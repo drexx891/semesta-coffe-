@@ -95,9 +95,10 @@ class _MainShellState extends State<MainShell> {
       _selectedIndex = 0;
     }
 
-    return GestureDetector(
-      onTap: () => sl<SessionManager>().resetActivity(),
-      onPanDown: (_) => sl<SessionManager>().resetActivity(),
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: (_) => sl<SessionManager>().resetActivity(),
+      onPointerMove: (_) => sl<SessionManager>().resetActivity(),
       child: Scaffold(
         body: isTablet ? _buildTabletLayout(navItems) : _buildPhoneLayout(navItems),
       ),

@@ -378,6 +378,26 @@ class MigrationV1 {
   ''';
 
   // ============================================================
+  // TABLE: vouchers
+  // ============================================================
+  static const String _createVouchers = '''
+    CREATE TABLE vouchers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      code TEXT NOT NULL UNIQUE,
+      discount_percentage REAL NOT NULL DEFAULT 0,
+      discount_nominal REAL NOT NULL DEFAULT 0,
+      min_purchase REAL NOT NULL DEFAULT 0,
+      max_discount REAL NOT NULL DEFAULT 0,
+      valid_from TEXT NOT NULL,
+      valid_until TEXT NOT NULL,
+      usage_limit INTEGER NOT NULL DEFAULT 999999,
+      used_count INTEGER NOT NULL DEFAULT 0,
+      is_active INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+    )
+  ''';
+
+  // ============================================================
   // INDEXES
   // ============================================================
   static const List<String> _createIndexes = [

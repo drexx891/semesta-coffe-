@@ -10,6 +10,7 @@ import '../../../bloc/pos/pos_event.dart';
 import '../../../bloc/pos/pos_state.dart';
 import 'customer_selection_dialog.dart';
 import 'discount_dialog.dart';
+import 'voucher_dialog.dart';
 import 'payment_sheet.dart';
 
 class CartSummary extends StatelessWidget {
@@ -95,35 +96,76 @@ class CartSummary extends StatelessWidget {
               const SizedBox(height: 20),
 
               _buildSummaryRow(AppStrings.subtotal, state.subtotal),
-              if (state.discountAmount > 0) _buildSummaryRow(AppStrings.discount, -state.discountAmount, isDiscount: true),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton.icon(
-                  onPressed: () async {
-                    final result = await showDialog<Map<String, dynamic>>(
-                      context: context,
-                      builder: (ctx) => DiscountDialog(
-                        currentPercentage: state.discountPercentage,
-                        currentNominal: state.discountNominal,
-                        maxPercentage: state.maxCashierDiscount,
+              if (state.selectedVoucher != null) ...[
+                _buildSummaryRow('Voucher (${state.selectedVoucher!.code})', -state.selectedVoucher!.calculateDiscount(state.subtotal), isDiscount: true),
+              ] else if (state.discountAmount > 0) ...[
+                _buildSummaryRow(AppStrings.discount, -state.discountAmount, isDiscount: true),
+              ],
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (state.selectedVoucher != null)
+                    TextButton.icon(
+                      onPressed: () {
+                        context.read<PosBloc>().add(ClearVoucher());
+                      },
+                      icon: const Icon(Icons.close_rounded, size: 14, color: AppColors.error),
+                      label: Text('Hapus Voucher', style: GoogleFonts.inter(fontSize: 12, color: AppColors.error, fontWeight: FontWeight.w600)),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                    );
+                    )
+                  else
+                    TextButton.icon(
+                      onPressed: () async {
+                        final result = await showDialog<Voucher>(
+                          context: context,
+                          builder: (ctx) => const VoucherDialog(),
+                        );
+                        if (result != null && context.mounted) {
+                          context.read<PosBloc>().add(ApplyVoucher(result));
+                        }
+                      },
+                      icon: const Icon(Icons.confirmation_number_outlined, size: 14, color: AppColors.success),
+                      label: Text('Gunakan Voucher', style: GoogleFonts.inter(fontSize: 12, color: AppColors.success, fontWeight: FontWeight.w600)),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ),
+                  const SizedBox(width: 8),
+                  if (state.selectedVoucher == null)
+                    TextButton.icon(
+                      onPressed: () async {
+                        final result = await showDialog<Map<String, dynamic>>(
+                          context: context,
+                          builder: (ctx) => DiscountDialog(
+                            currentPercentage: state.discountPercentage,
+                            currentNominal: state.discountNominal,
+                            maxPercentage: state.maxCashierDiscount,
+                          ),
+                        );
 
-                    if (result != null && context.mounted) {
-                      context.read<PosBloc>().add(ApplyDiscount(
-                            result['percentage'] as double,
-                            result['nominal'] as double,
-                          ));
-                    }
-                  },
-                  icon: const Icon(Icons.local_offer_rounded, size: 14, color: AppColors.warning),
-                  label: Text(state.discountAmount > 0 ? 'Ubah Diskon' : 'Terapkan Diskon', style: GoogleFonts.inter(fontSize: 12, color: AppColors.warning, fontWeight: FontWeight.w600)),
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                ),
+                        if (result != null && context.mounted) {
+                          context.read<PosBloc>().add(ApplyDiscount(
+                                result['percentage'] as double,
+                                result['nominal'] as double,
+                              ));
+                        }
+                      },
+                      icon: const Icon(Icons.local_offer_rounded, size: 14, color: AppColors.warning),
+                      label: Text(state.discountAmount > 0 ? 'Ubah Diskon' : 'Terapkan Diskon', style: GoogleFonts.inter(fontSize: 12, color: AppColors.warning, fontWeight: FontWeight.w600)),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ),
+                ],
               ),
               if (state.serviceChargeEnabled)
                 _buildSummaryRow('${AppStrings.serviceCharge} (${state.serviceChargePercentage.toStringAsFixed(0)}%)', state.serviceChargeAmount),

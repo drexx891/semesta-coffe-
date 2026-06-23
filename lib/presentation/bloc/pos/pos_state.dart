@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../../../domain/entities/hold_order.dart';
 import '../../../../domain/entities/customer.dart';
+import '../../../../domain/entities/voucher.dart';
 
 enum PaymentStatus { idle, processing, success, error }
 
@@ -10,6 +11,7 @@ class PosState extends Equatable {
   final String? tableNumber;
   final String? customerNameInput;
   final Customer? selectedCustomer;
+  final Voucher? selectedVoucher;
   final double discountPercentage;
   final double discountNominal;
   final double taxPercentage;
@@ -31,6 +33,7 @@ class PosState extends Equatable {
     this.tableNumber,
     this.customerNameInput,
     this.selectedCustomer,
+    this.selectedVoucher,
     this.discountPercentage = 0,
     this.discountNominal = 0,
     this.taxPercentage = 11.0,
@@ -52,6 +55,9 @@ class PosState extends Equatable {
   double get subtotal => cartItems.fold(0.0, (sum, item) => sum + item.subtotal);
 
   double get discountAmount {
+    if (selectedVoucher != null) {
+      return selectedVoucher!.calculateDiscount(subtotal);
+    }
     if (discountPercentage > 0) {
       return subtotal * (discountPercentage / 100);
     }
@@ -74,6 +80,7 @@ class PosState extends Equatable {
     String? tableNumber,
     String? customerNameInput,
     Customer? selectedCustomer,
+    Voucher? selectedVoucher,
     double? discountPercentage,
     double? discountNominal,
     double? taxPercentage,
@@ -89,6 +96,7 @@ class PosState extends Equatable {
     String? lastTransactionNumber,
     int? lastTransactionId,
     bool clearCustomer = false,
+    bool clearVoucher = false,
   }) {
     return PosState(
       cartItems: cartItems ?? this.cartItems,
@@ -96,6 +104,7 @@ class PosState extends Equatable {
       tableNumber: tableNumber ?? this.tableNumber,
       customerNameInput: clearCustomer ? null : (customerNameInput ?? this.customerNameInput),
       selectedCustomer: clearCustomer ? null : (selectedCustomer ?? this.selectedCustomer),
+      selectedVoucher: clearVoucher ? null : (selectedVoucher ?? this.selectedVoucher),
       discountPercentage: discountPercentage ?? this.discountPercentage,
       discountNominal: discountNominal ?? this.discountNominal,
       taxPercentage: taxPercentage ?? this.taxPercentage,
@@ -120,6 +129,7 @@ class PosState extends Equatable {
         tableNumber,
         customerNameInput,
         selectedCustomer,
+        selectedVoucher,
         discountPercentage,
         discountNominal,
         taxPercentage,

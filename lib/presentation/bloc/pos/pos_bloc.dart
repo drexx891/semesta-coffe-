@@ -11,6 +11,7 @@ import '../../../../data/database/dao/shift_dao.dart';
 import '../../../../data/database/dao/transaction_dao.dart';
 import '../../../../data/database/dao/settings_dao.dart';
 import '../../../../data/database/dao/hold_order_dao.dart';
+import '../../../../data/database/dao/voucher_dao.dart';
 import '../../../../services/session_manager.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../domain/entities/hold_order.dart';
@@ -22,6 +23,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   final TransactionDao _transactionDao;
   final SettingsDao _settingsDao;
   final HoldOrderDao _holdOrderDao;
+  final VoucherDao _voucherDao;
   final SessionManager _sessionManager;
   final SharedPreferences _prefs;
 
@@ -35,6 +37,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
     required TransactionDao transactionDao,
     required SettingsDao settingsDao,
     required HoldOrderDao holdOrderDao,
+    required VoucherDao voucherDao,
     required SessionManager sessionManager,
     required SharedPreferences prefs,
   })  : _productDao = productDao,
@@ -43,6 +46,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
         _transactionDao = transactionDao,
         _settingsDao = settingsDao,
         _holdOrderDao = holdOrderDao,
+        _voucherDao = voucherDao,
         _sessionManager = sessionManager,
         _prefs = prefs,
         super(const PosState()) {
@@ -57,6 +61,8 @@ class PosBloc extends Bloc<PosEvent, PosState> {
     on<SetCustomerName>(_onSetCustomerName);
     on<ApplyDiscount>(_onApplyDiscount);
     on<ClearDiscount>(_onClearDiscount);
+    on<ApplyVoucher>(_onApplyVoucher);
+    on<ClearVoucher>(_onClearVoucher);
     on<ProcessPayment>(_onProcessPayment);
     on<SaveHoldOrder>(_onSaveHoldOrder);
     on<LoadHoldOrder>(_onLoadHoldOrder);
@@ -219,6 +225,29 @@ class PosBloc extends Bloc<PosEvent, PosState> {
     add(const SyncCartState());
   }
 
+  void _onApplyVoucher(ApplyVoucher event, Emitter<PosState> emit) {
+    if (!event.voucher.isValid) {
+      emit(state.copyWith(errorMessage: 'Voucher tidak valid atau sudah kadaluarsa'));
+      return;
+    }
+    if (state.subtotal < event.voucher.minPurchase) {
+      emit(state.copyWith(errorMessage: 'Minimum pembelian belum terpenuhi'));
+      return;
+    }
+    
+    emit(state.copyWith(
+      selectedVoucher: event.voucher,
+      discountPercentage: 0, // Clear manual discount when using voucher
+      discountNominal: 0,
+    ));
+    add(const SyncCartState());
+  }
+
+  void _onClearVoucher(ClearVoucher event, Emitter<PosState> emit) {
+    emit(state.copyWith(clearVoucher: true));
+    add(const SyncCartState());
+  }
+
   Future<void> _onSaveHoldOrder(SaveHoldOrder event, Emitter<PosState> emit) async {
     if (state.cartItems.isEmpty) return;
     
@@ -332,7 +361,8 @@ class PosBloc extends Bloc<PosEvent, PosState> {
           'queue_number': queueNumber,
           'subtotal': state.subtotal,
           'discount_amount': state.discountAmount,
-          'discount_percentage': state.discountPercentage,
+          'discount_percentage': state.selectedVoucher != null ? 0 : state.discountPercentage,
+          'discount_reason': state.selectedVoucher != null ? 'Voucher: ${state.selectedVoucher!.code}' : null,
           'service_charge_amount': state.serviceChargeAmount,
           'tax_amount': state.taxAmount,
           'total': state.total,
@@ -372,6 +402,11 @@ class PosBloc extends Bloc<PosEvent, PosState> {
         lastQueueNumber: queueNumber,
         lastTransactionNumber: trxNumber,
       ));
+      
+      if (state.selectedVoucher != null && state.selectedVoucher!.id != null) {
+        await _voucherDao.incrementUsedCount(state.selectedVoucher!.id!);
+      }
+      
       add(const SyncCartState(status: 'success'));
       
     } catch (e) {
@@ -417,6 +452,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
       tableNumber: null,
       customerNameInput: null,
       clearCustomer: true,
+      clearVoucher: true,
       paymentStatus: PaymentStatus.idle,
       errorMessage: null,
       lastQueueNumber: null,

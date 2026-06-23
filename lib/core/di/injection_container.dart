@@ -8,6 +8,7 @@ import '../../data/database/dao/stock_dao.dart';
 import '../../data/database/dao/settings_dao.dart';
 import '../../data/database/dao/hold_order_dao.dart';
 import '../../data/database/dao/customer_dao.dart';
+import '../../data/database/dao/voucher_dao.dart';
 import '../../services/session_manager.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/menu/menu_bloc.dart';
@@ -35,6 +36,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<SettingsDao>(() => SettingsDao(sl()));
   sl.registerLazySingleton<HoldOrderDao>(() => HoldOrderDao(sl()));
   sl.registerLazySingleton<CustomerDao>(() => CustomerDao());
+  sl.registerLazySingleton<VoucherDao>(() => VoucherDao(sl()));
 
   // === BLoCs ===
   sl.registerFactory(() => AuthBloc(
@@ -58,6 +60,7 @@ Future<void> initDependencies() async {
         transactionDao: sl(),
         settingsDao: sl(),
         holdOrderDao: sl(),
+        voucherDao: sl(),
         sessionManager: sl(),
         prefs: sl(),
       ));

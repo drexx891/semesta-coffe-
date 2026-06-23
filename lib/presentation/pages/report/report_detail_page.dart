@@ -8,6 +8,7 @@ import '../../../core/di/injection_container.dart';
 import '../../../core/utils/receipt_printer.dart';
 import '../../../data/database/dao/transaction_dao.dart';
 import '../../../data/database/dao/shift_dao.dart';
+import '../../../core/utils/csv_exporter.dart';
 
 enum ReportType { daily, monthly, bestSeller, salesByCashier, paymentMethods, voidTransactions, discount, tax, shift, hpp, generic }
 
@@ -93,7 +94,31 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
         title: Text(widget.title, style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600)),
         backgroundColor: AppColors.primaryDark,
         actions: [
-          if (!_isLoading && widget.type != ReportType.generic && _listData.isNotEmpty)
+          if (!_isLoading && widget.type != ReportType.generic && _listData.isNotEmpty) ...[
+            IconButton(
+              icon: const Icon(Icons.download_rounded),
+              tooltip: 'Export CSV',
+              onPressed: () async {
+                try {
+                  if (widget.type == ReportType.shift) {
+                    await CsvExporter.exportShifts(_listData);
+                  } else {
+                    await CsvExporter.exportTransactions(_listData);
+                  }
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Berhasil mengekspor ke CSV')),
+                    );
+                  }
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Gagal mengekspor: $e')),
+                    );
+                  }
+                }
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.print_rounded),
               tooltip: 'Cetak Laporan',
@@ -105,6 +130,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                 );
               },
             ),
+          ],
         ],
       ),
       body: _isLoading

@@ -8,6 +8,7 @@ import 'user_management_page.dart';
 import 'printer_settings_page.dart';
 import 'activity_log_page.dart';
 import 'backup_restore_page.dart';
+import 'voucher_management_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -19,6 +20,7 @@ class SettingsPage extends StatelessWidget {
       _SettingsSection(AppStrings.transactionConfig, Icons.tune_rounded, AppColors.accent, const TransactionConfigPage()),
       _SettingsSection(AppStrings.printerSettings, Icons.print_rounded, AppColors.info, const PrinterSettingsPage()),
       _SettingsSection(AppStrings.userManagement, Icons.group_rounded, AppColors.success, const UserManagementPage()),
+      _SettingsSection('Promo & Voucher', Icons.confirmation_number_rounded, AppColors.secondary, const VoucherManagementPage()),
       _SettingsSection(AppStrings.activityLog, Icons.history_rounded, AppColors.warning, const ActivityLogPage()),
       _SettingsSection(AppStrings.backupRestore, Icons.backup_rounded, AppColors.paymentTransfer, const BackupRestorePage()),
     ];

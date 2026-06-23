@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../../../domain/entities/hold_order.dart';
 import '../../../../domain/entities/customer.dart';
+import '../../../../domain/entities/voucher.dart';
 
 abstract class PosEvent extends Equatable {
   const PosEvent();
@@ -72,6 +73,15 @@ class ApplyDiscount extends PosEvent {
 }
 
 class ClearDiscount extends PosEvent {}
+
+class ApplyVoucher extends PosEvent {
+  final Voucher voucher;
+  const ApplyVoucher(this.voucher);
+  @override
+  List<Object?> get props => [voucher];
+}
+
+class ClearVoucher extends PosEvent {}
 
 class ProcessPayment extends PosEvent {
   final String paymentMethod;

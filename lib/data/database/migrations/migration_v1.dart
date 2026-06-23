@@ -358,24 +358,7 @@ class MigrationV1 {
     )
   ''';
 
-  // ============================================================
-  // TABLE: vouchers
-  // ============================================================
-  static const String _createVouchers = '''
-    CREATE TABLE vouchers (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      code TEXT NOT NULL UNIQUE,
-      type TEXT NOT NULL CHECK(type IN ('percentage', 'nominal')),
-      value REAL NOT NULL DEFAULT 0,
-      min_transaction REAL NOT NULL DEFAULT 0,
-      is_active INTEGER NOT NULL DEFAULT 1,
-      valid_from TEXT,
-      valid_until TEXT,
-      usage_count INTEGER NOT NULL DEFAULT 0,
-      max_usage INTEGER NOT NULL DEFAULT 0,
-      created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
-    )
-  ''';
+
 
   // ============================================================
   // TABLE: vouchers

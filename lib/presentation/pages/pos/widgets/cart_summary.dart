@@ -8,6 +8,7 @@ import '../../../../domain/entities/customer.dart';
 import '../../../bloc/pos/pos_bloc.dart';
 import '../../../bloc/pos/pos_event.dart';
 import '../../../bloc/pos/pos_state.dart';
+import '../../../../domain/entities/voucher.dart';
 import 'customer_selection_dialog.dart';
 import 'discount_dialog.dart';
 import 'voucher_dialog.dart';

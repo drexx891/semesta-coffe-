@@ -53,7 +53,8 @@ class VoucherDao {
   }
 
   Future<void> incrementUsedCount(int id) async {
-    await _db.rawUpdate(
+    final db = await _db.database;
+    await db.rawUpdate(
       'UPDATE vouchers SET used_count = used_count + 1 WHERE id = ?',
       [id],
     );

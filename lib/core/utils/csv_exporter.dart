@@ -43,7 +43,7 @@ class CsvExporter {
       ]);
     }
     
-    String csvData = const ListToCsvConverter().convert(rows);
+    String csvData = _convertToCsv(rows);
     await _downloadCsv(csvData, 'laporan_transaksi_${DateFormat('yyyyMMdd_HHmmss').format(DateTime.now())}');
   }
 
@@ -80,8 +80,20 @@ class CsvExporter {
       ]);
     }
     
-    String csvData = const ListToCsvConverter().convert(rows);
+    String csvData = _convertToCsv(rows);
     await _downloadCsv(csvData, 'laporan_shift_${DateFormat('yyyyMMdd_HHmmss').format(DateTime.now())}');
+  }
+
+  static String _convertToCsv(List<List<dynamic>> rows) {
+    return rows.map((row) {
+      return row.map((cell) {
+        String cellStr = cell.toString();
+        if (cellStr.contains(',') || cellStr.contains('"') || cellStr.contains('\n')) {
+          return '"${cellStr.replaceAll('"', '""')}"';
+        }
+        return cellStr;
+      }).join(',');
+    }).join('\n');
   }
 
   static Future<void> _downloadCsv(String csvData, String fileName) async {

@@ -232,7 +232,7 @@ class _MainShellState extends State<MainShell> {
           selectedIndex: _selectedIndex < bottomItems.length ? _selectedIndex : bottomItems.length,
           onDestinationSelected: (index) {
             if (hasMore && index == bottomItems.length) {
-              _showMoreMenu(navItems.sublist(maxBottomItems));
+              _showMoreMenu(navItems.sublist(maxBottomItems), maxBottomItems);
             } else {
               setState(() => _selectedIndex = index);
             }
@@ -339,15 +339,17 @@ class _MainShellState extends State<MainShell> {
     );
   }
 
-  void _showMoreMenu(List<_NavItem> moreItems) {
+  void _showMoreMenu(List<_NavItem> moreItems, int startOffset) {
     showModalBottomSheet(
       context: context,
       builder: (context) => Padding(
         padding: const EdgeInsets.all(AppDimensions.spacing16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: moreItems.map((item) {
-            final globalIndex = _navItems.indexOf(item);
+          children: moreItems.asMap().entries.map((entry) {
+            final localIndex = entry.key;
+            final item = entry.value;
+            final globalIndex = startOffset + localIndex;
             return ListTile(
               leading: Icon(item.icon, color: AppColors.primary),
               title: Text(item.label),

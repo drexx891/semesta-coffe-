@@ -1,0 +1,8 @@
+{
+  "name": "smesta_coffee",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "C:\\flutter\\bin\\flutter.bat run -d chrome --web-port 8081",
+    "dev:windows": "C:\\flutter\\bin\\flutter.bat run -d windows"
+  }
+}

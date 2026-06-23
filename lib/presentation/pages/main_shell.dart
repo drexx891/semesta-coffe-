@@ -353,9 +353,13 @@ class _MainShellState extends State<MainShell> {
             return ListTile(
               leading: Icon(item.icon, color: AppColors.primary),
               title: Text(item.label),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                setState(() => _selectedIndex = globalIndex);
+                // Delay sedikit agar animasi tutup bottom sheet tidak bentrok dengan rebuild Scaffold
+                await Future.delayed(const Duration(milliseconds: 250));
+                if (mounted) {
+                  setState(() => _selectedIndex = globalIndex);
+                }
               },
             );
           }).toList(),

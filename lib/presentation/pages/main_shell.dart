@@ -284,11 +284,10 @@ class _MainShellState extends State<MainShell> {
     return Scaffold(
       body: navItems[_selectedIndex].page,
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
+        decoration: const BoxDecoration(
+          color: AppColors.primaryDark,
           boxShadow: [
             BoxShadow(
-              color: AppColors.cardShadow.withValues(alpha: 0.3),
               color: AppColors.cardShadow,
               blurRadius: 10,
               offset: Offset(0, -2),

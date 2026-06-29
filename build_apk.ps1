@@ -1,14 +1,14 @@
 # Script untuk men-generate Icon, Splash Screen, dan APK Release
-echo "Mengambil package terbaru..."
+Write-Output "Mengambil package terbaru..."
 flutter pub get
 
-echo "Membuat App Icon..."
+Write-Output "Membuat App Icon..."
 flutter pub run flutter_launcher_icons
 
-echo "Membuat Splash Screen..."
+Write-Output "Membuat Splash Screen..."
 flutter pub run flutter_native_splash:create
 
-echo "Membangun APK versi Release..."
+Write-Output "Membangun APK versi Release..."
 flutter build apk --release
 
-echo "Proses Selesai! File APK dapat ditemukan di folder build\app\outputs\flutter-apk\app-release.apk"
+Write-Output "Proses Selesai! File APK dapat ditemukan di folder build\app\outputs\flutter-apk\app-release.apk"

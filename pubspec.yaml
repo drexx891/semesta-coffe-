@@ -46,6 +46,7 @@ dependencies:
   csv: ^8.0.0
   audioplayers: ^6.8.1
   supabase_flutter: ^2.15.0
+  esc_pos_utils_plus: ^2.0.4
 
 dev_dependencies:
   flutter_test:

@@ -9,9 +9,14 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          token: ${{ github.token }}
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2

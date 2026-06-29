@@ -27,8 +27,8 @@ class DatabaseHelper {
       // Menggunakan databaseFactoryFfiWeb dengan absolute URI agar tidak crash saat routing SPA di Vercel
       databaseFactory = createDatabaseFactoryFfiWeb(
         options: SqfliteFfiWebOptions(
-          sharedWorkerUri: Uri.parse('/sqflite_sw.js'),
-          sqlite3WasmUri: Uri.parse('/sqlite3.wasm'),
+          sharedWorkerUri: Uri.parse('/sqflite_sw.js?v=2'),
+          sqlite3WasmUri: Uri.parse('/sqlite3.wasm?v=2'),
         ),
       );
       return await databaseFactory.openDatabase(

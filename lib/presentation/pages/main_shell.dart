@@ -51,9 +51,9 @@ class _MainShellState extends State<MainShell> {
         ),
       ),
       _NavItem(icon: LucideIcons.monitorCheck, label: AppStrings.pos, page: const PosPage()),
-      _NavItem(icon: LucideIcons.receiptText, label: AppStrings.transactions, page: const TransactionHistoryPage()),
+      _NavItem(icon: LucideIcons.receipt, label: AppStrings.transactions, page: const TransactionHistoryPage()),
       _NavItem(icon: LucideIcons.users, label: 'Pelanggan', page: const CustomerListPage()),
-      _NavItem(icon: LucideIcons.ticketPercent, label: 'Voucher', page: const VoucherListPage()),
+      _NavItem(icon: LucideIcons.ticket, label: 'Voucher', page: const VoucherListPage()),
       _NavItem(icon: LucideIcons.chefHat, label: 'KDS', page: const KdsPage()),
       _NavItem(icon: LucideIcons.clock, label: AppStrings.shift, page: const ShiftPage()),
     ];

@@ -126,7 +126,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
               ),
             );
           },
-          icon: const Icon(LucideIcons.user_add_rounded),
+          icon: const Icon(LucideIcons.userPlus),
           label: const Text('Member Baru'),
           backgroundColor: AppColors.accent,
         ),
@@ -238,7 +238,7 @@ class _CustomerCardState extends State<_CustomerCard> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(LucideIcons.stars_rounded, color: AppColors.accent, size: 16),
+                      const Icon(LucideIcons.star, color: AppColors.accent, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         '${widget.customer.loyaltyPoints} Poin',

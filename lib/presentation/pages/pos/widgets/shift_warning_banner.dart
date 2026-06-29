@@ -22,7 +22,7 @@ class ShiftWarningBanner extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              const Icon(LucideIcons.triangleAlert_amber_rounded, color: AppColors.error, size: 24),
+              const Icon(LucideIcons.alertTriangle, color: AppColors.error, size: 24),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

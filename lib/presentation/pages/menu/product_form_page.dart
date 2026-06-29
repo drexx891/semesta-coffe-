@@ -191,7 +191,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                                     : Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Icon(LucideIcons.plus_a_photo_rounded, size: 32, color: Colors.grey.shade500),
+                                          Icon(LucideIcons.camera, size: 32, color: Colors.grey.shade500),
                                           const SizedBox(height: 8),
                                           Text('Pilih Foto', style: GoogleFonts.inter(fontSize: 12, color: Colors.grey.shade600)),
                                         ],

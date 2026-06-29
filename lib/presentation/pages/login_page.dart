@@ -234,7 +234,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               controller: _usernameController,
               decoration: InputDecoration(
                 labelText: AppStrings.username,
-                prefixIcon: const Icon(LucideIcons.user_outline_rounded),
+                prefixIcon: const Icon(LucideIcons.user),
                 filled: true,
                 fillColor: AppColors.surfaceVariant.withValues(alpha: 0.5),
               ),
@@ -259,7 +259,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 fillColor: AppColors.surfaceVariant.withValues(alpha: 0.5),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? LucideIcons.eye_off_rounded : LucideIcons.eye,
+                    _obscurePassword ? LucideIcons.eyeOff_rounded : LucideIcons.eye,
                     color: AppColors.textTertiary,
                   ),
                   onPressed: () => setState(() => _obscurePassword = !_obscurePassword),

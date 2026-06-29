@@ -48,7 +48,7 @@ class VoucherListPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(LucideIcons.ticketPercent, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                      Icon(LucideIcons.ticket, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                       const SizedBox(height: 16),
                       Text('Belum ada voucher', style: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 16)),
                     ],
@@ -76,7 +76,7 @@ class VoucherListPage extends StatelessWidget {
               ),
             );
           },
-          icon: const Icon(LucideIcons.plus_circle_outline_rounded),
+          icon: const Icon(LucideIcons.plusCircle),
           label: const Text('Buat Voucher'),
           backgroundColor: AppColors.accent,
         ),

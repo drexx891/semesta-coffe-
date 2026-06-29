@@ -133,7 +133,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                       ),
                       if (_payments.length > 1)
                         IconButton(
-                          icon: const Icon(LucideIcons.minus_circle, color: AppColors.error),
+                          icon: const Icon(LucideIcons.minusCircle, color: AppColors.error),
                           onPressed: () => _removePaymentLine(index),
                         ),
                     ],

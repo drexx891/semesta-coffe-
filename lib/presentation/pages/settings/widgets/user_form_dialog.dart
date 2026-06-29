@@ -139,7 +139,7 @@ class _UserFormDialogState extends State<UserFormDialog> {
                     labelText: isEdit ? 'Password Baru (Kosongkan jika tidak diubah)' : 'Password',
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword ? LucideIcons.eye_off : LucideIcons.eye),
+                      icon: Icon(_obscurePassword ? LucideIcons.eyeOff : LucideIcons.eye),
                       onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
                   ),
@@ -171,7 +171,7 @@ class _UserFormDialogState extends State<UserFormDialog> {
                       labelText: 'PIN 4 Digit (Khusus Akses Supervisor)',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscurePin ? LucideIcons.eye_off : LucideIcons.eye),
+                        icon: Icon(_obscurePin ? LucideIcons.eyeOff : LucideIcons.eye),
                         onPressed: () => setState(() => _obscurePin = !_obscurePin),
                       ),
                     ),

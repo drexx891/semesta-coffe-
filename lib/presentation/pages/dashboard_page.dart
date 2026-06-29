@@ -172,7 +172,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       child: Row(
         children: [
-          const Icon(LucideIcons.triangleAlert_amber_rounded, color: AppColors.error, size: 24),
+          const Icon(LucideIcons.alertTriangle, color: AppColors.error, size: 24),
           const SizedBox(width: AppDimensions.spacing12),
           Expanded(
             child: Column(

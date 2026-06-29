@@ -19,7 +19,7 @@ class SettingsPage extends StatelessWidget {
     final settingsSections = [
       _SettingsSection(AppStrings.storeProfile, Icons.store_rounded, AppColors.primary, const StoreProfilePage()),
       _SettingsSection(AppStrings.transactionConfig, Icons.tune_rounded, AppColors.accent, const TransactionConfigPage()),
-      _SettingsSection(AppStrings.printerSettings, LucideIcons.printerer, AppColors.info, const PrinterSettingsPage()),
+      _SettingsSection(AppStrings.printerSettings, LucideIcons.printer, AppColors.info, const PrinterSettingsPage()),
       _SettingsSection(AppStrings.userManagement, Icons.group_rounded, AppColors.success, const UserManagementPage()),
       _SettingsSection('Promo & Voucher', LucideIcons.ticket, AppColors.paymentQris, const VoucherManagementPage()),
       _SettingsSection(AppStrings.activityLog, LucideIcons.history, AppColors.warning, const ActivityLogPage()),

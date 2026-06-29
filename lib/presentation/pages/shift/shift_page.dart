@@ -192,7 +192,7 @@ class _ShiftPageState extends State<ShiftPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(LucideIcons.lock_open_rounded, size: 48, color: AppColors.primary),
+                Icon(LucideIcons.unlock, size: 48, color: AppColors.primary),
                 const SizedBox(height: 16),
                 Text(
                   'Buka Shift',

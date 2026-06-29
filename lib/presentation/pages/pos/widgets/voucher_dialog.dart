@@ -97,7 +97,7 @@ class _VoucherDialogState extends State<VoucherDialog> {
                 labelText: 'Kode Voucher',
                 errorText: _errorMessage,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                prefixIcon: const Icon(LucideIcons.ticketPercent_outlined),
+                prefixIcon: const Icon(LucideIcons.ticket_outlined),
               ),
               onSubmitted: (_) => _checkVoucher(),
             ),

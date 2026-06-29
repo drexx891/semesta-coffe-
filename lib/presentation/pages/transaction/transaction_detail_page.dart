@@ -191,7 +191,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
             onPressed: _printKitchenTicket,
           ),
           IconButton(
-            icon: const Icon(LucideIcons.printerer),
+            icon: const Icon(LucideIcons.printer),
             tooltip: 'Cetak Struk',
             onPressed: _printReceipt,
           ),

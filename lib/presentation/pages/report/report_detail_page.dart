@@ -119,7 +119,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
               },
             ),
             IconButton(
-              icon: const Icon(LucideIcons.printerer),
+              icon: const Icon(LucideIcons.printer),
               tooltip: 'Cetak Laporan',
               onPressed: () async {
                 await ReceiptPrinter.printReportSummary(

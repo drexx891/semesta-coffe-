@@ -187,7 +187,7 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                             labelText: 'Alamat Jaringan Printer Kasir (IP Jaringan/LAN)',
                             hintText: 'Cth: 192.168.1.100',
                             border: const OutlineInputBorder(),
-                            prefixIcon: const Icon(LucideIcons.printerer),
+                            prefixIcon: const Icon(LucideIcons.printer),
                             suffixIcon: TextButton(
                               onPressed: () => _testPrint(_receiptPrinterController.text.trim()),
                               child: const Text('TEST PRINT'),

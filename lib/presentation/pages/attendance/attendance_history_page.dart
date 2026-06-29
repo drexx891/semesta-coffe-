@@ -135,7 +135,7 @@ class _AttendanceHistoryPageState extends State<AttendanceHistoryPage> {
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(LucideIcons.notebookText, size: 12, color: AppColors.textTertiary),
+                                      const Icon(LucideIcons.fileText, size: 12, color: AppColors.textTertiary),
                                       const SizedBox(width: 4),
                                       Expanded(
                                         child: Text(

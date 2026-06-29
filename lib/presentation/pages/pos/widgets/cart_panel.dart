@@ -62,7 +62,7 @@ class CartPanel extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(LucideIcons.shoppingCart_outlined, size: 48, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                          Icon(LucideIcons.shoppingCart, size: 48, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                           const SizedBox(height: 8),
                           Text(AppStrings.emptyCart, style: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 14)),
                           const SizedBox(height: 4),

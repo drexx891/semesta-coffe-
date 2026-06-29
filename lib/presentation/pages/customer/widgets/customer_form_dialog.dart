@@ -102,7 +102,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: 'Poin Loyalitas',
-                      prefixIcon: Icon(LucideIcons.stars_rounded),
+                      prefixIcon: Icon(LucideIcons.star),
                     ),
                   ),
               ],

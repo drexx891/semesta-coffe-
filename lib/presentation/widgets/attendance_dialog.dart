@@ -105,7 +105,7 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
                       decoration: InputDecoration(
                         labelText: 'Catatan Pulang (Opsional)',
                         hintText: 'Cth: Selesai shift pagi',
-                        prefixIcon: const Icon(LucideIcons.notebookText),
+                        prefixIcon: const Icon(LucideIcons.fileText),
                       ),
                       maxLines: 2,
                     ),

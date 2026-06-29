@@ -136,7 +136,7 @@ class _VoucherManagementPageState extends State<VoucherManagementPage> {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(LucideIcons.ticketPercent, color: AppColors.primary, size: 20),
+                                    const Icon(LucideIcons.ticket, color: AppColors.primary, size: 20),
                                     const SizedBox(width: 8),
                                     Text(voucher.code, style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                                   ],

@@ -98,7 +98,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(LucideIcons.receiptText, size: 64, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                      Icon(LucideIcons.receipt, size: 64, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                       const SizedBox(height: 12),
                       Text('Belum ada transaksi pada $dateLabel', style: GoogleFonts.inter(color: AppColors.textTertiary)),
                     ],

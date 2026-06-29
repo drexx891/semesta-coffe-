@@ -7,6 +7,8 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/base64_image_helper.dart';
+import '../../../data/database/dao/hold_order_dao.dart';
+import '../../../domain/entities/hold_order.dart';
 
 import '../../bloc/menu/menu_bloc.dart';
 import '../../bloc/menu/menu_event.dart';
@@ -30,13 +32,11 @@ class PosPage extends StatefulWidget {
 }
 
 class _PosPageState extends State<PosPage> {
-  late PosBloc _posBloc;
   final ScrollController _cartScrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _posBloc = sl<PosBloc>()..add(InitPos());
     Future.microtask(() {
       context.read<MenuBloc>().add(LoadMenu());
     });
@@ -44,7 +44,6 @@ class _PosPageState extends State<PosPage> {
 
   @override
   void dispose() {
-    _posBloc.close();
     _cartScrollController.dispose();
     super.dispose();
   }
@@ -54,9 +53,7 @@ class _PosPageState extends State<PosPage> {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= AppDimensions.tabletBreakpoint;
 
-    return BlocProvider.value(
-      value: _posBloc,
-      child: BlocListener<PosBloc, PosState>(
+    return BlocListener<PosBloc, PosState>(
         listenWhen: (previous, current) =>
             previous.paymentStatus != current.paymentStatus ||
             previous.errorMessage != current.errorMessage,
@@ -72,7 +69,7 @@ class _PosPageState extends State<PosPage> {
               context: context,
               barrierDismissible: false,
               builder: (_) => BlocProvider.value(
-                value: _posBloc,
+                value: context.read<PosBloc>(),
                 child: PaymentSuccessDialog(
                   transactionId: state.lastTransactionId!,
                   queueNumber: state.lastQueueNumber ?? '-',
@@ -80,6 +77,8 @@ class _PosPageState extends State<PosPage> {
                 ),
               ),
             );
+            // Reset payment status after showing dialog (BUG 7/10 fix)
+            context.read<PosBloc>().add(ResetPos());
           }
         },
         child: Scaffold(
@@ -143,10 +142,85 @@ class _PosPageState extends State<PosPage> {
   }
 
   void _showHoldOrdersDialog(BuildContext context) {
-    // We could implement this dialog properly, but for now we'll keep it simple
-    // or just show a message.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Daftar hold order akan diimplementasikan penuh di task berikutnya.')),
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return FutureBuilder<List<Map<String, dynamic>>>(
+          future: sl<HoldOrderDao>().getActiveHoldOrders(),
+          builder: (context, snapshot) {
+            final orders = snapshot.data ?? [];
+            return AlertDialog(
+              title: Text('Hold Orders', style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600)),
+              content: SizedBox(
+                width: 360,
+                child: orders.isEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24),
+                        child: Center(
+                          child: Text('Tidak ada pesanan ditahan', style: GoogleFonts.inter(color: AppColors.textTertiary)),
+                        ),
+                      )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: orders.length,
+                        separatorBuilder: (_, __) => const Divider(),
+                        itemBuilder: (ctx, index) {
+                          final order = orders[index];
+                          final label = order['label'] as String? ?? 'Pesanan';
+                          final createdAt = order['created_at'] as String? ?? '';
+                          final itemsJson = order['items_json'] as String? ?? '[]';
+                          List<CartItem> items = [];
+                          try {
+                            items = CartItem.decodeList(itemsJson);
+                          } catch (_) {}
+                          final totalItems = items.fold<int>(0, (s, i) => s + i.quantity);
+                          final orderType = order['order_type'] as String? ?? 'dine_in';
+
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: Container(
+                              width: 40, height: 40,
+                              decoration: BoxDecoration(
+                                color: AppColors.warning.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(Icons.pause_circle_rounded, color: AppColors.warning),
+                            ),
+                            title: Text(label, style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14)),
+                            subtitle: Text('$totalItems item · ${orderType == 'dine_in' ? 'Dine In' : 'Takeaway'}',
+                                style: GoogleFonts.inter(fontSize: 12, color: AppColors.textTertiary)),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.play_circle_rounded, color: AppColors.success, size: 28),
+                              tooltip: 'Muat pesanan',
+                              onPressed: () {
+                                Navigator.pop(context);
+                                final holdOrder = HoldOrder(
+                                  id: order['id'] as int?,
+                                  label: label,
+                                  orderType: orderType,
+                                  tableNumber: order['table_number'] as String?,
+                                  items: items,
+                                  userId: order['user_id'] as int? ?? 1,
+                                  createdAt: DateTime.tryParse(createdAt) ?? DateTime.now(),
+                                  expiresAt: DateTime.tryParse(order['expires_at'] as String? ?? '') ?? DateTime.now(),
+                                );
+                                ctx.read<PosBloc>().add(LoadHoldOrder(holdOrder));
+                              },
+                            ),
+                          );
+                        },
+                      ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Tutup'),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 

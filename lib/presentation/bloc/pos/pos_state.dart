@@ -97,6 +97,7 @@ class PosState extends Equatable {
     int? lastTransactionId,
     bool clearCustomer = false,
     bool clearVoucher = false,
+    bool clearActiveShiftId = false,
   }) {
     return PosState(
       cartItems: cartItems ?? this.cartItems,
@@ -112,7 +113,7 @@ class PosState extends Equatable {
       taxEnabled: taxEnabled ?? this.taxEnabled,
       serviceChargeEnabled: serviceChargeEnabled ?? this.serviceChargeEnabled,
       maxCashierDiscount: maxCashierDiscount ?? this.maxCashierDiscount,
-      activeShiftId: activeShiftId ?? this.activeShiftId,
+      activeShiftId: clearActiveShiftId ? null : (activeShiftId ?? this.activeShiftId),
       activeHoldOrders: activeHoldOrders ?? this.activeHoldOrders,
       paymentStatus: paymentStatus ?? this.paymentStatus,
       errorMessage: errorMessage ?? this.errorMessage,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart' show VoidCallback;
 import '../domain/entities/user.dart';
 
 /// Mengelola session pengguna yang sedang login
@@ -71,5 +72,3 @@ class SessionManager {
     _sessionTimer?.cancel();
   }
 }
-
-typedef VoidCallback = void Function();

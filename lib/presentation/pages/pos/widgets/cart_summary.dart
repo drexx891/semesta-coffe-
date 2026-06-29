@@ -14,14 +14,37 @@ import 'discount_dialog.dart';
 import 'voucher_dialog.dart';
 import 'payment_sheet.dart';
 
-class CartSummary extends StatelessWidget {
+class CartSummary extends StatefulWidget {
   const CartSummary({super.key});
+
+  @override
+  State<CartSummary> createState() => _CartSummaryState();
+}
+
+class _CartSummaryState extends State<CartSummary> {
+  final TextEditingController _customerController = TextEditingController();
+
+  @override
+  void dispose() {
+    _customerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PosBloc, PosState>(
       builder: (context, state) {
         if (state.cartItems.isEmpty) return const SizedBox.shrink();
+
+        // Sinkronisasi dengan state eksternal (misal setelah payment / clear)
+        if (state.customerNameInput == null || state.customerNameInput!.isEmpty) {
+          if (_customerController.text.isNotEmpty) {
+            _customerController.text = '';
+          }
+        } else if (_customerController.text != state.customerNameInput) {
+          _customerController.text = state.customerNameInput!;
+          _customerController.selection = TextSelection.collapsed(offset: _customerController.text.length);
+        }
 
         return Container(
           padding: const EdgeInsets.all(24),
@@ -39,8 +62,7 @@ class CartSummary extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
-                      controller: TextEditingController(text: state.customerNameInput)
-                        ..selection = TextSelection.collapsed(offset: state.customerNameInput?.length ?? 0),
+                      controller: _customerController,
                       onChanged: (val) {
                         context.read<PosBloc>().add(SetCustomerName(val));
                       },

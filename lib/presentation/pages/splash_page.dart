@@ -69,18 +69,11 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
           ),
         ),
         child: Center(
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Opacity(
-                opacity: _fadeAnimation.value,
-                child: Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: child,
-                ),
-              );
-            },
-            child: Column(
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: ScaleTransition(
+              scale: _scaleAnimation,
+              child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Logo/Icon

@@ -9,6 +9,8 @@ import '../../services/session_manager.dart';
 import '../../core/di/injection_container.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/auth/auth_event.dart';
+import '../bloc/pos/pos_bloc.dart';
+import '../bloc/pos/pos_event.dart';
 import 'dashboard_page.dart';
 import 'pos/pos_page.dart';
 import 'transaction/transaction_history_page.dart';
@@ -30,6 +32,7 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _selectedIndex = 0;
+  late final PosBloc _posBloc;
 
   List<_NavItem> get _navItems {
     final items = <_NavItem>[
@@ -85,6 +88,18 @@ class _MainShellState extends State<MainShell> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _posBloc = sl<PosBloc>()..add(InitPos());
+  }
+
+  @override
+  void dispose() {
+    _posBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= AppDimensions.tabletBreakpoint;
@@ -95,12 +110,15 @@ class _MainShellState extends State<MainShell> {
       _selectedIndex = 0;
     }
 
-    return Listener(
-      behavior: HitTestBehavior.translucent,
-      onPointerDown: (_) => sl<SessionManager>().resetActivity(),
-      onPointerMove: (_) => sl<SessionManager>().resetActivity(),
-      child: Scaffold(
-        body: isTablet ? _buildTabletLayout(navItems) : _buildPhoneLayout(navItems),
+    return BlocProvider.value(
+      value: _posBloc,
+      child: Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => sl<SessionManager>().resetActivity(),
+        onPointerMove: (_) => sl<SessionManager>().resetActivity(),
+        child: Scaffold(
+          body: isTablet ? _buildTabletLayout(navItems) : _buildPhoneLayout(navItems),
+        ),
       ),
     );
   }
@@ -353,10 +371,8 @@ class _MainShellState extends State<MainShell> {
             return ListTile(
               leading: Icon(item.icon, color: AppColors.primary),
               title: Text(item.label),
-              onTap: () async {
+              onTap: () {
                 Navigator.pop(context);
-                // Delay sedikit agar animasi tutup bottom sheet tidak bentrok dengan rebuild Scaffold
-                await Future.delayed(const Duration(milliseconds: 250));
                 if (mounted) {
                   setState(() => _selectedIndex = globalIndex);
                 }

@@ -112,9 +112,11 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   Future<void> _checkShiftStatus(Emitter<PosState> emit) async {
     try {
       final shift = await _shiftDao.getActiveShift();
-      emit(state.copyWith(
-        activeShiftId: shift?['id'] as int?,
-      ));
+      if (shift != null) {
+        emit(state.copyWith(activeShiftId: shift['id'] as int));
+      } else {
+        emit(state.copyWith(clearActiveShiftId: true));
+      }
     } catch (_) {}
   }
 
@@ -374,25 +376,29 @@ class PosBloc extends Bloc<PosEvent, PosState> {
           'order_status': 'queued',
           'created_at': DateTime.now().toIso8601String(),
         },
-        items: state.cartItems.map((item) => {
-          'product_id': item.productId,
-          'product_name': item.productName,
-          'size': item.size,
-          'sugar_level': item.sugarLevel,
-          'ice_level': item.iceLevel,
-          'extra_shot': item.extraShot ? 1 : 0,
-          'toppings_json': item.selectedToppings.isNotEmpty
-              ? jsonEncode(item.selectedToppings.map((t) => t.toJson()).toList())
-              : null,
-          'notes': item.notes,
-          'unit_price': item.basePrice,
-          'modifier_price': item.modifierPrice,
-          'quantity': item.quantity,
-          'subtotal': item.subtotal,
+        items: state.cartItems.map((item) {
+          return {
+            'product_id': item.productId,
+            'product_name': item.productName,
+            'size': item.size,
+            'sugar_level': item.sugarLevel,
+            'ice_level': item.iceLevel,
+            'extra_shot': item.extraShot ? 1 : 0,
+            'toppings_json': item.selectedToppings.isNotEmpty
+                ? jsonEncode(item.selectedToppings.map((t) => t.toJson()).toList())
+                : null,
+            'notes': item.notes,
+            'unit_price': item.basePrice,
+            'modifier_price': item.modifierPrice,
+            'quantity': item.quantity,
+            'subtotal': item.subtotal,
+          };
         }).toList(),
-        stockDeductions: mergedDeductions.entries.map((e) => {
-          'ingredient_id': e.key,
-          'quantity': e.value,
+        stockDeductions: mergedDeductions.entries.map((e) {
+          return {
+            'ingredient_id': e.key,
+            'quantity': e.value,
+          };
         }).toList(),
       );
 

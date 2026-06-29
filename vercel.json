@@ -1,11 +1,18 @@
 {
-  "installCommand": "echo 'Skipping npm install'",
-  "buildCommand": "bash build.sh",
-  "outputDirectory": "public",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/([^.]*)",
-      "destination": "/index.html"
+      "src": "/(.*\\.wasm)",
+      "dest": "/$1",
+      "headers": {
+        "Content-Type": "application/wasm"
+      }
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }

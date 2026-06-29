@@ -7,10 +7,11 @@ import '../../../../core/di/injection_container.dart';
 import '../../../../data/database/dao/transaction_dao.dart';
 import '../../../../core/utils/receipt_printer.dart';
 import '../../../../services/session_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../bloc/pos/pos_bloc.dart';
 import '../../../bloc/pos/pos_event.dart';
 
-class PaymentSuccessDialog extends StatelessWidget {
+class PaymentSuccessDialog extends StatefulWidget {
   final int transactionId;
   final String queueNumber;
   final String trxNumber;
@@ -21,6 +22,40 @@ class PaymentSuccessDialog extends StatelessWidget {
     required this.queueNumber,
     required this.trxNumber,
   });
+
+  @override
+  State<PaymentSuccessDialog> createState() => _PaymentSuccessDialogState();
+}
+
+class _PaymentSuccessDialogState extends State<PaymentSuccessDialog> {
+  
+  @override
+  void initState() {
+    super.initState();
+    _checkAutoPrint();
+  }
+
+  Future<void> _checkAutoPrint() async {
+    final prefs = sl<SharedPreferences>();
+    final autoPrint = prefs.getBool('auto_print_receipt') ?? true;
+    if (autoPrint) {
+      _doPrint();
+    }
+  }
+
+  Future<void> _doPrint() async {
+    final transactionDao = sl<TransactionDao>();
+    final session = sl<SessionManager>();
+    final trxData = await transactionDao.getById(widget.transactionId);
+    if (trxData != null) {
+      final items = List<Map<String, dynamic>>.from(trxData['items'] as List);
+      await ReceiptPrinter.printReceipt(
+        transaction: trxData,
+        items: items,
+        cashier: session.currentUser!,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +77,7 @@ class PaymentSuccessDialog extends StatelessWidget {
           Text(AppStrings.paymentSuccess,
               style: GoogleFonts.playfairDisplay(fontSize: 20, fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
-          Text(trxNumber, style: GoogleFonts.inter(fontSize: 13, color: AppColors.textSecondary)),
+          Text(widget.trxNumber, style: GoogleFonts.inter(fontSize: 13, color: AppColors.textSecondary)),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
@@ -53,7 +88,7 @@ class PaymentSuccessDialog extends StatelessWidget {
             child: Column(
               children: [
                 Text(AppStrings.queueNumber, style: GoogleFonts.inter(fontSize: 12, color: AppColors.textSecondary)),
-                Text(queueNumber,
+                Text(widget.queueNumber,
                     style: GoogleFonts.playfairDisplay(fontSize: 36, fontWeight: FontWeight.w700, color: AppColors.accent)),
               ],
             ),
@@ -63,19 +98,7 @@ class PaymentSuccessDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () async {
-                    final transactionDao = sl<TransactionDao>();
-                    final session = sl<SessionManager>();
-                    final trxData = await transactionDao.getById(transactionId);
-                    if (trxData != null) {
-                      final items = List<Map<String, dynamic>>.from(trxData['items'] as List);
-                      await ReceiptPrinter.printReceipt(
-                        transaction: trxData,
-                        items: items,
-                        cashier: session.currentUser!,
-                      );
-                    }
-                  },
+                  onPressed: _doPrint,
                   icon: const Icon(Icons.print_rounded, size: 18),
                   label: Text(AppStrings.printReceipt, style: GoogleFonts.inter(fontSize: 13)),
                 ),

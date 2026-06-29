@@ -7,6 +7,9 @@ import '../../../../core/utils/currency_formatter.dart';
 import '../../../bloc/pos/pos_bloc.dart';
 import '../../../bloc/pos/pos_event.dart';
 import '../../../bloc/pos/pos_state.dart';
+import '../../../../core/di/injection_container.dart';
+import '../../../../data/database/dao/settings_dao.dart';
+import 'dart:convert';
 
 class PaymentSheet extends StatefulWidget {
   const PaymentSheet({super.key});
@@ -19,11 +22,25 @@ class _PaymentSheetState extends State<PaymentSheet> {
   String selectedMethod = 'cash';
   final cashController = TextEditingController();
   double cashReceived = 0;
+  String? _qrisBase64;
 
   @override
   void initState() {
     super.initState();
     context.read<PosBloc>().add(SyncCartState(status: 'payment', paymentMethod: selectedMethod));
+    _loadQrisSettings();
+  }
+
+  Future<void> _loadQrisSettings() async {
+    final settingsDao = sl<SettingsDao>();
+    final settings = await settingsDao.getSettings();
+    if (settings != null && settings['qris_image_path'] != null) {
+      if (mounted) {
+        setState(() {
+          _qrisBase64 = settings['qris_image_path'] as String?;
+        });
+      }
+    }
   }
 
   @override
@@ -84,6 +101,32 @@ class _PaymentSheetState extends State<PaymentSheet> {
                 ),
               ),
               const SizedBox(height: 16),
+
+              // QRIS Image
+              if (selectedMethod == 'qris' && _qrisBase64 != null) ...[
+                Center(
+                  child: Column(
+                    children: [
+                      Text('Silakan Scan QRIS Berikut', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 8),
+                      Container(
+                        height: 250,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.memory(base64Decode(_qrisBase64!), fit: BoxFit.contain),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
 
               // Cash input
               if (selectedMethod == 'cash') ...[

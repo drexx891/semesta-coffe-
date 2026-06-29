@@ -24,9 +24,8 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     if (kIsWeb) {
-      // Use NoWebWorker. This now works because we have the correct sqlite3.wasm (version 3.x)
-      // from running the setup script!
-      databaseFactory = databaseFactoryFfiWebNoWebWorker;
+      // Menggunakan databaseFactoryFfiWeb (membutuhkan sqflite_sw.js dan sqlite3.wasm)
+      databaseFactory = databaseFactoryFfiWeb;
       return await databaseFactory.openDatabase(
         'smesta_coffee.db',
         options: OpenDatabaseOptions(

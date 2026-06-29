@@ -187,36 +187,68 @@ class _MainShellState extends State<MainShell> {
                         preferBelow: false,
                         child: InkWell(
                           onTap: () => setState(() => _selectedIndex = index),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(16),
+                          splashColor: AppColors.accent.withValues(alpha: 0.1),
+                          highlightColor: Colors.transparent,
                           child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOutCubic,
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: isSelected ? AppColors.accent.withValues(alpha: 0.15) : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                              border: isSelected
-                                  ? Border.all(color: AppColors.accent.withValues(alpha: 0.3), width: 1)
+                              gradient: isSelected
+                                  ? LinearGradient(
+                                      colors: [
+                                        AppColors.accent.withValues(alpha: 0.25),
+                                        AppColors.accent.withValues(alpha: 0.05),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    )
                                   : null,
+                              color: isSelected ? null : Colors.transparent,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: isSelected
+                                  ? [
+                                      BoxShadow(
+                                        color: AppColors.accent.withValues(alpha: 0.15),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 4),
+                                      )
+                                    ]
+                                  : [],
+                              border: isSelected
+                                  ? Border.all(color: AppColors.accent.withValues(alpha: 0.5), width: 1.2)
+                                  : Border.all(color: Colors.transparent, width: 1.2),
                             ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
-                                  item.icon,
-                                  color: isSelected ? AppColors.accent : AppColors.white.withValues(alpha: 0.6),
-                                  size: 22,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  item.label,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 9,
-                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                    color: isSelected ? AppColors.accent : AppColors.white.withValues(alpha: 0.6),
+                                AnimatedScale(
+                                  scale: isSelected ? 1.15 : 1.0,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeOutBack,
+                                  child: Icon(
+                                    item.icon,
+                                    color: isSelected ? AppColors.accent : AppColors.white.withValues(alpha: 0.45),
+                                    size: 24,
                                   ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 6),
+                                AnimatedOpacity(
+                                  opacity: isSelected ? 1.0 : 0.6,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: Text(
+                                    item.label,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 10,
+                                      letterSpacing: 0.3,
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                                      color: isSelected ? AppColors.white : AppColors.white.withValues(alpha: 0.7),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
                             ),
@@ -257,36 +289,83 @@ class _MainShellState extends State<MainShell> {
           boxShadow: [
             BoxShadow(
               color: AppColors.cardShadow.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, -2),
+              color: AppColors.cardShadow,
+              blurRadius: 10,
+              offset: Offset(0, -2),
             ),
           ],
         ),
-        child: NavigationBar(
-          selectedIndex: _selectedIndex < bottomItems.length ? _selectedIndex : bottomItems.length,
-          onDestinationSelected: (index) {
-            if (hasMore && index == bottomItems.length) {
-              _showMoreMenu(navItems.sublist(maxBottomItems), maxBottomItems);
-            } else {
-              if (bottomItems[index].label == 'Clock In/Out') {
-                _showAttendanceDialog();
-                return;
-              }
-              setState(() => _selectedIndex = index);
-            }
-          },
-          destinations: [
-            ...bottomItems.map((item) => NavigationDestination(
-              icon: Icon(item.icon),
-              selectedIcon: Icon(item.icon),
-              label: item.label,
-            )),
-            if (hasMore)
-              const NavigationDestination(
-                icon: Icon(LucideIcons.ellipsis),
-                label: 'Lainnya',
-              ),
-          ],
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(bottomItems.length + (hasMore ? 1 : 0), (index) {
+                final isMore = hasMore && index == maxBottomItems;
+                final isSelected = _selectedIndex == index && !isMore;
+                final item = isMore ? _NavItem(icon: LucideIcons.ellipsis, label: 'Lainnya', page: const Scaffold()) : bottomItems[index];
+
+                return Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      if (isMore) {
+                        _showMoreMenu(navItems.sublist(maxBottomItems), maxBottomItems);
+                      } else {
+                        if (item.label == 'Clock In/Out') {
+                          _showAttendanceDialog();
+                          return;
+                        }
+                        setState(() => _selectedIndex = index);
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(16),
+                    splashColor: AppColors.accent.withValues(alpha: 0.1),
+                    highlightColor: Colors.transparent,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppColors.accent.withValues(alpha: 0.15) : Colors.transparent,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AnimatedScale(
+                            scale: isSelected ? 1.15 : 1.0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOutBack,
+                            child: Icon(
+                              item.icon,
+                              color: isSelected ? AppColors.accent : AppColors.white.withValues(alpha: 0.45),
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          AnimatedOpacity(
+                            opacity: isSelected ? 1.0 : 0.6,
+                            duration: const Duration(milliseconds: 300),
+                            child: Text(
+                              item.label,
+                              style: GoogleFonts.inter(
+                                fontSize: 10,
+                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                                color: isSelected ? AppColors.white : AppColors.white.withValues(alpha: 0.7),
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
         ),
       ),
     );

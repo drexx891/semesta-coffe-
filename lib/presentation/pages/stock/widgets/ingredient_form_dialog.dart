@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/di/injection_container.dart';
-import '../../../../data/database/dao/stock_dao.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../bloc/stock/stock_bloc.dart';
+import '../../../bloc/stock/stock_event.dart';
 
 class IngredientFormDialog extends StatefulWidget {
   final Map<String, dynamic>? ingredient;
@@ -13,7 +15,6 @@ class IngredientFormDialog extends StatefulWidget {
 }
 
 class _IngredientFormDialogState extends State<IngredientFormDialog> {
-  final StockDao _stockDao = sl<StockDao>();
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _nameController;
@@ -53,35 +54,26 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isSaving = true);
-    
-    try {
-      final data = {
-        'name': _nameController.text.trim(),
-        'category': _category,
-        'unit': _unitController.text.trim(),
-        'min_stock': double.tryParse(_minStockController.text) ?? 0.0,
-        'is_active': _isActive ? 1 : 0,
-      };
+    final data = {
+      'name': _nameController.text.trim(),
+      'category': _category,
+      'unit': _unitController.text.trim(),
+      'min_stock': double.tryParse(_minStockController.text) ?? 0.0,
+      'is_active': _isActive ? 1 : 0,
+    };
 
-      if (widget.ingredient == null) {
-        // Create new
-        data['current_stock'] = 0.0;
-        data['created_at'] = DateTime.now().toIso8601String();
-        data['updated_at'] = DateTime.now().toIso8601String();
-        await _stockDao.insertIngredient(data);
-      } else {
-        // Update
-        await _stockDao.updateIngredient(widget.ingredient!['id'] as int, data);
-      }
-      
-      if (mounted) Navigator.pop(context, true);
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal menyimpan: $e')));
-        setState(() => _isSaving = false);
-      }
+    if (widget.ingredient == null) {
+      // Create new
+      data['current_stock'] = 0.0;
+      data['created_at'] = DateTime.now().toIso8601String();
+      data['updated_at'] = DateTime.now().toIso8601String();
+      context.read<StockBloc>().add(AddIngredient(data));
+    } else {
+      // Update
+      context.read<StockBloc>().add(UpdateIngredient(widget.ingredient!['id'] as int, data));
     }
+    
+    if (mounted) Navigator.pop(context, true);
   }
 
   @override

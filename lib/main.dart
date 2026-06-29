@@ -17,6 +17,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'presentation/bloc/stock/stock_bloc.dart';
+import 'presentation/bloc/stock/stock_event.dart';
 
 void main() async {
   // Tangkap semua error widget dan render ke layar (mencegah layar putih)
@@ -129,6 +131,9 @@ class SmestaCoffeeApp extends StatelessWidget {
         ),
         BlocProvider<MenuBloc>(
           create: (_) => sl<MenuBloc>()..add(LoadMenu()),
+        ),
+        BlocProvider<StockBloc>(
+          create: (_) => sl<StockBloc>()..add(LoadStock()),
         ),
       ],
       child: MaterialApp.router(

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
-import '../../../../data/database/dao/stock_dao.dart';
 import '../../../../services/session_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../bloc/stock/stock_bloc.dart';
+import '../../../bloc/stock/stock_event.dart';
 
 class StockAdjustmentDialog extends StatefulWidget {
   final Map<String, dynamic> ingredient;
@@ -15,7 +17,6 @@ class StockAdjustmentDialog extends StatefulWidget {
 }
 
 class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
-  final StockDao _stockDao = sl<StockDao>();
   final SessionManager _session = sl<SessionManager>();
   final _formKey = GlobalKey<FormState>();
 
@@ -42,35 +43,26 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isSaving = true);
-    
-    try {
-      final qty = double.tryParse(_qtyController.text) ?? 0.0;
-      final userId = _session.currentUser?.id ?? 1;
+    final qty = double.tryParse(_qtyController.text) ?? 0.0;
+    final userId = _session.currentUser?.id ?? 1;
 
-      if (_adjustmentType == 'add') {
-        await _stockDao.addStock(
-          ingredientId: widget.ingredient['id'] as int,
-          quantity: qty,
-          userId: userId,
-          invoiceNumber: _reasonController.text.trim().isNotEmpty ? _reasonController.text.trim() : null,
-        );
-      } else {
-        await _stockDao.correctStock(
-          ingredientId: widget.ingredient['id'] as int,
-          newQuantity: qty,
-          reason: _reasonController.text.trim(),
-          userId: userId,
-        );
-      }
-      
-      if (mounted) Navigator.pop(context, true);
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal menyimpan: $e')));
-        setState(() => _isSaving = false);
-      }
+    if (_adjustmentType == 'add') {
+      context.read<StockBloc>().add(AddStock(
+        ingredientId: widget.ingredient['id'] as int,
+        quantity: qty,
+        userId: userId,
+        invoiceNumber: _reasonController.text.trim().isNotEmpty ? _reasonController.text.trim() : null,
+      ));
+    } else {
+      context.read<StockBloc>().add(CorrectStock(
+        ingredientId: widget.ingredient['id'] as int,
+        newQuantity: qty,
+        reason: _reasonController.text.trim(),
+        userId: userId,
+      ));
     }
+    
+    if (mounted) Navigator.pop(context, true);
   }
 
   @override

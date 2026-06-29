@@ -23,6 +23,8 @@ import 'presentation/bloc/customer/customer_bloc.dart';
 import 'presentation/bloc/customer/customer_event.dart';
 import 'presentation/bloc/voucher/voucher_bloc.dart';
 import 'presentation/bloc/voucher/voucher_event.dart';
+import 'presentation/bloc/attendance/attendance_bloc.dart';
+import 'presentation/bloc/attendance/attendance_event.dart';
 
 void main() async {
   // Tangkap semua error widget dan render ke layar (mencegah layar putih)
@@ -144,6 +146,9 @@ class SmestaCoffeeApp extends StatelessWidget {
         ),
         BlocProvider<VoucherBloc>(
           create: (_) => sl<VoucherBloc>()..add(LoadVouchers()),
+        ),
+        BlocProvider<AttendanceBloc>(
+          create: (_) => sl<AttendanceBloc>(),
         ),
       ],
       child: MaterialApp.router(

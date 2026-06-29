@@ -18,6 +18,7 @@ import 'menu/menu_list_page.dart';
 import 'stock/stock_list_page.dart';
 import 'customer/customer_list_page.dart';
 import 'voucher/voucher_list_page.dart';
+import 'attendance/attendance_history_page.dart';
 import 'report/report_page.dart';
 import 'settings/settings_page.dart';
 import 'shift/shift_page.dart';
@@ -66,7 +67,13 @@ class _MainShellState extends State<MainShell> {
     }
     
     // Virtual nav item for Attendance in mobile view (intercepted)
-    items.add(_NavItem(icon: Icons.fingerprint_rounded, label: 'Absensi', page: const Scaffold()));
+    items.add(_NavItem(icon: Icons.fingerprint_rounded, label: 'Clock In/Out', page: const Scaffold()));
+    
+    items.add(_NavItem(
+      icon: Icons.history_rounded, 
+      label: 'Riwayat Absensi', 
+      page: AttendanceHistoryPage(userId: widget.user.id ?? 1),
+    ));
 
     if (widget.user.canManageSettings) {
       items.add(_NavItem(icon: Icons.settings_rounded, label: AppStrings.settings, page: const SettingsPage()));
@@ -260,7 +267,7 @@ class _MainShellState extends State<MainShell> {
             if (hasMore && index == bottomItems.length) {
               _showMoreMenu(navItems.sublist(maxBottomItems), maxBottomItems);
             } else {
-              if (bottomItems[index].label == 'Absensi') {
+              if (bottomItems[index].label == 'Clock In/Out') {
                 _showAttendanceDialog();
                 return;
               }
@@ -410,7 +417,7 @@ class _MainShellState extends State<MainShell> {
               leading: Icon(item.icon, color: AppColors.primary),
               title: Text(item.label),
               onTap: () {
-                if (item.label == 'Absensi') {
+                if (item.label == 'Clock In/Out') {
                   Navigator.pop(context);
                   _showAttendanceDialog();
                   return;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'core/di/injection_container.dart';
 import 'core/theme/app_theme.dart';
@@ -14,6 +13,7 @@ import 'presentation/bloc/auth/auth_bloc.dart';
 import 'presentation/bloc/menu/menu_bloc.dart';
 import 'presentation/bloc/menu/menu_event.dart';
 import 'core/routes/app_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -42,6 +42,12 @@ void main() async {
   await initializeDateFormatting('id_ID', null);
 
   try {
+    // Inisialisasi Supabase
+    await Supabase.initialize(
+      url: 'https://jhdsklpaubhkcwgswqrt.supabase.co',
+      publishableKey: 'sb_publishable_LX3NuW-7wlF6k-m__iI17A_krboNnAb',
+    );
+
     // Inisialisasi dependency injection & database
     await initDependencies();
   } catch (e, stackTrace) {

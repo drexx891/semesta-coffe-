@@ -138,7 +138,7 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                           onChanged: (val) {
                             setState(() => _autoPrintReceipt = val);
                           },
-                          activeColor: AppColors.primary,
+                          activeThumbColor: AppColors.primary,
                         ),
                       ],
                     ),

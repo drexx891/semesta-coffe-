@@ -20,6 +20,7 @@ import 'report/report_page.dart';
 import 'settings/settings_page.dart';
 import 'shift/shift_page.dart';
 import 'kds/kds_page.dart';
+import '../widgets/attendance_dialog.dart';
 
 /// Shell navigasi utama — responsive sidebar (tablet) / bottom nav (phone)
 class MainShell extends StatefulWidget {
@@ -59,6 +60,9 @@ class _MainShellState extends State<MainShell> {
     if (widget.user.canManageMenu) {
       items.add(_NavItem(icon: Icons.restaurant_menu_rounded, label: AppStrings.menu, page: const MenuListPage()));
     }
+    
+    // Virtual nav item for Attendance in mobile view (intercepted)
+    items.add(_NavItem(icon: Icons.fingerprint_rounded, label: 'Absensi', page: const Scaffold()));
 
     if (widget.user.canManageSettings) {
       items.add(_NavItem(icon: Icons.settings_rounded, label: AppStrings.settings, page: const SettingsPage()));
@@ -252,6 +256,10 @@ class _MainShellState extends State<MainShell> {
             if (hasMore && index == bottomItems.length) {
               _showMoreMenu(navItems.sublist(maxBottomItems), maxBottomItems);
             } else {
+              if (bottomItems[index].label == 'Absensi') {
+                _showAttendanceDialog();
+                return;
+              }
               setState(() => _selectedIndex = index);
             }
           },
@@ -307,6 +315,32 @@ class _MainShellState extends State<MainShell> {
             style: GoogleFonts.inter(
               fontSize: 8,
               color: AppColors.accent.withValues(alpha: 0.8),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Attendance / Clock In
+          InkWell(
+            onTap: () async {
+              final result = await showDialog<String>(
+                context: context,
+                builder: (ctx) => AttendanceDialog(userId: widget.user.id ?? 1),
+              );
+              if (result != null && mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Berhasil merekam absensi: $result')));
+              }
+            },
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.white.withValues(alpha: 0.2)),
+              ),
+              child: Icon(
+                Icons.fingerprint_rounded,
+                color: AppColors.white.withValues(alpha: 0.6),
+                size: 18,
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -372,6 +406,11 @@ class _MainShellState extends State<MainShell> {
               leading: Icon(item.icon, color: AppColors.primary),
               title: Text(item.label),
               onTap: () {
+                if (item.label == 'Absensi') {
+                  Navigator.pop(context);
+                  _showAttendanceDialog();
+                  return;
+                }
                 Navigator.pop(context);
                 if (mounted) {
                   setState(() => _selectedIndex = globalIndex);
@@ -382,6 +421,16 @@ class _MainShellState extends State<MainShell> {
         ),
       ),
     );
+  }
+
+  void _showAttendanceDialog() async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AttendanceDialog(userId: widget.user.id ?? 1),
+    );
+    if (result != null && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Berhasil merekam absensi: $result')));
+    }
   }
 }
 

@@ -44,6 +44,8 @@ dependencies:
   go_router: ^17.3.0
   shared_preferences: ^2.5.5
   csv: ^8.0.0
+  audioplayers: ^6.8.1
+  supabase_flutter: ^2.15.0
 
 dev_dependencies:
   flutter_test:

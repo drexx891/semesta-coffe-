@@ -9,7 +9,10 @@ import '../../data/database/dao/settings_dao.dart';
 import '../../data/database/dao/hold_order_dao.dart';
 import '../../data/database/dao/customer_dao.dart';
 import '../../data/database/dao/voucher_dao.dart';
+import '../../data/database/dao/attendance_dao.dart';
 import '../../services/session_manager.dart';
+import '../../services/audio_service.dart';
+import '../../services/supabase_sync_service.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/menu/menu_bloc.dart';
 import '../../presentation/bloc/menu_management/menu_management_bloc.dart';
@@ -37,6 +40,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<HoldOrderDao>(() => HoldOrderDao(sl()));
   sl.registerLazySingleton<CustomerDao>(() => CustomerDao());
   sl.registerLazySingleton<VoucherDao>(() => VoucherDao(sl()));
+  sl.registerLazySingleton<AttendanceDao>(() => AttendanceDao(sl()));
 
   // === BLoCs ===
   sl.registerFactory(() => AuthBloc(
@@ -67,6 +71,8 @@ Future<void> initDependencies() async {
 
   // === Services ===
   sl.registerLazySingleton<SessionManager>(() => SessionManager());
+  sl.registerLazySingleton<AudioService>(() => AudioService());
+  sl.registerLazySingleton<SupabaseSyncService>(() => SupabaseSyncService(sl()));
 
   // Inisialisasi database
   await sl<DatabaseHelper>().database;

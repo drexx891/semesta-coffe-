@@ -7,6 +7,7 @@ import '../../../../core/di/injection_container.dart';
 import '../../../../data/database/dao/transaction_dao.dart';
 import '../../../../core/utils/receipt_printer.dart';
 import '../../../../services/session_manager.dart';
+import '../../../../services/audio_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../bloc/pos/pos_bloc.dart';
 import '../../../bloc/pos/pos_event.dart';
@@ -32,7 +33,13 @@ class _PaymentSuccessDialogState extends State<PaymentSuccessDialog> {
   @override
   void initState() {
     super.initState();
+    _playAudio();
     _checkAutoPrint();
+  }
+
+  Future<void> _playAudio() async {
+    final audioService = sl<AudioService>();
+    await audioService.playSuccessSound();
   }
 
   Future<void> _checkAutoPrint() async {

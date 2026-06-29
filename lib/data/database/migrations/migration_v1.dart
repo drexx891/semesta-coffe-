@@ -3,7 +3,7 @@
 class MigrationV1 {
   MigrationV1._();
 
-  static const int version = 3;
+  static const int version = 4;
 
   /// Jalankan semua DDL untuk membuat tabel
   static List<String> get createStatements => [
@@ -25,6 +25,7 @@ class MigrationV1 {
     _createStockMovements,
     _createActivityLogs,
     _createVouchers,
+    _createAttendance,
     // Indexes
     ..._createIndexes,
   ];
@@ -39,6 +40,20 @@ class MigrationV1 {
   // ============================================================
   // TABLE: users
   // ============================================================
+  
+  // ============================================================
+  // TABLE: attendance
+  // ============================================================
+  static const String _createAttendance = '''
+    CREATE TABLE attendance (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      clock_in_time TEXT NOT NULL,
+      clock_out_time TEXT,
+      notes TEXT,
+      FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    )
+  ''';
   static const String _createUsers = '''
     CREATE TABLE users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

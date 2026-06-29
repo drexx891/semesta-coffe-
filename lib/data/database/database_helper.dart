@@ -128,6 +128,19 @@ class DatabaseHelper {
       // Phase C: Order Status
       await db.execute("ALTER TABLE transactions ADD COLUMN order_status TEXT NOT NULL DEFAULT 'completed'");
     }
+
+    if (oldVersion < 4) {
+      await db.execute('''
+        CREATE TABLE attendance (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER NOT NULL,
+          clock_in_time TEXT NOT NULL,
+          clock_out_time TEXT,
+          notes TEXT,
+          FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        )
+      ''');
+    }
   }
 
   /// Tutup database

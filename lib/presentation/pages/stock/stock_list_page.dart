@@ -86,9 +86,9 @@ class _StockListPageState extends State<StockListPage> {
                 },
                 child: ListView.builder(
                   padding: const EdgeInsets.all(AppDimensions.spacing16),
-                  itemCount: _ingredients.length,
+                  itemCount: ingredients.length,
                   itemBuilder: (ctx, index) {
-                    final ing = _ingredients[index];
+                    final ing = ingredients[index];
                     final currentStock = (ing['current_stock'] as num).toDouble();
                     final minStock = (ing['min_stock'] as num).toDouble();
                     final stockColor = _getStockColor(currentStock, minStock);

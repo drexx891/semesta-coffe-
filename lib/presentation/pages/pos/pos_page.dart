@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -505,113 +506,158 @@ class _PosPageState extends State<PosPage> {
 
   Widget _buildProductCard(BuildContext context, Map<String, dynamic> product, Map<int, bool> stockAvailability) {
     final productId = product['id'] as int;
-    final name = product['name'] as String;
-    final price = (product['price_regular'] as num).toDouble();
     final isAvailable = stockAvailability[productId] ?? true;
 
-    return GestureDetector(
-      onTap: isAvailable ? () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          useSafeArea: true,
-          backgroundColor: Colors.transparent,
-          builder: (ctx) => ModifierBottomSheet(
-            product: product,
-            onAddToCart: (item) {
-              context.read<PosBloc>().add(AddToCart(item));
-            },
-          ),
-        );
-      } : null,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.border.withValues(alpha: 0.3)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+    return _ProductCard(
+      product: product,
+      isAvailable: isAvailable,
+    );
+  }
+}
+
+class _ProductCard extends StatefulWidget {
+  final Map<String, dynamic> product;
+  final bool isAvailable;
+
+  const _ProductCard({required this.product, required this.isAvailable});
+
+  @override
+  State<_ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<_ProductCard> {
+  bool _isHovered = false;
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final name = widget.product['name'] as String;
+    final price = (widget.product['price_regular'] as num).toDouble();
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: widget.isAvailable ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      child: GestureDetector(
+        onTapDown: widget.isAvailable ? (_) => setState(() => _isPressed = true) : null,
+        onTapUp: widget.isAvailable ? (_) => setState(() => _isPressed = false) : null,
+        onTapCancel: widget.isAvailable ? () => setState(() => _isPressed = false) : null,
+        onTap: widget.isAvailable ? () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: true,
+            backgroundColor: Colors.transparent,
+            builder: (ctx) => ModifierBottomSheet(
+              product: widget.product,
+              onAddToCart: (item) {
+                context.read<PosBloc>().add(AddToCart(item));
+              },
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+          );
+        } : null,
+        child: AnimatedScale(
+          scale: _isPressed ? 0.95 : (_isHovered ? 1.03 : 1.0),
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOutCubic,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppDimensions.radiusMedium * 1.5),
+              border: Border.all(
+                color: _isHovered && widget.isAvailable ? AppColors.primary : AppColors.border.withValues(alpha: 0.3),
+                width: _isHovered && widget.isAvailable ? 2 : 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primaryDark.withValues(alpha: _isHovered ? 0.15 : 0.05),
+                  blurRadius: _isHovered ? 20 : 12,
+                  offset: Offset(0, _isHovered ? 8 : 4),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppDimensions.radiusMedium * 1.5),
+              child: Stack(
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      color: AppColors.surfaceVariant,
-                      child: product['image_path'] != null && (product['image_path'] as String).isNotEmpty
-                          ? Base64ImageHelper.buildImage(product['image_path'] as String, fit: BoxFit.cover)
-                          : const Icon(Icons.coffee_rounded, size: 48, color: AppColors.border),
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          color: AppColors.surfaceVariant,
+                          child: widget.product['image_path'] != null && (widget.product['image_path'] as String).isNotEmpty
+                              ? Base64ImageHelper.buildImage(widget.product['image_path'] as String, fit: BoxFit.cover)
+                              : const Icon(Icons.coffee_rounded, size: 48, color: AppColors.border),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                name,
+                                style: GoogleFonts.inter(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textPrimary,
+                                  height: 1.2,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                CurrencyFormatter.format(price),
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.accentDark,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            name,
-                            style: GoogleFonts.inter(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                              height: 1.2,
+                  if (!widget.isAvailable)
+                    Positioned.fill(
+                      child: ClipRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                          child: Container(
+                            color: AppColors.surface.withValues(alpha: 0.3),
+                            child: Center(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: AppColors.textPrimary.withValues(alpha: 0.8),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Text(
+                                  'HABIS',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppColors.white,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ),
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                          Text(
-                            CurrencyFormatter.format(price),
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.accentDark,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
-              if (!isAvailable)
-                Positioned.fill(
-                  child: Container(
-                    color: AppColors.surface.withValues(alpha: 0.7),
-                    child: Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: AppColors.textPrimary,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          'HABIS',
-                          style: GoogleFonts.inter(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.white,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+            ),
           ),
         ),
       ),

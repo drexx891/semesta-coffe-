@@ -31,6 +31,16 @@ class AppTheme {
         outlineVariant: AppColors.divider,
       ),
 
+      // === Page Transitions ===
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
+
       // === Scaffold ===
       scaffoldBackgroundColor: AppColors.background,
 
@@ -125,13 +135,13 @@ class AppTheme {
           minimumSize: const Size(AppDimensions.buttonMinWidth, AppDimensions.buttonHeight),
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimensions.spacing24,
-            vertical: AppDimensions.spacing12,
+            vertical: AppDimensions.spacing16,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+            borderRadius: BorderRadius.circular(100), // Pill shape
           ),
-          elevation: 2,
-          shadowColor: AppColors.cardShadow,
+          elevation: 4,
+          shadowColor: AppColors.primaryDark.withValues(alpha: 0.4),
           textStyle: GoogleFonts.inter(
             fontSize: AppDimensions.textBody,
             fontWeight: FontWeight.w600,
@@ -186,10 +196,10 @@ class AppTheme {
       // === Card ===
       cardTheme: CardThemeData(
         color: AppColors.surface,
-        elevation: AppDimensions.cardElevation,
-        shadowColor: AppColors.cardShadow,
+        elevation: 8,
+        shadowColor: AppColors.cardShadow.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
+          borderRadius: BorderRadius.circular(AppDimensions.cardRadius * 1.5),
         ),
         margin: const EdgeInsets.all(AppDimensions.spacing8),
       ),
@@ -199,27 +209,27 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.surface,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.spacing16,
-          vertical: AppDimensions.spacing12,
+          horizontal: AppDimensions.spacing24,
+          vertical: AppDimensions.spacing16,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(100), // Pill shape
           borderSide: const BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(100),
           borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(100),
           borderSide: const BorderSide(color: AppColors.primary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(100),
           borderSide: const BorderSide(color: AppColors.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(100),
           borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
         hintStyle: GoogleFonts.inter(

@@ -18,6 +18,23 @@ import 'core/routes/app_router.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() async {
+  // Tangkap semua error widget dan render ke layar (mencegah layar putih)
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Material(
+        color: Colors.red.shade900,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Text(
+            'WIDGET ERROR:\n\n${details.exceptionAsString()}\n\n${details.stack?.toString() ?? ''}',
+            style: const TextStyle(color: Colors.white, fontSize: 14),
+          ),
+        ),
+      ),
+    );
+  };
+
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
 
@@ -33,6 +50,24 @@ void main() async {
   } catch (e, stackTrace) {
     debugPrint('FAILED TO INIT DEPENDENCIES: $e');
     debugPrint('STACKTRACE: $stackTrace');
+    
+    // Tampilkan error di layar jika inisialisasi gagal
+    runApp(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: Material(
+          color: Colors.white,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Text(
+              'Gagal Inisialisasi Aplikasi:\n\n$e\n\n$stackTrace',
+              style: const TextStyle(color: Colors.red, fontSize: 14),
+            ),
+          ),
+        ),
+      ),
+    );
+    return; // Berhenti di sini, jangan lanjut ke SmestaCoffeeApp
   }
 
   // Set preferred orientations

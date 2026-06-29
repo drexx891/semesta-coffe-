@@ -1,4 +1,4 @@
-name: Deploy Flutter Web to GitHub Pages
+name: Deploy Flutter Web to Vercel Bypass
 
 on:
   push:
@@ -28,9 +28,12 @@ jobs:
       - name: Setup SPA Routing (Vercel Fallback)
         run: cp build/web/index.html build/web/404.html
 
-      - name: Deploy to vercel-deploy branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
-          publish_branch: vercel-deploy
+      - name: Commit build to public folder
+        run: |
+          mkdir -p public
+          cp -r build/web/* public/
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/
+          git commit -m "[skip ci] chore: update public build for vercel" || echo "No changes to commit"
+          git push

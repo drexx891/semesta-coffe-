@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "C:\\flutter\\bin\\flutter.bat run -d chrome --web-port 8081",
     "dev:windows": "C:\\flutter\\bin\\flutter.bat run -d windows",
-    "build": "bash build.sh"
+    "build": "echo \"Vercel Build Bypassed. Serving /public directly.\""
   },
   "dependencies": {
     "puppeteer": "^25.2.0"

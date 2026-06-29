@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../data/database/dao/stock_dao.dart';
 
@@ -105,7 +104,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _category,
+                initialValue: _category,
                 decoration: const InputDecoration(labelText: 'Kategori', border: OutlineInputBorder()),
                 items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                 onChanged: (v) {

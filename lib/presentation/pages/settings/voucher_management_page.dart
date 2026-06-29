@@ -143,7 +143,7 @@ class _VoucherManagementPageState extends State<VoucherManagementPage> {
                                 Switch(
                                   value: voucher.isActive,
                                   onChanged: (_) => _toggleVoucherStatus(voucher),
-                                  activeColor: AppColors.success,
+                                  activeThumbColor: AppColors.success,
                                 ),
                               ],
                             ),

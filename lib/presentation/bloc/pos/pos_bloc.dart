@@ -5,18 +5,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pos_event.dart';
 import 'pos_state.dart';
-import '../../../../data/database/dao/product_dao.dart';
-import '../../../../data/database/dao/stock_dao.dart';
-import '../../../../data/database/dao/shift_dao.dart';
-import '../../../../data/database/dao/transaction_dao.dart';
-import '../../../../data/database/dao/settings_dao.dart';
-import '../../../../data/database/dao/hold_order_dao.dart';
-import '../../../../data/database/dao/voucher_dao.dart';
-import '../../../../services/session_manager.dart';
-import '../../../../core/utils/date_formatter.dart';
-import '../../../../domain/entities/hold_order.dart';
+import '../../../data/database/dao/product_dao.dart';
+import '../../../data/database/dao/stock_dao.dart';
+import '../../../data/database/dao/shift_dao.dart';
+import '../../../data/database/dao/transaction_dao.dart';
+import '../../../data/database/dao/settings_dao.dart';
+import '../../../data/database/dao/hold_order_dao.dart';
+import '../../../data/database/dao/voucher_dao.dart';
+import '../../../services/session_manager.dart';
+import '../../../core/utils/date_formatter.dart';
+import '../../../domain/entities/hold_order.dart';
 
 class PosBloc extends Bloc<PosEvent, PosState> {
+  // ignore: unused_field
   final ProductDao _productDao;
   final StockDao _stockDao;
   final ShiftDao _shiftDao;
@@ -31,25 +32,16 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   Timer? _shiftCheckTimer;
 
   PosBloc({
-    required ProductDao productDao,
-    required StockDao stockDao,
-    required ShiftDao shiftDao,
-    required TransactionDao transactionDao,
-    required SettingsDao settingsDao,
-    required HoldOrderDao holdOrderDao,
-    required VoucherDao voucherDao,
-    required SessionManager sessionManager,
-    required SharedPreferences prefs,
-  })  : _productDao = productDao,
-        _stockDao = stockDao,
-        _shiftDao = shiftDao,
-        _transactionDao = transactionDao,
-        _settingsDao = settingsDao,
-        _holdOrderDao = holdOrderDao,
-        _voucherDao = voucherDao,
-        _sessionManager = sessionManager,
-        _prefs = prefs,
-        super(const PosState()) {
+    required this._productDao,
+    required this._stockDao,
+    required this._shiftDao,
+    required this._transactionDao,
+    required this._settingsDao,
+    required this._holdOrderDao,
+    required this._voucherDao,
+    required this._sessionManager,
+    required this._prefs,
+  })  : super(const PosState()) {
     on<InitPos>(_onInitPos);
     on<AddToCart>(_onAddToCart);
     on<UpdateCartItemQuantity>(_onUpdateCartItemQuantity);

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import '../../../../../core/constants/app_colors.dart';
-import '../../../../../domain/entities/voucher.dart';
-import '../../../../../data/database/dao/voucher_dao.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../domain/entities/voucher.dart';
+import '../../../../data/database/dao/voucher_dao.dart';
 
 class VoucherFormDialog extends StatefulWidget {
   final Voucher? voucher;

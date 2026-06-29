@@ -150,7 +150,7 @@ class _UserFormDialogState extends State<UserFormDialog> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: _selectedRole,
+                  initialValue: _selectedRole,
                   decoration: const InputDecoration(labelText: 'Peran (Role)', border: OutlineInputBorder()),
                   items: const [
                     DropdownMenuItem(value: 'cashier', child: Text('Kasir')),

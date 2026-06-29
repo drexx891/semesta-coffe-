@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../bloc/menu_management/menu_management_bloc.dart';
 import '../../bloc/menu_management/menu_management_event.dart';
 import 'package:image_picker/image_picker.dart';
@@ -77,6 +76,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         });
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Gagal mengambil gambar')),
       );
@@ -214,7 +214,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           ),
                           const SizedBox(height: 16),
                           DropdownButtonFormField<int>(
-                            value: _selectedCategoryId,
+                            initialValue: _selectedCategoryId,
                             decoration: const InputDecoration(
                               labelText: 'Kategori',
                               border: OutlineInputBorder(),
@@ -289,7 +289,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         SwitchListTile(
                           title: const Text('Tersedia Ukuran Large'),
                           value: _hasLargeSize,
-                          activeColor: AppColors.primary,
+                          activeThumbColor: AppColors.primary,
                           onChanged: (v) => setState(() => _hasLargeSize = v),
                         ),
                         if (_hasLargeSize)
@@ -310,21 +310,21 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         SwitchListTile(
                           title: const Text('Bisa Kustomisasi Gula (Sugar Level)'),
                           value: _hasSugarLevel,
-                          activeColor: AppColors.primary,
+                          activeThumbColor: AppColors.primary,
                           onChanged: (v) => setState(() => _hasSugarLevel = v),
                         ),
                         const Divider(height: 1),
                         SwitchListTile(
                           title: const Text('Bisa Kustomisasi Es (Ice Level)'),
                           value: _hasIceLevel,
-                          activeColor: AppColors.primary,
+                          activeThumbColor: AppColors.primary,
                           onChanged: (v) => setState(() => _hasIceLevel = v),
                         ),
                         const Divider(height: 1),
                         SwitchListTile(
                           title: const Text('Bisa Tambah Extra Shot (Espresso)'),
                           value: _hasExtraShot,
-                          activeColor: AppColors.primary,
+                          activeThumbColor: AppColors.primary,
                           onChanged: (v) => setState(() => _hasExtraShot = v),
                         ),
                         if (_hasExtraShot)

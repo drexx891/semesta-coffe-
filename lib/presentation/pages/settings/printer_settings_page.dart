@@ -93,7 +93,7 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                         Text('Konfigurasi Kertas', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryDark)),
                         const SizedBox(height: 16),
                         DropdownButtonFormField<String>(
-                          value: _paperSize,
+                          initialValue: _paperSize,
                           decoration: const InputDecoration(
                             labelText: 'Ukuran Kertas Printer',
                             border: OutlineInputBorder(),

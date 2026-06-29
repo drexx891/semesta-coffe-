@@ -20,7 +20,6 @@ import '../../bloc/pos/pos_state.dart';
 import 'widgets/modifier_bottom_sheet.dart';
 import 'widgets/cart_panel.dart';
 import 'widgets/cart_summary.dart';
-import 'widgets/hold_order_dialog.dart';
 import 'widgets/shift_warning_banner.dart';
 import 'widgets/payment_success_dialog.dart';
 
@@ -38,6 +37,7 @@ class _PosPageState extends State<PosPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
+      if (!mounted) return;
       context.read<MenuBloc>().add(LoadMenu());
     });
   }
@@ -137,7 +137,6 @@ class _PosPageState extends State<PosPage> {
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -163,7 +162,7 @@ class _PosPageState extends State<PosPage> {
                     : ListView.separated(
                         shrinkWrap: true,
                         itemCount: orders.length,
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, _) => const Divider(),
                         itemBuilder: (ctx, index) {
                           final order = orders[index];
                           final label = order['label'] as String? ?? 'Pesanan';
@@ -319,7 +318,7 @@ class _PosPageState extends State<PosPage> {
                           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                         ),
                         child: BlocProvider.value(
-                          value: _posBloc,
+                          value: context.read<PosBloc>(),
                           child: Column(
                             children: [
                               Expanded(child: CartPanel(scrollController: scrollController)),

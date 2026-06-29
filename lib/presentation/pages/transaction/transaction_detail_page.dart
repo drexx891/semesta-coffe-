@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/receipt_printer.dart';
 import '../../../core/di/injection_container.dart';
@@ -98,6 +97,8 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
       voidedByUserId = overrideUser['id'] as int;
     }
 
+    if (!mounted) return;
+
     final reasonController = TextEditingController();
     final bool? confirm = await showDialog<bool>(
       context: context,
@@ -135,6 +136,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
     );
 
     if (confirm != true) return;
+    if (!mounted) return;
 
     setState(() => _isLoading = true);
     try {

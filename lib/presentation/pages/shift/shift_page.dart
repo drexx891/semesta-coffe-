@@ -6,7 +6,6 @@ import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/shift_dao.dart';
 import '../../../services/session_manager.dart';
 import '../../../core/utils/currency_formatter.dart';
-import 'dart:convert';
 
 class ShiftPage extends StatefulWidget {
   const ShiftPage({super.key});

@@ -100,7 +100,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                       Expanded(
                         flex: 2,
                         child: DropdownButtonFormField<String>(
-                          value: payment['method'],
+                          initialValue: payment['method'],
                           decoration: const InputDecoration(
                             isDense: true,
                             border: OutlineInputBorder(),

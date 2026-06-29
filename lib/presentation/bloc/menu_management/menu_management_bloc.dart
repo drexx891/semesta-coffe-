@@ -6,9 +6,8 @@ import 'menu_management_state.dart';
 class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> {
   final ProductDao _productDao;
 
-  MenuManagementBloc({required ProductDao productDao})
-      : _productDao = productDao,
-        super(MenuManagementInitial()) {
+  MenuManagementBloc({required this._productDao})
+      : super(MenuManagementInitial()) {
     on<LoadMenuManagement>(_onLoadMenuManagement);
     on<CreateCategory>(_onCreateCategory);
     on<UpdateCategory>(_onUpdateCategory);

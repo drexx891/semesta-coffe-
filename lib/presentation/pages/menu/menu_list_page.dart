@@ -98,7 +98,7 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
           final state = context.read<MenuManagementBloc>().state;
           if (state is MenuManagementLoaded) {
             if (_tabController.index == 0) {
@@ -118,17 +118,18 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
                 ),
               );
             } else {
-              showDialog(
+              final menuManagementBloc = context.read<MenuManagementBloc>();
+              final result = await showDialog(
                 context: context,
                 builder: (ctx) => const CategoryFormDialog(),
-              ).then((result) {
-                if (result != null) {
-                  context.read<MenuManagementBloc>().add(CreateCategory(
-                    name: result['name'],
-                    sortOrder: result['sort_order'],
-                  ));
-                }
-              });
+              );
+              if (!mounted) return;
+              if (result != null) {
+                menuManagementBloc.add(CreateCategory(
+                  name: result['name'],
+                  sortOrder: result['sort_order'],
+                ));
+              }
             }
           }
         },
@@ -190,7 +191,7 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
                   onChanged: (val) {
                     context.read<MenuManagementBloc>().add(ToggleProductActive(product['id'], val));
                   },
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
@@ -241,19 +242,20 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {
-                    showDialog(
+                  onPressed: () async {
+                    final menuManagementBloc = context.read<MenuManagementBloc>();
+                    final result = await showDialog(
                       context: context,
                       builder: (ctx) => CategoryFormDialog(category: category),
-                    ).then((result) {
-                      if (result != null) {
-                        context.read<MenuManagementBloc>().add(UpdateCategory(
-                          id: category['id'],
-                          name: result['name'],
-                          sortOrder: result['sort_order'],
-                        ));
-                      }
-                    });
+                    );
+                    if (!mounted) return;
+                    if (result != null) {
+                      menuManagementBloc.add(UpdateCategory(
+                        id: category['id'],
+                        name: result['name'],
+                        sortOrder: result['sort_order'],
+                      ));
+                    }
                   },
                 ),
                 IconButton(

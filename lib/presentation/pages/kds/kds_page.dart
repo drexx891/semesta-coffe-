@@ -3,10 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'dart:convert';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/transaction_dao.dart';
-import '../../../core/utils/date_formatter.dart';
 
 class KdsPage extends StatefulWidget {
   const KdsPage({super.key});
@@ -172,7 +170,7 @@ class _KdsPageState extends State<KdsPage> {
                 // Build modifier string
                 final modifiers = <String>[];
                 if (item['size'] != null && item['size'] != 'regular') {
-                  modifiers.add('${(item['size'] as String).toUpperCase()}');
+                  modifiers.add((item['size'] as String).toUpperCase());
                 }
                 if (item['extra_shot'] == 1) {
                   modifiers.add('Extra Shot');

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../core/utils/receipt_printer.dart';
@@ -99,23 +98,22 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
               icon: const Icon(Icons.download_rounded),
               tooltip: 'Export CSV',
               onPressed: () async {
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
                 try {
                   if (widget.type == ReportType.shift) {
                     await CsvExporter.exportShifts(_listData);
                   } else {
                     await CsvExporter.exportTransactions(_listData);
                   }
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Berhasil mengekspor ke CSV')),
-                    );
-                  }
+                  if (!mounted) return;
+                  scaffoldMessenger.showSnackBar(
+                    const SnackBar(content: Text('Berhasil mengekspor ke CSV')),
+                  );
                 } catch (e) {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Gagal mengekspor: $e')),
-                    );
-                  }
+                  if (!mounted) return;
+                  scaffoldMessenger.showSnackBar(
+                    SnackBar(content: Text('Gagal mengekspor: $e')),
+                  );
                 }
               },
             ),
@@ -226,7 +224,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
               : ListView.separated(
                   padding: const EdgeInsets.all(16),
                   itemCount: _listData.length,
-                  separatorBuilder: (_, __) => const Divider(),
+                  separatorBuilder: (_, _) => const Divider(),
                   itemBuilder: (ctx, i) {
                     final item = _listData[i];
                     if (widget.type == ReportType.bestSeller) {

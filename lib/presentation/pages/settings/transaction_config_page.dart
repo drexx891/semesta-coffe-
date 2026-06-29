@@ -99,7 +99,7 @@ class _TransactionConfigPageState extends State<TransactionConfigPage> {
                         subtitle: const Text('Pajak akan otomatis dihitung pada setiap transaksi.'),
                         value: _taxEnabled,
                         onChanged: (v) => setState(() => _taxEnabled = v),
-                        activeColor: AppColors.primary,
+                        activeThumbColor: AppColors.primary,
                       ),
                       const SizedBox(height: 24),
                       TextFormField(

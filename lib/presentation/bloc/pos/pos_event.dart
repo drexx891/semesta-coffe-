@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import '../../../../domain/entities/hold_order.dart';
-import '../../../../domain/entities/customer.dart';
-import '../../../../domain/entities/voucher.dart';
+import '../../../domain/entities/hold_order.dart';
+import '../../../domain/entities/customer.dart';
+import '../../../domain/entities/voucher.dart';
 
 abstract class PosEvent extends Equatable {
   const PosEvent();

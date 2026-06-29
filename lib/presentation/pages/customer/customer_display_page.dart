@@ -431,7 +431,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(LucideIcons.coffee_outlined, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                                Icon(LucideIcons.coffee, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                                 const SizedBox(height: 16),
                                 Text(
                                   _searchQuery.isNotEmpty ? 'Menu tidak ditemukan' : 'Belum ada menu',

@@ -31,6 +31,10 @@ class StockDao {
     return await _db.update('ingredients', data, where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<int> deleteIngredient(int id) async {
+    return await _db.update('ingredients', {'is_active': 0}, where: 'id = ?', whereArgs: [id]);
+  }
+
   /// Get bahan baku dengan stok kritis (di bawah minimum)
   Future<List<Map<String, dynamic>>> getCriticalStock() async {
     return await _db.rawQuery('''

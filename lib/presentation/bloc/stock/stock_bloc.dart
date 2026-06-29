@@ -28,7 +28,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
 
   Future<void> _onAddIngredient(AddIngredient event, Emitter<StockState> emit) async {
     try {
-      await stockDao.addIngredient(event.ingredientData);
+      await stockDao.insertIngredient(event.ingredientData);
       emit(const StockActionSuccess('Bahan baku berhasil ditambahkan'));
       add(LoadStock());
     } catch (e) {

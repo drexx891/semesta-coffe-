@@ -25,6 +25,7 @@ dependencies:
   # UI
   google_fonts: ^6.2.1
   fl_chart: ^0.70.2
+  lucide_icons: ^0.438.0
 
   # Utils
   intl: ^0.20.2

@@ -4,6 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/user_dao.dart';
 import 'widgets/user_form_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class UserManagementPage extends StatefulWidget {
   const UserManagementPage({super.key});
@@ -89,7 +90,7 @@ class _UserManagementPageState extends State<UserManagementPage> {
         backgroundColor: AppColors.primaryDark,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_rounded),
+            icon: const Icon(LucideIcons.plus),
             onPressed: () => _showUserForm(),
           ),
         ],
@@ -114,7 +115,7 @@ class _UserManagementPageState extends State<UserManagementPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit_rounded, color: AppColors.primary),
+                          icon: const Icon(LucideIcons.pencil, color: AppColors.primary),
                           onPressed: () => _showUserForm(user),
                         ),
                         IconButton(

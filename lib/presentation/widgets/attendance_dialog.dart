@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/attendance/attendance_bloc.dart';
 import '../bloc/attendance/attendance_event.dart';
 import '../bloc/attendance/attendance_state.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class AttendanceDialog extends StatefulWidget {
   final int userId;
@@ -79,7 +80,7 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Icon(
-                    isClockedIn ? Icons.output_rounded : Icons.login_rounded,
+                    isClockedIn ? LucideIcons.logOut : LucideIcons.logIn,
                     size: 48,
                     color: isClockedIn ? AppColors.warning : AppColors.success,
                   ),
@@ -104,7 +105,7 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
                       decoration: InputDecoration(
                         labelText: 'Catatan Pulang (Opsional)',
                         hintText: 'Cth: Selesai shift pagi',
-                        prefixIcon: const Icon(Icons.notes_rounded),
+                        prefixIcon: const Icon(LucideIcons.notebookText),
                       ),
                       maxLines: 2,
                     ),

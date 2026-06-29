@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class Base64ImageHelper {
   /// Builds an image from a base64 string. Returns a placeholder if invalid.
@@ -42,7 +43,7 @@ class Base64ImageHelper {
       color: Colors.grey.shade200,
       child: Center(
         child: Icon(
-          Icons.local_cafe_rounded,
+          LucideIcons.coffee,
           color: Colors.grey.shade400,
           size: (width != null && width < 50) ? 24 : 40,
         ),

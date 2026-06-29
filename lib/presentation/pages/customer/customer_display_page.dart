@@ -12,6 +12,7 @@ import '../../bloc/menu/menu_bloc.dart';
 import '../../bloc/menu/menu_event.dart';
 import '../../bloc/menu/menu_state.dart';
 import '../pos/widgets/modifier_bottom_sheet.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CustomerDisplayPage extends StatefulWidget {
   const CustomerDisplayPage({super.key});
@@ -215,7 +216,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                     color: AppColors.successLight,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.check_circle_rounded, color: AppColors.success, size: 56),
+                  child: const Icon(LucideLucideIcons.checkCircle, color: AppColors.success, size: 56),
                 ),
                 const SizedBox(height: 20),
                 Text('Pesanan Terkirim!', style: GoogleFonts.playfairDisplay(fontSize: 24, fontWeight: FontWeight.bold)),
@@ -379,7 +380,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                           decoration: InputDecoration(
                             hintText: 'Cari minuman favoritmu...',
                             hintStyle: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 15),
-                            prefixIcon: const Icon(Icons.search_rounded, color: AppColors.primaryLight),
+                            prefixIcon: const Icon(LucideLucideIcons.search, color: AppColors.primaryLight),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                           ),
@@ -430,7 +431,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.local_cafe_outlined, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                                Icon(LucideIcons.coffee_outlined, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                                 const SizedBox(height: 16),
                                 Text(
                                   _searchQuery.isNotEmpty ? 'Menu tidak ditemukan' : 'Belum ada menu',
@@ -516,7 +517,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               ),
-                              icon: const Icon(Icons.delete_outline_rounded, size: 20),
+                              icon: const Icon(LucideIcons.trash2, size: 20),
                               label: Text('Reset', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                             ),
                         ],
@@ -657,7 +658,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.remove_rounded, size: 16),
+                  icon: const Icon(LucideIcons.minus, size: 16),
                   color: AppColors.textSecondary,
                   onPressed: () => _updateQuantity(index, -1),
                   constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -669,7 +670,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                   child: Text('${item.quantity}', textAlign: TextAlign.center, style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 14)),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add_rounded, size: 16),
+                  icon: const Icon(LucideIcons.plus, size: 16),
                   color: AppColors.primary,
                   onPressed: () => _updateQuantity(index, 1),
                   constraints: const BoxConstraints(minWidth: 32, minHeight: 32),

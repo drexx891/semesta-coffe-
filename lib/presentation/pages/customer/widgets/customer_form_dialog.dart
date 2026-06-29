@@ -7,6 +7,7 @@ import '../../../../core/constants/app_dimensions.dart';
 import '../../../../domain/entities/customer.dart';
 import '../../../bloc/customer/customer_bloc.dart';
 import '../../../bloc/customer/customer_event.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CustomerFormDialog extends StatefulWidget {
   final Customer? customer;
@@ -81,7 +82,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                   controller: _nameController,
                   decoration: const InputDecoration(
                     labelText: 'Nama Lengkap',
-                    prefixIcon: Icon(Icons.person_rounded),
+                    prefixIcon: Icon(LucideIcons.user),
                   ),
                   validator: (v) => v == null || v.isEmpty ? 'Nama wajib diisi' : null,
                 ),
@@ -91,7 +92,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     labelText: 'Nomor Telepon',
-                    prefixIcon: Icon(Icons.phone_rounded),
+                    prefixIcon: Icon(LucideLucideIcons.phone),
                   ),
                 ),
                 const SizedBox(height: AppDimensions.spacing16),
@@ -101,7 +102,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: 'Poin Loyalitas',
-                      prefixIcon: Icon(Icons.stars_rounded),
+                      prefixIcon: Icon(LucideIcons.stars_rounded),
                     ),
                   ),
               ],

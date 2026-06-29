@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import 'report_detail_page.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class ReportPage extends StatelessWidget {
   const ReportPage({super.key});
@@ -12,13 +13,13 @@ class ReportPage extends StatelessWidget {
     final reports = [
       _ReportItem(AppStrings.dailyReport, Icons.today_rounded, AppColors.info),
       _ReportItem(AppStrings.monthlyReport, Icons.calendar_month_rounded, AppColors.primary),
-      _ReportItem(AppStrings.bestSellerReport, Icons.star_rounded, AppColors.accent),
-      _ReportItem(AppStrings.salesByCashier, Icons.person_rounded, AppColors.success),
+      _ReportItem(AppStrings.bestSellerReport, LucideLucideIcons.star, AppColors.accent),
+      _ReportItem(AppStrings.salesByCashier, LucideIcons.user, AppColors.success),
       _ReportItem(AppStrings.paymentMethodReport, Icons.payment_rounded, AppColors.paymentQris),
       _ReportItem(AppStrings.discountReport, Icons.discount_rounded, AppColors.warning),
       _ReportItem(AppStrings.taxReport, Icons.account_balance_rounded, AppColors.paymentTransfer),
       _ReportItem(AppStrings.voidReport, Icons.cancel_rounded, AppColors.error),
-      _ReportItem(AppStrings.shiftReport, Icons.schedule_rounded, AppColors.primaryLight),
+      _ReportItem(AppStrings.shiftReport, LucideIcons.clock, AppColors.primaryLight),
       _ReportItem(AppStrings.hppReport, Icons.calculate_rounded, AppColors.accentDark),
     ];
 

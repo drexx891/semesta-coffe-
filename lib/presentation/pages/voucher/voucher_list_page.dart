@@ -9,6 +9,7 @@ import '../../bloc/voucher/voucher_bloc.dart';
 import '../../bloc/voucher/voucher_event.dart';
 import '../../bloc/voucher/voucher_state.dart';
 import 'widgets/voucher_form_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class VoucherListPage extends StatelessWidget {
   const VoucherListPage({super.key});
@@ -47,7 +48,7 @@ class VoucherListPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.local_offer_rounded, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                      Icon(LucideIcons.ticketPercent, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                       const SizedBox(height: 16),
                       Text('Belum ada voucher', style: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 16)),
                     ],
@@ -75,7 +76,7 @@ class VoucherListPage extends StatelessWidget {
               ),
             );
           },
-          icon: const Icon(Icons.add_circle_outline_rounded),
+          icon: const Icon(LucideIcons.plus_circle_outline_rounded),
           label: const Text('Buat Voucher'),
           backgroundColor: AppColors.accent,
         ),
@@ -144,7 +145,7 @@ class _VoucherCardState extends State<_VoucherCard> {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    Icons.confirmation_number_rounded,
+                    LucideIcons.ticket,
                     color: isValid ? AppColors.primaryDark : AppColors.textTertiary,
                     size: 28,
                   ),
@@ -204,7 +205,7 @@ class _VoucherCardState extends State<_VoucherCard> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
+                  icon: const Icon(LucideIcons.trash2, color: AppColors.error),
                   onPressed: () {
                     showDialog(
                       context: context,

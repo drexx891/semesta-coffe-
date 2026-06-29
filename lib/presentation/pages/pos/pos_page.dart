@@ -23,6 +23,7 @@ import 'widgets/cart_panel.dart';
 import 'widgets/cart_summary.dart';
 import 'widgets/shift_warning_banner.dart';
 import 'widgets/payment_success_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class PosPage extends StatefulWidget {
   const PosPage({super.key});
@@ -122,7 +123,7 @@ class _PosPageState extends State<PosPage> {
                     backgroundColor: AppColors.error,
                     alignment: const Alignment(0.4, -0.4),
                     child: IconButton(
-                      icon: const Icon(Icons.history_rounded, color: AppColors.textSecondary),
+                      icon: const Icon(LucideLucideIcons.history, color: AppColors.textSecondary),
                       tooltip: 'Hold Orders',
                       onPressed: () => _showHoldOrdersDialog(context),
                     ),
@@ -415,7 +416,7 @@ class _PosPageState extends State<PosPage> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: AppStrings.searchProduct,
-                  prefixIcon: const Icon(Icons.search_rounded),
+                  prefixIcon: const Icon(LucideLucideIcons.search),
                   filled: true,
                   fillColor: AppColors.white,
                   contentPadding: const EdgeInsets.symmetric(vertical: 12),

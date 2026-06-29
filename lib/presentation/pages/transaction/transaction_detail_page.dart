@@ -9,6 +9,7 @@ import '../../../data/database/dao/transaction_dao.dart';
 import '../../../services/session_manager.dart';
 
 import '../../../presentation/widgets/pin_verification_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class TransactionDetailPage extends StatefulWidget {
   final int transactionId;
@@ -190,7 +191,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
             onPressed: _printKitchenTicket,
           ),
           IconButton(
-            icon: const Icon(Icons.print_rounded),
+            icon: const Icon(LucideLucideIcons.printerer),
             tooltip: 'Cetak Struk',
             onPressed: _printReceipt,
           ),

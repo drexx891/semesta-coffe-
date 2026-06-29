@@ -9,6 +9,7 @@ import '../../../core/utils/currency_formatter.dart';
 import 'transaction_detail_page.dart';
 
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 /// Halaman Riwayat Transaksi
 class TransactionHistoryPage extends StatefulWidget {
@@ -97,7 +98,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.receipt_long_rounded, size: 64, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                      Icon(LucideIcons.receiptText, size: 64, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                       const SizedBox(height: 12),
                       Text('Belum ada transaksi pada $dateLabel', style: GoogleFonts.inter(color: AppColors.textTertiary)),
                     ],

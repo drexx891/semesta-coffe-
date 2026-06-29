@@ -10,6 +10,7 @@ import '../../bloc/stock/stock_event.dart';
 import '../../bloc/stock/stock_state.dart';
 import 'widgets/ingredient_form_dialog.dart';
 import 'widgets/stock_adjustment_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 
 class StockListPage extends StatefulWidget {
@@ -72,7 +73,7 @@ class _StockListPageState extends State<StockListPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.inventory_2_rounded, size: 64, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                      Icon(LucideIcons.packageSearch, size: 64, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                       const SizedBox(height: 12),
                       Text('Belum ada bahan baku', style: GoogleFonts.inter(color: AppColors.textTertiary)),
                     ],
@@ -154,7 +155,7 @@ class _StockListPageState extends State<StockListPage> {
               ),
             );
           },
-          icon: const Icon(Icons.add_rounded),
+          icon: const Icon(LucideIcons.plus),
           label: const Text('Tambah Bahan'),
           backgroundColor: AppColors.accent,
         ),

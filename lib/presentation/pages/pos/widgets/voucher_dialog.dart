@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it/get_it.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../data/database/dao/voucher_dao.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class VoucherDialog extends StatefulWidget {
   const VoucherDialog({super.key});
@@ -70,7 +71,7 @@ class _VoucherDialogState extends State<VoucherDialog> {
                     color: AppColors.primaryLight.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Icon(Icons.confirmation_number_rounded, color: AppColors.primaryDark),
+                  child: const Icon(LucideIcons.ticket, color: AppColors.primaryDark),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -83,7 +84,7 @@ class _VoucherDialogState extends State<VoucherDialog> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary),
+                  icon: const Icon(LucideIcons.x, color: AppColors.textSecondary),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -96,7 +97,7 @@ class _VoucherDialogState extends State<VoucherDialog> {
                 labelText: 'Kode Voucher',
                 errorText: _errorMessage,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                prefixIcon: const Icon(Icons.local_offer_outlined),
+                prefixIcon: const Icon(LucideIcons.ticketPercent_outlined),
               ),
               onSubmitted: (_) => _checkVoucher(),
             ),

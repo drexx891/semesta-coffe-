@@ -7,6 +7,7 @@ import '../../../../core/di/injection_container.dart';
 import '../../../../data/database/dao/product_dao.dart';
 import '../../../../domain/entities/hold_order.dart';
 import '../../../../domain/entities/transaction.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class ModifierBottomSheet extends StatefulWidget {
   final Map<String, dynamic> product;
@@ -109,7 +110,7 @@ class _ModifierBottomSheetState extends State<ModifierBottomSheet> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.close_rounded),
+                icon: const Icon(LucideIcons.x),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -140,7 +141,7 @@ class _ModifierBottomSheetState extends State<ModifierBottomSheet> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      _buildQuantityButton(Icons.remove, () {
+                      _buildQuantityButton(LucideIcons.minus, () {
                         if (_extraShot > 0) setState(() => _extraShot--);
                       }),
                       Container(
@@ -148,7 +149,7 @@ class _ModifierBottomSheetState extends State<ModifierBottomSheet> {
                         alignment: Alignment.center,
                         child: Text('$_extraShot', style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
                       ),
-                      _buildQuantityButton(Icons.add, () {
+                      _buildQuantityButton(LucideIcons.plus, () {
                         if (_extraShot < 5) setState(() => _extraShot++);
                       }),
                       const Spacer(),

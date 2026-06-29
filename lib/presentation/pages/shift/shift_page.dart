@@ -10,6 +10,7 @@ import '../../../data/database/dao/settings_dao.dart';
 import '../../../services/printer_service.dart';
 import '../../../core/utils/receipt_printer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class ShiftPage extends StatefulWidget {
   const ShiftPage({super.key});
@@ -191,7 +192,7 @@ class _ShiftPageState extends State<ShiftPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(Icons.lock_open_rounded, size: 48, color: AppColors.primary),
+                Icon(LucideIcons.lock_open_rounded, size: 48, color: AppColors.primary),
                 const SizedBox(height: 16),
                 Text(
                   'Buka Shift',
@@ -210,7 +211,7 @@ class _ShiftPageState extends State<ShiftPage> {
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: 'Uang Modal Awal (Rp)',
-                    prefixIcon: Icon(Icons.account_balance_wallet_rounded),
+                    prefixIcon: Icon(LucideIcons.wallet),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -251,7 +252,7 @@ class _ShiftPageState extends State<ShiftPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.lock_rounded, size: 48, color: AppColors.accent),
+                  Icon(LucideLucideIcons.lock, size: 48, color: AppColors.accent),
                   const SizedBox(height: 16),
                   Text(
                     'Tutup Shift',
@@ -291,7 +292,7 @@ class _ShiftPageState extends State<ShiftPage> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: 'Uang Fisik Aktual (Rp)',
-                      prefixIcon: Icon(Icons.money_rounded),
+                      prefixIcon: Icon(LucideIcons.banknote),
                       border: OutlineInputBorder(),
                     ),
                   ),

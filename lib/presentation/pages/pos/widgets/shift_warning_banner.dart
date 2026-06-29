@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../bloc/pos/pos_bloc.dart';
 import '../../../bloc/pos/pos_state.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class ShiftWarningBanner extends StatelessWidget {
   const ShiftWarningBanner({super.key});
@@ -21,7 +22,7 @@ class ShiftWarningBanner extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              const Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 24),
+              const Icon(LucideIcons.triangleAlert_amber_rounded, color: AppColors.error, size: 24),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

@@ -8,6 +8,7 @@ import '../../../core/utils/receipt_printer.dart';
 import '../../../data/database/dao/transaction_dao.dart';
 import '../../../data/database/dao/shift_dao.dart';
 import '../../../core/utils/csv_exporter.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 enum ReportType { daily, monthly, bestSeller, salesByCashier, paymentMethods, voidTransactions, discount, tax, shift, hpp, generic }
 
@@ -95,7 +96,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
         actions: [
           if (!_isLoading && widget.type != ReportType.generic && _listData.isNotEmpty) ...[
             IconButton(
-              icon: const Icon(Icons.download_rounded),
+              icon: const Icon(LucideLucideIcons.download),
               tooltip: 'Export CSV',
               onPressed: () async {
                 final scaffoldMessenger = ScaffoldMessenger.of(context);
@@ -118,7 +119,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.print_rounded),
+              icon: const Icon(LucideLucideIcons.printerer),
               tooltip: 'Cetak Laporan',
               onPressed: () async {
                 await ReceiptPrinter.printReportSummary(
@@ -229,7 +230,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                     final item = _listData[i];
                     if (widget.type == ReportType.bestSeller) {
                       return ListTile(
-                        leading: const Icon(Icons.category_rounded, color: AppColors.primary),
+                        leading: const Icon(LucideIcons.layoutGrid, color: AppColors.primary),
                         title: Text(item['category_name'] as String, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                         subtitle: Text('${item['total_qty']} item terjual', style: GoogleFonts.inter(fontSize: 12)),
                         trailing: Text(
@@ -239,7 +240,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                       );
                     } else if (widget.type == ReportType.salesByCashier) {
                       return ListTile(
-                        leading: const Icon(Icons.person_rounded, color: AppColors.primary),
+                        leading: const Icon(LucideIcons.user, color: AppColors.primary),
                         title: Text(item['cashier_name'] as String, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                         subtitle: Text('${item['total_transactions']} transaksi', style: GoogleFonts.inter(fontSize: 12)),
                         trailing: Text(
@@ -295,7 +296,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                       final endTime = item['closed_at'] != null ? DateTime.parse(item['closed_at']) : null;
                       final difference = (item['cash_difference'] as num?)?.toDouble() ?? 0;
                       return ListTile(
-                        leading: const Icon(Icons.schedule_rounded, color: AppColors.primaryLight),
+                        leading: const Icon(LucideIcons.clock, color: AppColors.primaryLight),
                         title: Text(item['user_name'] as String? ?? 'Kasir', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                         subtitle: Text('${startTime.day}/${startTime.month}/${startTime.year} ${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} - ${endTime != null ? '${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}' : 'Buka'}', style: GoogleFonts.inter(fontSize: 12)),
                         trailing: Text(
@@ -313,7 +314,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                         leading: CircleAvatar(
                           backgroundColor: status == 'completed' ? AppColors.successLight : AppColors.errorLight,
                           child: Icon(
-                            status == 'completed' ? Icons.check_rounded : Icons.close_rounded,
+                            status == 'completed' ? LucideLucideIcons.check : LucideIcons.x,
                             color: status == 'completed' ? AppColors.success : AppColors.error,
                             size: 18,
                           ),

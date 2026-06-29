@@ -7,6 +7,7 @@ import '../../bloc/menu_management/menu_management_event.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import '../../../core/utils/base64_image_helper.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class ProductFormPage extends StatefulWidget {
   final Map<String, dynamic>? product;
@@ -143,7 +144,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         backgroundColor: AppColors.primaryDark,
         actions: [
           IconButton(
-            icon: const Icon(Icons.check),
+            icon: const Icon(LucideIcons.check),
             onPressed: _submit,
             tooltip: 'Simpan',
           ),
@@ -190,7 +191,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                                     : Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.add_a_photo_rounded, size: 32, color: Colors.grey.shade500),
+                                          Icon(LucideIcons.plus_a_photo_rounded, size: 32, color: Colors.grey.shade500),
                                           const SizedBox(height: 8),
                                           Text('Pilih Foto', style: GoogleFonts.inter(fontSize: 12, color: Colors.grey.shade600)),
                                         ],

@@ -24,6 +24,7 @@ import 'settings/settings_page.dart';
 import 'shift/shift_page.dart';
 import 'kds/kds_page.dart';
 import '../widgets/attendance_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 /// Shell navigasi utama — responsive sidebar (tablet) / bottom nav (phone)
 class MainShell extends StatefulWidget {
@@ -41,7 +42,7 @@ class _MainShellState extends State<MainShell> {
   List<_NavItem> get _navItems {
     final items = <_NavItem>[
       _NavItem(
-        icon: Icons.dashboard_rounded, 
+        icon: LucideIcons.layoutDashboard, 
         label: AppStrings.dashboard, 
         page: DashboardPage(
           onNavigate: (destination) {
@@ -49,34 +50,34 @@ class _MainShellState extends State<MainShell> {
           },
         ),
       ),
-      _NavItem(icon: Icons.point_of_sale_rounded, label: AppStrings.pos, page: const PosPage()),
-      _NavItem(icon: Icons.receipt_long_rounded, label: AppStrings.transactions, page: const TransactionHistoryPage()),
-      _NavItem(icon: Icons.people_alt_rounded, label: 'Pelanggan', page: const CustomerListPage()),
-      _NavItem(icon: Icons.local_offer_rounded, label: 'Voucher', page: const VoucherListPage()),
-      _NavItem(icon: Icons.kitchen_rounded, label: 'KDS', page: const KdsPage()),
-      _NavItem(icon: Icons.schedule_rounded, label: AppStrings.shift, page: const ShiftPage()),
+      _NavItem(icon: LucideIcons.monitorCheck, label: AppStrings.pos, page: const PosPage()),
+      _NavItem(icon: LucideIcons.receiptText, label: AppStrings.transactions, page: const TransactionHistoryPage()),
+      _NavItem(icon: LucideIcons.users, label: 'Pelanggan', page: const CustomerListPage()),
+      _NavItem(icon: LucideIcons.ticketPercent, label: 'Voucher', page: const VoucherListPage()),
+      _NavItem(icon: LucideIcons.chefHat, label: 'KDS', page: const KdsPage()),
+      _NavItem(icon: LucideIcons.clock, label: AppStrings.shift, page: const ShiftPage()),
     ];
 
     if (widget.user.canSupervise) {
-      items.add(_NavItem(icon: Icons.inventory_2_rounded, label: AppStrings.stock, page: const StockListPage()));
+      items.add(_NavItem(icon: LucideIcons.packageSearch, label: AppStrings.stock, page: const StockListPage()));
       items.add(_NavItem(icon: Icons.bar_chart_rounded, label: AppStrings.reports, page: const ReportPage()));
     }
 
     if (widget.user.canManageMenu) {
-      items.add(_NavItem(icon: Icons.restaurant_menu_rounded, label: AppStrings.menu, page: const MenuListPage()));
+      items.add(_NavItem(icon: LucideIcons.utensils, label: AppStrings.menu, page: const MenuListPage()));
     }
     
     // Virtual nav item for Attendance in mobile view (intercepted)
-    items.add(_NavItem(icon: Icons.fingerprint_rounded, label: 'Clock In/Out', page: const Scaffold()));
+    items.add(_NavItem(icon: LucideLucideIcons.fingerprint, label: 'Clock In/Out', page: const Scaffold()));
     
     items.add(_NavItem(
-      icon: Icons.history_rounded, 
+      icon: LucideLucideIcons.history, 
       label: 'Riwayat Absensi', 
       page: AttendanceHistoryPage(userId: widget.user.id ?? 1),
     ));
 
     if (widget.user.canManageSettings) {
-      items.add(_NavItem(icon: Icons.settings_rounded, label: AppStrings.settings, page: const SettingsPage()));
+      items.add(_NavItem(icon: LucideLucideIcons.settings, label: AppStrings.settings, page: const SettingsPage()));
     }
 
     return items;
@@ -282,7 +283,7 @@ class _MainShellState extends State<MainShell> {
             )),
             if (hasMore)
               const NavigationDestination(
-                icon: Icon(Icons.more_horiz_rounded),
+                icon: Icon(LucideIcons.moreHorizontal),
                 label: 'Lainnya',
               ),
           ],
@@ -348,7 +349,7 @@ class _MainShellState extends State<MainShell> {
                 border: Border.all(color: AppColors.white.withValues(alpha: 0.2)),
               ),
               child: Icon(
-                Icons.fingerprint_rounded,
+                LucideLucideIcons.fingerprint,
                 color: AppColors.white.withValues(alpha: 0.6),
                 size: 18,
               ),
@@ -366,7 +367,7 @@ class _MainShellState extends State<MainShell> {
                 border: Border.all(color: AppColors.white.withValues(alpha: 0.2)),
               ),
               child: Icon(
-                Icons.logout_rounded,
+                LucideIcons.logOut,
                 color: AppColors.white.withValues(alpha: 0.6),
                 size: 18,
               ),

@@ -10,6 +10,7 @@ import '../../data/database/dao/stock_dao.dart';
 import '../../data/database/dao/shift_dao.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../services/session_manager.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 /// Dashboard — ringkasan penjualan hari ini
 class DashboardPage extends StatefulWidget {
@@ -171,7 +172,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       child: Row(
         children: [
-          const Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 24),
+          const Icon(LucideIcons.triangleAlert_amber_rounded, color: AppColors.error, size: 24),
           const SizedBox(width: AppDimensions.spacing12),
           Expanded(
             child: Column(
@@ -261,7 +262,7 @@ class _DashboardPageState extends State<DashboardPage> {
               color: AppColors.info,
             ),
             _buildSummaryCard(
-              icon: Icons.star_rounded,
+              icon: LucideLucideIcons.star,
               label: AppStrings.bestSeller,
               value: _bestSellerName ?? '-',
               subtitle: _bestSellerQty > 0 ? '$_bestSellerQty terjual' : null,
@@ -354,9 +355,9 @@ class _DashboardPageState extends State<DashboardPage> {
           spacing: AppDimensions.spacing12,
           runSpacing: AppDimensions.spacing12,
           children: [
-            _buildQuickActionChip(Icons.point_of_sale_rounded, 'Mulai Transaksi', AppColors.primary, 'pos'),
-            _buildQuickActionChip(Icons.schedule_rounded, 'Buka Shift', AppColors.success, 'shift'),
-            _buildQuickActionChip(Icons.inventory_2_rounded, 'Cek Stok', AppColors.warning, 'stock'),
+            _buildQuickActionChip(LucideIcons.monitorCheck, 'Mulai Transaksi', AppColors.primary, 'pos'),
+            _buildQuickActionChip(LucideIcons.clock, 'Buka Shift', AppColors.success, 'shift'),
+            _buildQuickActionChip(LucideIcons.packageSearch, 'Cek Stok', AppColors.warning, 'stock'),
           ],
         ),
       ],

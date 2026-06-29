@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/settings_dao.dart';
 import '../../../services/printer_service.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class PrinterSettingsPage extends StatefulWidget {
   const PrinterSettingsPage({super.key});
@@ -186,7 +187,7 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                             labelText: 'Alamat Jaringan Printer Kasir (IP Jaringan/LAN)',
                             hintText: 'Cth: 192.168.1.100',
                             border: const OutlineInputBorder(),
-                            prefixIcon: const Icon(Icons.print_rounded),
+                            prefixIcon: const Icon(LucideLucideIcons.printerer),
                             suffixIcon: TextButton(
                               onPressed: () => _testPrint(_receiptPrinterController.text.trim()),
                               child: const Text('TEST PRINT'),

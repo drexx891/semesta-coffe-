@@ -11,6 +11,7 @@ import '../../bloc/menu_management/menu_management_event.dart';
 import '../../bloc/menu_management/menu_management_state.dart';
 import 'product_form_page.dart';
 import 'widgets/category_form_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class MenuListPage extends StatelessWidget {
   const MenuListPage({super.key});
@@ -133,7 +134,7 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
             }
           }
         },
-        icon: const Icon(Icons.add_rounded),
+        icon: const Icon(LucideIcons.plus),
         label: Text(_tabController.index == 0 ? 'Tambah Produk' : 'Tambah Kategori'),
         backgroundColor: AppColors.accent,
       ),
@@ -194,7 +195,7 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
                   activeThumbColor: AppColors.primary,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
+                  icon: const Icon(LucideIcons.pencil, color: Colors.blue),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -241,7 +242,7 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
+                  icon: const Icon(LucideIcons.pencil, color: Colors.blue),
                   onPressed: () async {
                     final menuManagementBloc = context.read<MenuManagementBloc>();
                     final result = await showDialog(

@@ -4,6 +4,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../domain/entities/customer.dart';
 import '../../../../data/database/dao/customer_dao.dart';
 import '../../../../core/di/injection_container.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CustomerSelectionDialog extends StatefulWidget {
   const CustomerSelectionDialog({super.key});
@@ -84,7 +85,7 @@ class _CustomerSelectionDialogState extends State<CustomerSelectionDialog> {
           children: [
             Text('Pilih Member', style: GoogleFonts.playfairDisplay(fontSize: 20, fontWeight: FontWeight.w600)),
             IconButton(
-              icon: const Icon(Icons.person_add_rounded, color: AppColors.primary),
+              icon: const Icon(LucideIcons.user_add_rounded, color: AppColors.primary),
               onPressed: () => setState(() => _isAddingNew = true),
               tooltip: 'Member Baru',
             ),
@@ -96,7 +97,7 @@ class _CustomerSelectionDialogState extends State<CustomerSelectionDialog> {
           onChanged: _search,
           decoration: InputDecoration(
             hintText: 'Cari nama atau nomor WA...',
-            prefixIcon: const Icon(Icons.search),
+            prefixIcon: const Icon(LucideIcons.search),
             filled: true,
             fillColor: AppColors.background,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),

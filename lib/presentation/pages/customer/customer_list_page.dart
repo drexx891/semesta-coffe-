@@ -8,6 +8,7 @@ import '../../bloc/customer/customer_bloc.dart';
 import '../../bloc/customer/customer_event.dart';
 import '../../bloc/customer/customer_state.dart';
 import 'widgets/customer_form_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CustomerListPage extends StatefulWidget {
   const CustomerListPage({super.key});
@@ -66,7 +67,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Cari nama atau nomor telepon...',
-                  prefixIcon: const Icon(Icons.search_rounded),
+                  prefixIcon: const Icon(LucideLucideIcons.search),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.clear_rounded),
                     onPressed: () {
@@ -125,7 +126,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
               ),
             );
           },
-          icon: const Icon(Icons.person_add_rounded),
+          icon: const Icon(LucideIcons.user_add_rounded),
           label: const Text('Member Baru'),
           backgroundColor: AppColors.accent,
         ),
@@ -237,7 +238,7 @@ class _CustomerCardState extends State<_CustomerCard> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.stars_rounded, color: AppColors.accent, size: 16),
+                      const Icon(LucideIcons.stars_rounded, color: AppColors.accent, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         '${widget.customer.loyaltyPoints} Poin',
@@ -251,7 +252,7 @@ class _CustomerCardState extends State<_CustomerCard> {
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
+                  icon: const Icon(LucideIcons.trash2, color: AppColors.error),
                   onPressed: () {
                     showDialog(
                       context: context,

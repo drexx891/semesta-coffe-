@@ -7,6 +7,7 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../bloc/attendance/attendance_bloc.dart';
 import '../../bloc/attendance/attendance_event.dart';
 import '../../bloc/attendance/attendance_state.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class AttendanceHistoryPage extends StatefulWidget {
   final int userId;
@@ -66,7 +67,7 @@ class _AttendanceHistoryPageState extends State<AttendanceHistoryPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.history_rounded, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                    Icon(LucideLucideIcons.history, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                     const SizedBox(height: 16),
                     Text('Belum ada riwayat absensi', style: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 16)),
                   ],
@@ -99,7 +100,7 @@ class _AttendanceHistoryPageState extends State<AttendanceHistoryPage> {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            clockOut != null ? Icons.check_circle_rounded : Icons.pending_rounded,
+                            clockOut != null ? LucideLucideIcons.checkCircle : LucideIcons.clock3,
                             color: clockOut != null ? AppColors.success : AppColors.warning,
                           ),
                         ),
@@ -115,11 +116,11 @@ class _AttendanceHistoryPageState extends State<AttendanceHistoryPage> {
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  const Icon(Icons.login_rounded, size: 14, color: AppColors.textSecondary),
+                                  const Icon(LucideIcons.logIn, size: 14, color: AppColors.textSecondary),
                                   const SizedBox(width: 4),
                                   Text('Masuk: ${_formatTime(clockIn)}', style: GoogleFonts.inter(fontSize: 13, color: AppColors.textSecondary)),
                                   const SizedBox(width: 16),
-                                  const Icon(Icons.output_rounded, size: 14, color: AppColors.textSecondary),
+                                  const Icon(LucideIcons.logOut, size: 14, color: AppColors.textSecondary),
                                   const SizedBox(width: 4),
                                   Text('Pulang: ${_formatTime(clockOut)}', style: GoogleFonts.inter(fontSize: 13, color: AppColors.textSecondary)),
                                 ],
@@ -134,7 +135,7 @@ class _AttendanceHistoryPageState extends State<AttendanceHistoryPage> {
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.notes_rounded, size: 12, color: AppColors.textTertiary),
+                                      const Icon(LucideIcons.notebookText, size: 12, color: AppColors.textTertiary),
                                       const SizedBox(width: 4),
                                       Expanded(
                                         child: Text(

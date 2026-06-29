@@ -8,6 +8,7 @@ import '../../../bloc/pos/pos_bloc.dart';
 import '../../../bloc/pos/pos_event.dart';
 import '../../../bloc/pos/pos_state.dart';
 import 'hold_order_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CartPanel extends StatelessWidget {
   final ScrollController scrollController;
@@ -29,7 +30,7 @@ class CartPanel extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.shopping_cart_rounded, color: AppColors.primary, size: 20),
+                  const Icon(LucideIcons.shoppingCart, color: AppColors.primary, size: 20),
                   const SizedBox(width: 8),
                   Text(
                     '${AppStrings.cart} (${state.cartItems.fold<int>(0, (s, i) => s + i.quantity)})',
@@ -45,7 +46,7 @@ class CartPanel extends StatelessWidget {
                     const SizedBox(width: 4),
                     TextButton.icon(
                       onPressed: () => context.read<PosBloc>().add(ClearCart()),
-                      icon: const Icon(Icons.delete_outline_rounded, size: 16, color: AppColors.error),
+                      icon: const Icon(LucideIcons.trash2, size: 16, color: AppColors.error),
                       label: Text(AppStrings.clearCart,
                           style: GoogleFonts.inter(fontSize: 12, color: AppColors.error)),
                     ),
@@ -61,7 +62,7 @@ class CartPanel extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.shopping_cart_outlined, size: 48, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                          Icon(LucideIcons.shoppingCart_outlined, size: 48, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                           const SizedBox(height: 8),
                           Text(AppStrings.emptyCart, style: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 14)),
                           const SizedBox(height: 4),
@@ -110,7 +111,7 @@ class CartPanel extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.remove, size: 16),
+                                      icon: const Icon(LucideIcons.minus, size: 16),
                                       onPressed: () => context.read<PosBloc>().add(UpdateCartItemQuantity(index, -1)),
                                       constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                                       padding: EdgeInsets.zero,
@@ -122,7 +123,7 @@ class CartPanel extends StatelessWidget {
                                           style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600)),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.add, size: 16),
+                                      icon: const Icon(LucideIcons.plus, size: 16),
                                       onPressed: () => context.read<PosBloc>().add(UpdateCartItemQuantity(index, 1)),
                                       constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                                       padding: EdgeInsets.zero,

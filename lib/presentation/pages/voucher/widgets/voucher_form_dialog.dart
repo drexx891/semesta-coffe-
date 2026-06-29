@@ -8,6 +8,7 @@ import '../../../../core/constants/app_dimensions.dart';
 import '../../../../domain/entities/voucher.dart';
 import '../../../bloc/voucher/voucher_bloc.dart';
 import '../../../bloc/voucher/voucher_event.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class VoucherFormDialog extends StatefulWidget {
   final Voucher? voucher;
@@ -128,7 +129,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                     controller: _codeController,
                     decoration: const InputDecoration(
                       labelText: 'Kode Voucher (Unik)',
-                      prefixIcon: Icon(Icons.confirmation_number_rounded),
+                      prefixIcon: Icon(LucideIcons.ticket),
                     ),
                     validator: (v) => v == null || v.isEmpty ? 'Kode wajib diisi' : null,
                   ),
@@ -141,7 +142,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             labelText: 'Diskon (%)',
-                            prefixIcon: Icon(Icons.percent_rounded),
+                            prefixIcon: Icon(LucideLucideIcons.percent),
                           ),
                         ),
                       ),
@@ -152,7 +153,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             labelText: 'Diskon (Rp)',
-                            prefixIcon: Icon(Icons.money_rounded),
+                            prefixIcon: Icon(LucideIcons.banknote),
                           ),
                         ),
                       ),
@@ -164,7 +165,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: 'Min. Pembelian (Rp)',
-                      prefixIcon: Icon(Icons.shopping_cart_rounded),
+                      prefixIcon: Icon(LucideIcons.shoppingCart),
                     ),
                   ),
                   const SizedBox(height: AppDimensions.spacing16),
@@ -181,7 +182,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.date_range_rounded, color: AppColors.textSecondary, size: 20),
+                                const Icon(LucideIcons.calendarDays, color: AppColors.textSecondary, size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(child: Text(DateFormat('dd MMM yyyy').format(_validFrom!), style: const TextStyle(fontSize: 14))),
                               ],
@@ -201,7 +202,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.event_available_rounded, color: AppColors.textSecondary, size: 20),
+                                const Icon(LucideIcons.calendarCheck, color: AppColors.textSecondary, size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(child: Text(DateFormat('dd MMM yyyy').format(_validUntil!), style: const TextStyle(fontSize: 14))),
                               ],

@@ -13,6 +13,7 @@ import 'customer_selection_dialog.dart';
 import 'discount_dialog.dart';
 import 'voucher_dialog.dart';
 import 'payment_sheet.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CartSummary extends StatefulWidget {
   const CartSummary({super.key});
@@ -70,7 +71,7 @@ class _CartSummaryState extends State<CartSummary> {
                         isDense: true,
                         hintText: 'Nama / No Meja',
                         hintStyle: GoogleFonts.inter(fontSize: 13, color: AppColors.textTertiary),
-                        prefixIcon: const Icon(Icons.person_outline_rounded, size: 18, color: AppColors.textSecondary),
+                        prefixIcon: const Icon(LucideIcons.user_outline_rounded, size: 18, color: AppColors.textSecondary),
                         filled: true,
                         fillColor: AppColors.surfaceVariant,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -89,7 +90,7 @@ class _CartSummaryState extends State<CartSummary> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.person_search_rounded, color: AppColors.primaryDark),
+                      icon: const Icon(LucideIcons.user_search_rounded, color: AppColors.primaryDark),
                       tooltip: 'Cari Member',
                       onPressed: () async {
                         final result = await showDialog<Customer>(
@@ -133,7 +134,7 @@ class _CartSummaryState extends State<CartSummary> {
                       onPressed: () {
                         context.read<PosBloc>().add(ClearVoucher());
                       },
-                      icon: const Icon(Icons.close_rounded, size: 14, color: AppColors.error),
+                      icon: const Icon(LucideIcons.x, size: 14, color: AppColors.error),
                       label: Text('Hapus Voucher', style: GoogleFonts.inter(fontSize: 12, color: AppColors.error, fontWeight: FontWeight.w600)),
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -152,7 +153,7 @@ class _CartSummaryState extends State<CartSummary> {
                           context.read<PosBloc>().add(ApplyVoucher(result));
                         }
                       },
-                      icon: const Icon(Icons.confirmation_number_outlined, size: 14, color: AppColors.success),
+                      icon: const Icon(LucideIcons.ticket_outlined, size: 14, color: AppColors.success),
                       label: Text('Gunakan Voucher', style: GoogleFonts.inter(fontSize: 12, color: AppColors.success, fontWeight: FontWeight.w600)),
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -180,7 +181,7 @@ class _CartSummaryState extends State<CartSummary> {
                               ));
                         }
                       },
-                      icon: const Icon(Icons.local_offer_rounded, size: 14, color: AppColors.warning),
+                      icon: const Icon(LucideIcons.ticketPercent, size: 14, color: AppColors.warning),
                       label: Text(state.discountAmount > 0 ? 'Ubah Diskon' : 'Terapkan Diskon', style: GoogleFonts.inter(fontSize: 12, color: AppColors.warning, fontWeight: FontWeight.w600)),
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

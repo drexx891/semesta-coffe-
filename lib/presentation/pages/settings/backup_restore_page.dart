@@ -10,6 +10,7 @@ import '../../../core/di/injection_container.dart';
 import '../../../data/database/database_helper.dart';
 import '../../../data/database/dao/transaction_dao.dart';
 import '../../../services/supabase_sync_service.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class BackupRestorePage extends StatefulWidget {
   const BackupRestorePage({super.key});
@@ -298,7 +299,7 @@ class _BackupRestorePageState extends State<BackupRestorePage> {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: kIsWeb ? null : (_isLoading ? null : _exportDatabase),
-                    icon: const Icon(Icons.download_rounded),
+                    icon: const Icon(LucideLucideIcons.download),
                     label: const Text('Simpan File'),
                     style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
                   ),

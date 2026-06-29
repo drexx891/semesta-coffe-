@@ -7,6 +7,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/voucher.dart';
 import '../../../data/database/dao/voucher_dao.dart';
 import 'widgets/voucher_form_dialog.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class VoucherManagementPage extends StatefulWidget {
   const VoucherManagementPage({super.key});
@@ -97,7 +98,7 @@ class _VoucherManagementPageState extends State<VoucherManagementPage> {
         backgroundColor: AppColors.primaryDark,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_rounded),
+            icon: const Icon(LucideIcons.plus),
             tooltip: 'Tambah Voucher',
             onPressed: () async {
               final result = await showDialog<bool>(
@@ -135,7 +136,7 @@ class _VoucherManagementPageState extends State<VoucherManagementPage> {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(Icons.local_offer_rounded, color: AppColors.primary, size: 20),
+                                    const Icon(LucideIcons.ticketPercent, color: AppColors.primary, size: 20),
                                     const SizedBox(width: 8),
                                     Text(voucher.code, style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                                   ],
@@ -163,7 +164,7 @@ class _VoucherManagementPageState extends State<VoucherManagementPage> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.edit_rounded, color: AppColors.info, size: 20),
+                                  icon: const Icon(LucideIcons.pencil, color: AppColors.info, size: 20),
                                   onPressed: () async {
                                     final result = await showDialog<bool>(
                                       context: context,
@@ -173,7 +174,7 @@ class _VoucherManagementPageState extends State<VoucherManagementPage> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error, size: 20),
+                                  icon: const Icon(LucideIcons.trash2, color: AppColors.error, size: 20),
                                   onPressed: () => _deleteVoucher(voucher),
                                 ),
                               ],

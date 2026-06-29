@@ -16,6 +16,7 @@ import 'core/routes/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   // Tangkap semua error widget dan render ke layar (mencegah layar putih)
@@ -48,6 +49,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
 
+  // Muat file .env untuk API keys
+  await dotenv.load(fileName: ".env");
+
   // Inisialisasi locale Indonesia
   await initializeDateFormatting('id_ID', null);
 
@@ -55,8 +59,8 @@ void main() async {
   try {
     initStep = 'Initializing Supabase...';
     await Supabase.initialize(
-      url: 'https://jhdsklpaubhkcwgswqrt.supabase.co',
-      anonKey: 'sb_publishable_LX3NuW-7wlF6k-m__iI17A_krboNnAb',
+      url: dotenv.env['SUPABASE_URL'] ?? '',
+      anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
     );
 
     initStep = 'Initializing Dependencies (Database, etc)...';

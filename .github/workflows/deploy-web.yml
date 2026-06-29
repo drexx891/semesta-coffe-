@@ -23,13 +23,14 @@ jobs:
         run: flutter pub get
 
       - name: Build Web
-        run: flutter build web --release --base-href /semesta-coffe-/
+        run: flutter build web --release --base-href /
 
-      - name: Setup SPA Routing (GitHub Pages 404 Hack)
+      - name: Setup SPA Routing (Vercel Fallback)
         run: cp build/web/index.html build/web/404.html
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to vercel-deploy branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
+          publish_branch: vercel-deploy

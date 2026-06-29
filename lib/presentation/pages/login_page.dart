@@ -329,7 +329,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline_rounded, size: 18, color: AppColors.info.withValues(alpha: 0.7)),
+                  Icon(LucideIcons.info, size: 18, color: AppColors.info.withValues(alpha: 0.7)),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(

@@ -96,7 +96,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
         actions: [
           if (!_isLoading && widget.type != ReportType.generic && _listData.isNotEmpty) ...[
             IconButton(
-              icon: const Icon(LucideLucideIcons.download),
+              icon: const Icon(LucideIcons.download),
               tooltip: 'Export CSV',
               onPressed: () async {
                 final scaffoldMessenger = ScaffoldMessenger.of(context);
@@ -119,7 +119,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
               },
             ),
             IconButton(
-              icon: const Icon(LucideLucideIcons.printerer),
+              icon: const Icon(LucideIcons.printerer),
               tooltip: 'Cetak Laporan',
               onPressed: () async {
                 await ReceiptPrinter.printReportSummary(
@@ -314,7 +314,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                         leading: CircleAvatar(
                           backgroundColor: status == 'completed' ? AppColors.successLight : AppColors.errorLight,
                           child: Icon(
-                            status == 'completed' ? LucideLucideIcons.check : LucideIcons.x,
+                            status == 'completed' ? LucideIcons.check : LucideIcons.x,
                             color: status == 'completed' ? AppColors.success : AppColors.error,
                             size: 18,
                           ),

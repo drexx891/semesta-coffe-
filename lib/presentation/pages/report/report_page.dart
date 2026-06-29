@@ -13,7 +13,7 @@ class ReportPage extends StatelessWidget {
     final reports = [
       _ReportItem(AppStrings.dailyReport, Icons.today_rounded, AppColors.info),
       _ReportItem(AppStrings.monthlyReport, Icons.calendar_month_rounded, AppColors.primary),
-      _ReportItem(AppStrings.bestSellerReport, LucideLucideIcons.star, AppColors.accent),
+      _ReportItem(AppStrings.bestSellerReport, LucideIcons.star, AppColors.accent),
       _ReportItem(AppStrings.salesByCashier, LucideIcons.user, AppColors.success),
       _ReportItem(AppStrings.paymentMethodReport, Icons.payment_rounded, AppColors.paymentQris),
       _ReportItem(AppStrings.discountReport, Icons.discount_rounded, AppColors.warning),

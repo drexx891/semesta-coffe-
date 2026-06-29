@@ -92,7 +92,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     labelText: 'Nomor Telepon',
-                    prefixIcon: Icon(LucideLucideIcons.phone),
+                    prefixIcon: Icon(LucideIcons.phone),
                   ),
                 ),
                 const SizedBox(height: AppDimensions.spacing16),

@@ -67,7 +67,7 @@ class _AttendanceHistoryPageState extends State<AttendanceHistoryPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(LucideLucideIcons.history, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
+                    Icon(LucideIcons.history, size: 80, color: AppColors.textTertiary.withValues(alpha: 0.3)),
                     const SizedBox(height: 16),
                     Text('Belum ada riwayat absensi', style: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 16)),
                   ],
@@ -100,7 +100,7 @@ class _AttendanceHistoryPageState extends State<AttendanceHistoryPage> {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            clockOut != null ? LucideLucideIcons.checkCircle : LucideIcons.clock3,
+                            clockOut != null ? LucideIcons.checkCircle : LucideIcons.clock3,
                             color: clockOut != null ? AppColors.success : AppColors.warning,
                           ),
                         ),

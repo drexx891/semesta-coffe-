@@ -41,7 +41,7 @@ void main() async {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.error_outline_rounded, color: AppColors.error, size: 48),
+                Icon(LucideIcons.alertCircle, color: AppColors.error, size: 48),
                 SizedBox(height: 16),
                 Text('Terjadi Kesalahan', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 SizedBox(height: 8),

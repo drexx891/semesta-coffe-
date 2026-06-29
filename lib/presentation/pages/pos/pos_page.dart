@@ -123,7 +123,7 @@ class _PosPageState extends State<PosPage> {
                     backgroundColor: AppColors.error,
                     alignment: const Alignment(0.4, -0.4),
                     child: IconButton(
-                      icon: const Icon(LucideLucideIcons.history, color: AppColors.textSecondary),
+                      icon: const Icon(LucideIcons.history, color: AppColors.textSecondary),
                       tooltip: 'Hold Orders',
                       onPressed: () => _showHoldOrdersDialog(context),
                     ),
@@ -416,7 +416,7 @@ class _PosPageState extends State<PosPage> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: AppStrings.searchProduct,
-                  prefixIcon: const Icon(LucideLucideIcons.search),
+                  prefixIcon: const Icon(LucideIcons.search),
                   filled: true,
                   fillColor: AppColors.white,
                   contentPadding: const EdgeInsets.symmetric(vertical: 12),

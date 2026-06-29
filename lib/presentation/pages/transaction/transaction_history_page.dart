@@ -132,7 +132,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Icon(
-                              isVoid ? Icons.cancel_rounded : Icons.receipt_rounded,
+                              isVoid ? Icons.cancel_rounded : LucideIcons.receipt,
                               color: isVoid ? AppColors.error : AppColors.success,
                             ),
                           ),

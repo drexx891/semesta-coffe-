@@ -299,7 +299,7 @@ class _BackupRestorePageState extends State<BackupRestorePage> {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: kIsWeb ? null : (_isLoading ? null : _exportDatabase),
-                    icon: const Icon(LucideLucideIcons.download),
+                    icon: const Icon(LucideIcons.download),
                     label: const Text('Simpan File'),
                     style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
                   ),

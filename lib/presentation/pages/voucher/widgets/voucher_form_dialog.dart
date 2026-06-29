@@ -142,7 +142,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             labelText: 'Diskon (%)',
-                            prefixIcon: Icon(LucideLucideIcons.percent),
+                            prefixIcon: Icon(LucideIcons.percent),
                           ),
                         ),
                       ),

@@ -216,7 +216,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                     color: AppColors.successLight,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(LucideLucideIcons.checkCircle, color: AppColors.success, size: 56),
+                  child: const Icon(LucideIcons.checkCircle, color: AppColors.success, size: 56),
                 ),
                 const SizedBox(height: 20),
                 Text('Pesanan Terkirim!', style: GoogleFonts.playfairDisplay(fontSize: 24, fontWeight: FontWeight.bold)),
@@ -380,7 +380,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                           decoration: InputDecoration(
                             hintText: 'Cari minuman favoritmu...',
                             hintStyle: GoogleFonts.inter(color: AppColors.textTertiary, fontSize: 15),
-                            prefixIcon: const Icon(LucideLucideIcons.search, color: AppColors.primaryLight),
+                            prefixIcon: const Icon(LucideIcons.search, color: AppColors.primaryLight),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                           ),

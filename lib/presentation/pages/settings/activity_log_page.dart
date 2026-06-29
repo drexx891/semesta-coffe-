@@ -38,7 +38,7 @@ class _ActivityLogPageState extends State<ActivityLogPage> {
     if (action.contains('SHIFT')) return LucideIcons.clock;
     if (action.contains('STOCK')) return LucideIcons.packageSearch;
     if (action.contains('USER')) return Icons.group_rounded;
-    if (action.contains('SETTINGS')) return LucideLucideIcons.settings;
+    if (action.contains('SETTINGS')) return LucideIcons.settings;
     return Icons.info_rounded;
   }
 

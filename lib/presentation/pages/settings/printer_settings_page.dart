@@ -134,7 +134,7 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                           decoration: const InputDecoration(
                             labelText: 'Ukuran Kertas Printer',
                             border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.receipt_rounded),
+                            prefixIcon: Icon(LucideIcons.receipt),
                           ),
                           items: const [
                             DropdownMenuItem(value: '58mm', child: Text('58mm (Kecil)')),
@@ -187,7 +187,7 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                             labelText: 'Alamat Jaringan Printer Kasir (IP Jaringan/LAN)',
                             hintText: 'Cth: 192.168.1.100',
                             border: const OutlineInputBorder(),
-                            prefixIcon: const Icon(LucideLucideIcons.printerer),
+                            prefixIcon: const Icon(LucideIcons.printerer),
                             suffixIcon: TextButton(
                               onPressed: () => _testPrint(_receiptPrinterController.text.trim()),
                               child: const Text('TEST PRINT'),
@@ -214,7 +214,7 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                           decoration: BoxDecoration(color: AppColors.warning.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.warning)),
                           child: Row(
                             children: [
-                              const Icon(Icons.info_outline, color: AppColors.warning),
+                              const Icon(LucideIcons.info, color: AppColors.warning),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(

@@ -252,7 +252,7 @@ class _ShiftPageState extends State<ShiftPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(LucideLucideIcons.lock, size: 48, color: AppColors.accent),
+                  Icon(LucideIcons.lock, size: 48, color: AppColors.accent),
                   const SizedBox(height: 16),
                   Text(
                     'Tutup Shift',

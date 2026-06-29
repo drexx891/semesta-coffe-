@@ -256,13 +256,13 @@ class _DashboardPageState extends State<DashboardPage> {
               color: AppColors.accent,
             ),
             _buildSummaryCard(
-              icon: Icons.receipt_rounded,
+              icon: LucideIcons.receipt,
               label: AppStrings.totalTransactions,
               value: '$_totalTransactions',
               color: AppColors.info,
             ),
             _buildSummaryCard(
-              icon: LucideLucideIcons.star,
+              icon: LucideIcons.star,
               label: AppStrings.bestSeller,
               value: _bestSellerName ?? '-',
               subtitle: _bestSellerQty > 0 ? '$_bestSellerQty terjual' : null,

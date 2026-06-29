@@ -67,7 +67,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Cari nama atau nomor telepon...',
-                  prefixIcon: const Icon(LucideLucideIcons.search),
+                  prefixIcon: const Icon(LucideIcons.search),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.clear_rounded),
                     onPressed: () {

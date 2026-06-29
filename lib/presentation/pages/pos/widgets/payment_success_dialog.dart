@@ -79,7 +79,7 @@ class _PaymentSuccessDialogState extends State<PaymentSuccessDialog> {
               color: AppColors.successLight,
               shape: BoxShape.circle,
             ),
-            child: const Icon(LucideLucideIcons.checkCircle, color: AppColors.success, size: 48),
+            child: const Icon(LucideIcons.checkCircle, color: AppColors.success, size: 48),
           ),
           const SizedBox(height: 16),
           Text(AppStrings.paymentSuccess,
@@ -107,7 +107,7 @@ class _PaymentSuccessDialogState extends State<PaymentSuccessDialog> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: _doPrint,
-                  icon: const Icon(LucideLucideIcons.printerer, size: 18),
+                  icon: const Icon(LucideIcons.printerer, size: 18),
                   label: Text(AppStrings.printReceipt, style: GoogleFonts.inter(fontSize: 13)),
                 ),
               ),

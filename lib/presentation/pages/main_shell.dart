@@ -60,7 +60,7 @@ class _MainShellState extends State<MainShell> {
 
     if (widget.user.canSupervise) {
       items.add(_NavItem(icon: LucideIcons.packageSearch, label: AppStrings.stock, page: const StockListPage()));
-      items.add(_NavItem(icon: Icons.bar_chart_rounded, label: AppStrings.reports, page: const ReportPage()));
+      items.add(_NavItem(icon: LucideIcons.barChart, label: AppStrings.reports, page: const ReportPage()));
     }
 
     if (widget.user.canManageMenu) {
@@ -68,16 +68,16 @@ class _MainShellState extends State<MainShell> {
     }
     
     // Virtual nav item for Attendance in mobile view (intercepted)
-    items.add(_NavItem(icon: LucideLucideIcons.fingerprint, label: 'Clock In/Out', page: const Scaffold()));
+    items.add(_NavItem(icon: LucideIcons.fingerprint, label: 'Clock In/Out', page: const Scaffold()));
     
     items.add(_NavItem(
-      icon: LucideLucideIcons.history, 
+      icon: LucideIcons.history, 
       label: 'Riwayat Absensi', 
       page: AttendanceHistoryPage(userId: widget.user.id ?? 1),
     ));
 
     if (widget.user.canManageSettings) {
-      items.add(_NavItem(icon: LucideLucideIcons.settings, label: AppStrings.settings, page: const SettingsPage()));
+      items.add(_NavItem(icon: LucideIcons.settings, label: AppStrings.settings, page: const SettingsPage()));
     }
 
     return items;
@@ -349,7 +349,7 @@ class _MainShellState extends State<MainShell> {
                 border: Border.all(color: AppColors.white.withValues(alpha: 0.2)),
               ),
               child: Icon(
-                LucideLucideIcons.fingerprint,
+                LucideIcons.fingerprint,
                 color: AppColors.white.withValues(alpha: 0.6),
                 size: 18,
               ),

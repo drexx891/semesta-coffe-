@@ -26,8 +26,10 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Setup Mock Assets (Fix Missing .env)
-        run: touch .env
+      - name: Setup Mock Assets (Create .env)
+        run: |
+          echo "SUPABASE_URL=https://jhdsklpaubhkcwgswqrt.supabase.co" >> .env
+          echo "SUPABASE_ANON_KEY=sb_publishable_LX3NuW-7wlF6k-m__iI17A_krboNnAb" >> .env
 
       - name: Build Web
         run: flutter build web --release --base-href /

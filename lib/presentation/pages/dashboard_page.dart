@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
@@ -33,6 +34,8 @@ class _DashboardPageState extends State<DashboardPage> {
   int _bestSellerQty = 0;
   Map<String, dynamic>? _activeShift;
   bool _isLoading = true;
+  List<Map<String, dynamic>> _weeklySales = [];
+  List<Map<String, dynamic>> _paymentMethods = [];
 
   @override
   void initState() {
@@ -57,6 +60,8 @@ class _DashboardPageState extends State<DashboardPage> {
       }
 
       _activeShift = await _shiftDao.getActiveShift();
+      _weeklySales = await _transactionDao.getWeeklySalesData();
+      _paymentMethods = await _transactionDao.getPaymentMethodDistribution();
     } catch (e) {
       // Silently handle — dashboard data is non-critical
     }
@@ -105,6 +110,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
                     // Summary cards
                     _buildSummaryGrid(),
+                    const SizedBox(height: AppDimensions.spacing24),
+
+                    // Analytics Charts (fl_chart)
+                    _buildAnalyticsCharts(),
                     const SizedBox(height: AppDimensions.spacing24),
 
                     // Quick actions
@@ -367,6 +376,183 @@ class _DashboardPageState extends State<DashboardPage> {
           widget.onNavigate!(destination);
         }
       },
+    );
+  }
+
+  Widget _buildAnalyticsCharts() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isWide = constraints.maxWidth > 800;
+        
+        final weeklyChart = _buildWeeklySalesChart();
+        final pieChart = _buildPaymentMethodChart();
+
+        if (isWide) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(flex: 2, child: weeklyChart),
+              const SizedBox(width: AppDimensions.spacing24),
+              Expanded(flex: 1, child: pieChart),
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              weeklyChart,
+              const SizedBox(height: AppDimensions.spacing24),
+              pieChart,
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildWeeklySalesChart() {
+    return Container(
+      height: 350,
+      padding: const EdgeInsets.all(AppDimensions.spacing16),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        boxShadow: [BoxShadow(color: AppColors.cardShadow.withValues(alpha: 0.15), blurRadius: 10, offset: const Offset(0, 4))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Tren Penjualan (7 Hari)', style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.textPrimary)),
+          const SizedBox(height: 24),
+          Expanded(
+            child: _weeklySales.isEmpty
+                ? const Center(child: Text('Belum ada data penjualan'))
+                : LineChart(
+                    LineChartData(
+                      gridData: FlGridData(show: true, drawVerticalLine: false, horizontalInterval: 100000),
+                      titlesData: FlTitlesData(
+                        rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              if (value.toInt() < 0 || value.toInt() >= _weeklySales.length) return const SizedBox.shrink();
+                              final dateStr = _weeklySales[value.toInt()]['sale_date'] as String;
+                              final date = DateTime.parse(dateStr);
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text('${date.day}/${date.month}', style: const TextStyle(fontSize: 10)),
+                              );
+                            },
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                            getTitlesWidget: (value, meta) {
+                              return Text('${(value / 1000).toInt()}k', style: const TextStyle(fontSize: 10));
+                            },
+                          ),
+                        ),
+                      ),
+                      borderData: FlBorderData(show: false),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: _weeklySales.asMap().entries.map((e) {
+                            return FlSpot(e.key.toDouble(), (e.value['total_sales'] as num).toDouble());
+                          }).toList(),
+                          isCurved: true,
+                          color: AppColors.primary,
+                          barWidth: 3,
+                          isStrokeCapRound: true,
+                          dotData: const FlDotData(show: true),
+                          belowBarData: BarAreaData(
+                            show: true,
+                            color: AppColors.primary.withValues(alpha: 0.2),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentMethodChart() {
+    return Container(
+      height: 350,
+      padding: const EdgeInsets.all(AppDimensions.spacing16),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        boxShadow: [BoxShadow(color: AppColors.cardShadow.withValues(alpha: 0.15), blurRadius: 10, offset: const Offset(0, 4))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Metode Pembayaran', style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.textPrimary)),
+          const SizedBox(height: 24),
+          Expanded(
+            child: _paymentMethods.isEmpty
+                ? const Center(child: Text('Belum ada data'))
+                : PieChart(
+                    PieChartData(
+                      sectionsSpace: 2,
+                      centerSpaceRadius: 40,
+                      sections: _paymentMethods.map((e) {
+                        final method = e['payment_method'] as String;
+                        final count = (e['count'] as num).toDouble();
+                        
+                        Color color;
+                        switch (method) {
+                          case 'cash': color = AppColors.success; break;
+                          case 'qris': color = AppColors.info; break;
+                          case 'transfer': color = AppColors.primary; break;
+                          case 'edc': color = AppColors.warning; break;
+                          default: color = Colors.grey;
+                        }
+                        
+                        return PieChartSectionData(
+                          color: color,
+                          value: count,
+                          title: '$count',
+                          radius: 50,
+                          titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+          ),
+          const SizedBox(height: 16),
+          // Legend
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: _paymentMethods.map((e) {
+              final method = e['payment_method'] as String;
+              Color color;
+              switch (method) {
+                case 'cash': color = AppColors.success; break;
+                case 'qris': color = AppColors.info; break;
+                case 'transfer': color = AppColors.primary; break;
+                case 'edc': color = AppColors.warning; break;
+                default: color = Colors.grey;
+              }
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(width: 12, height: 12, color: color, decoration: BoxDecoration(borderRadius: BorderRadius.circular(2))),
+                  const SizedBox(width: 4),
+                  Text(method.toUpperCase(), style: const TextStyle(fontSize: 11)),
+                ],
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }

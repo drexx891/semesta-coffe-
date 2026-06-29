@@ -329,6 +329,35 @@ class TransactionDao {
     return (result.first['total_sales'] as num).toDouble();
   }
 
+  /// Get penjualan 7 hari terakhir
+  Future<List<Map<String, dynamic>>> getWeeklySalesData() async {
+    final now = DateTime.now();
+    final sevenDaysAgo = DateTime(now.year, now.month, now.day).subtract(const Duration(days: 6)).toIso8601String();
+    
+    return await _db.rawQuery('''
+      SELECT 
+        date(created_at) as sale_date,
+        COALESCE(SUM(total), 0) as total_sales
+      FROM transactions
+      WHERE created_at >= ? AND status = 'completed'
+      GROUP BY date(created_at)
+      ORDER BY date(created_at) ASC
+    ''', [sevenDaysAgo]);
+  }
+
+  /// Get distribusi metode pembayaran
+  Future<List<Map<String, dynamic>>> getPaymentMethodDistribution() async {
+    return await _db.rawQuery('''
+      SELECT 
+        payment_method,
+        COUNT(*) as count,
+        COALESCE(SUM(total), 0) as total_sales
+      FROM transactions
+      WHERE status = 'completed'
+      GROUP BY payment_method
+    ''');
+  }
+
   /// Get produk terlaris hari ini
   Future<Map<String, dynamic>?> getTodayBestSeller() async {
     final today = DateTime.now();

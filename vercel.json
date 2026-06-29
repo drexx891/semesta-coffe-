@@ -1,9 +1,10 @@
 {
+  "installCommand": "echo 'Skipping npm install'",
   "buildCommand": "bash build.sh",
   "outputDirectory": "public",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/([^.]*)",
       "destination": "/index.html"
     }
   ]

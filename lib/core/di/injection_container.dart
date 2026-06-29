@@ -20,6 +20,7 @@ import '../../presentation/bloc/menu_management/menu_management_bloc.dart';
 import '../../presentation/bloc/pos/pos_bloc.dart';
 import '../../presentation/bloc/stock/stock_bloc.dart';
 import '../../presentation/bloc/customer/customer_bloc.dart';
+import '../../presentation/bloc/voucher/voucher_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -78,6 +79,10 @@ Future<void> initDependencies() async {
 
   sl.registerFactory(() => CustomerBloc(
         customerDao: sl(),
+      ));
+
+  sl.registerFactory(() => VoucherBloc(
+        voucherDao: sl(),
       ));
 
   // === Services ===

@@ -17,6 +17,7 @@ import 'transaction/transaction_history_page.dart';
 import 'menu/menu_list_page.dart';
 import 'stock/stock_list_page.dart';
 import 'customer/customer_list_page.dart';
+import 'voucher/voucher_list_page.dart';
 import 'report/report_page.dart';
 import 'settings/settings_page.dart';
 import 'shift/shift_page.dart';
@@ -50,6 +51,7 @@ class _MainShellState extends State<MainShell> {
       _NavItem(icon: Icons.point_of_sale_rounded, label: AppStrings.pos, page: const PosPage()),
       _NavItem(icon: Icons.receipt_long_rounded, label: AppStrings.transactions, page: const TransactionHistoryPage()),
       _NavItem(icon: Icons.people_alt_rounded, label: 'Pelanggan', page: const CustomerListPage()),
+      _NavItem(icon: Icons.local_offer_rounded, label: 'Voucher', page: const VoucherListPage()),
       _NavItem(icon: Icons.kitchen_rounded, label: 'KDS', page: const KdsPage()),
       _NavItem(icon: Icons.schedule_rounded, label: AppStrings.shift, page: const ShiftPage()),
     ];

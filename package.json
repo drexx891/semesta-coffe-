@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "C:\\flutter\\bin\\flutter.bat run -d chrome --web-port 8081",
+    "dev:fast": "C:\\flutter\\bin\\flutter.bat run -d chrome --web-port 8081 --profile",
     "dev:windows": "C:\\flutter\\bin\\flutter.bat run -d windows",
     "build": "echo \"Vercel Build Bypassed. Serving /public directly.\""
   },

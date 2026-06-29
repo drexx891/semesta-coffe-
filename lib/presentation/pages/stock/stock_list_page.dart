@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_dimensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/stock/stock_bloc.dart';
 import '../../bloc/stock/stock_event.dart';
@@ -66,9 +65,9 @@ class _StockListPageState extends State<StockListPage> {
               return const Center(child: CircularProgressIndicator(color: AppColors.accent));
             }
             if (state is StockLoaded) {
-              final _ingredients = state.ingredients;
+              final ingredients = state.ingredients;
               
-              if (_ingredients.isEmpty) {
+              if (ingredients.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

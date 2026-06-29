@@ -24,7 +24,7 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
   late TextEditingController _reasonController;
   
   String _adjustmentType = 'add'; // 'add', 'correct'
-  bool _isSaving = false;
+  final bool _isSaving = false;
 
   @override
   void initState() {

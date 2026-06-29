@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../core/di/injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/stock/stock_bloc.dart';
 import '../../../bloc/stock/stock_event.dart';
@@ -25,7 +24,7 @@ class _IngredientFormDialogState extends State<IngredientFormDialog> {
   final List<String> _categories = ['Biji Kopi', 'Susu', 'Sirup', 'Gula', 'Bubuk', 'Lainnya'];
   
   bool _isActive = true;
-  bool _isSaving = false;
+  final bool _isSaving = false;
 
   @override
   void initState() {

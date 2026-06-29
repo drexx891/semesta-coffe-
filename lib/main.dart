@@ -25,7 +25,6 @@ import 'presentation/bloc/customer/customer_event.dart';
 import 'presentation/bloc/voucher/voucher_bloc.dart';
 import 'presentation/bloc/voucher/voucher_event.dart';
 import 'presentation/bloc/attendance/attendance_bloc.dart';
-import 'presentation/bloc/attendance/attendance_event.dart';
 
 void main() async {
   // Tangkap semua error widget dan render ke layar (mencegah layar putih)
@@ -69,7 +68,7 @@ void main() async {
     initStep = 'Initializing Supabase...';
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL'] ?? '',
-      anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
+      publishableKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
     );
 
     initStep = 'Initializing Dependencies (Database, etc)...';

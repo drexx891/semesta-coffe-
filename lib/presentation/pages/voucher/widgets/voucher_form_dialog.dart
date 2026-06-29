@@ -217,7 +217,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                     title: Text('Voucher Aktif', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                     value: _isActive,
                     onChanged: (val) => setState(() => _isActive = val),
-                    activeColor: AppColors.accent,
+                    activeThumbColor: AppColors.accent,
                     contentPadding: EdgeInsets.zero,
                   ),
                 ],

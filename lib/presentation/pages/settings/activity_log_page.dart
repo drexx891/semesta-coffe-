@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/settings_dao.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class ActivityLogPage extends StatefulWidget {
   const ActivityLogPage({super.key});
@@ -34,9 +34,9 @@ class _ActivityLogPageState extends State<ActivityLogPage> {
 
   IconData _getIconForAction(String action) {
     if (action.contains('VOID')) return Icons.cancel_rounded;
-    if (action.contains('LOGIN')) return LucideIcons.logIn;
+    if (action.contains('LOGIN')) return LucideIcons.log_in;
     if (action.contains('SHIFT')) return LucideIcons.clock;
-    if (action.contains('STOCK')) return LucideIcons.packageSearch;
+    if (action.contains('STOCK')) return LucideIcons.package_search;
     if (action.contains('USER')) return Icons.group_rounded;
     if (action.contains('SETTINGS')) return LucideIcons.settings;
     return Icons.info_rounded;

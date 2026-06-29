@@ -4,7 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/user_dao.dart';
 import 'widgets/user_form_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class UserManagementPage extends StatefulWidget {
   const UserManagementPage({super.key});

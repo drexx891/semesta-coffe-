@@ -23,7 +23,7 @@ import 'widgets/cart_panel.dart';
 import 'widgets/cart_summary.dart';
 import 'widgets/shift_warning_banner.dart';
 import 'widgets/payment_success_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class PosPage extends StatefulWidget {
   const PosPage({super.key});

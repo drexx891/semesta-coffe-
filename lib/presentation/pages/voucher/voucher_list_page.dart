@@ -9,7 +9,7 @@ import '../../bloc/voucher/voucher_bloc.dart';
 import '../../bloc/voucher/voucher_event.dart';
 import '../../bloc/voucher/voucher_state.dart';
 import 'widgets/voucher_form_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class VoucherListPage extends StatelessWidget {
   const VoucherListPage({super.key});
@@ -76,7 +76,7 @@ class VoucherListPage extends StatelessWidget {
               ),
             );
           },
-          icon: const Icon(LucideIcons.plusCircle),
+          icon: const Icon(LucideIcons.circle_plus),
           label: const Text('Buat Voucher'),
           backgroundColor: AppColors.accent,
         ),
@@ -205,7 +205,7 @@ class _VoucherCardState extends State<_VoucherCard> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(LucideIcons.trash2, color: AppColors.error),
+                  icon: const Icon(LucideIcons.trash_2, color: AppColors.error),
                   onPressed: () {
                     showDialog(
                       context: context,

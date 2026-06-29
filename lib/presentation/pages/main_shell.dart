@@ -24,7 +24,7 @@ import 'settings/settings_page.dart';
 import 'shift/shift_page.dart';
 import 'kds/kds_page.dart';
 import '../widgets/attendance_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 /// Shell navigasi utama — responsive sidebar (tablet) / bottom nav (phone)
 class MainShell extends StatefulWidget {
@@ -42,7 +42,7 @@ class _MainShellState extends State<MainShell> {
   List<_NavItem> get _navItems {
     final items = <_NavItem>[
       _NavItem(
-        icon: LucideIcons.layoutDashboard, 
+        icon: LucideIcons.layout_dashboard, 
         label: AppStrings.dashboard, 
         page: DashboardPage(
           onNavigate: (destination) {
@@ -50,17 +50,17 @@ class _MainShellState extends State<MainShell> {
           },
         ),
       ),
-      _NavItem(icon: LucideIcons.monitorCheck, label: AppStrings.pos, page: const PosPage()),
+      _NavItem(icon: LucideIcons.monitor_check, label: AppStrings.pos, page: const PosPage()),
       _NavItem(icon: LucideIcons.receipt, label: AppStrings.transactions, page: const TransactionHistoryPage()),
       _NavItem(icon: LucideIcons.users, label: 'Pelanggan', page: const CustomerListPage()),
       _NavItem(icon: LucideIcons.ticket, label: 'Voucher', page: const VoucherListPage()),
-      _NavItem(icon: LucideIcons.chefHat, label: 'KDS', page: const KdsPage()),
+      _NavItem(icon: LucideIcons.chef_hat, label: 'KDS', page: const KdsPage()),
       _NavItem(icon: LucideIcons.clock, label: AppStrings.shift, page: const ShiftPage()),
     ];
 
     if (widget.user.canSupervise) {
-      items.add(_NavItem(icon: LucideIcons.packageSearch, label: AppStrings.stock, page: const StockListPage()));
-      items.add(_NavItem(icon: LucideIcons.barChart, label: AppStrings.reports, page: const ReportPage()));
+      items.add(_NavItem(icon: LucideIcons.package_search, label: AppStrings.stock, page: const StockListPage()));
+      items.add(_NavItem(icon: LucideIcons.chart_column_big, label: AppStrings.reports, page: const ReportPage()));
     }
 
     if (widget.user.canManageMenu) {
@@ -68,7 +68,7 @@ class _MainShellState extends State<MainShell> {
     }
     
     // Virtual nav item for Attendance in mobile view (intercepted)
-    items.add(_NavItem(icon: LucideIcons.fingerprint, label: 'Clock In/Out', page: const Scaffold()));
+    items.add(_NavItem(icon: LucideIcons.fingerprint_pattern, label: 'Clock In/Out', page: const Scaffold()));
     
     items.add(_NavItem(
       icon: LucideIcons.history, 
@@ -283,7 +283,7 @@ class _MainShellState extends State<MainShell> {
             )),
             if (hasMore)
               const NavigationDestination(
-                icon: Icon(LucideIcons.moreHorizontal),
+                icon: Icon(LucideIcons.ellipsis),
                 label: 'Lainnya',
               ),
           ],
@@ -349,7 +349,7 @@ class _MainShellState extends State<MainShell> {
                 border: Border.all(color: AppColors.white.withValues(alpha: 0.2)),
               ),
               child: Icon(
-                LucideIcons.fingerprint,
+                LucideIcons.fingerprint_pattern,
                 color: AppColors.white.withValues(alpha: 0.6),
                 size: 18,
               ),
@@ -367,7 +367,7 @@ class _MainShellState extends State<MainShell> {
                 border: Border.all(color: AppColors.white.withValues(alpha: 0.2)),
               ),
               child: Icon(
-                LucideIcons.logOut,
+                LucideIcons.log_out,
                 color: AppColors.white.withValues(alpha: 0.6),
                 size: 18,
               ),

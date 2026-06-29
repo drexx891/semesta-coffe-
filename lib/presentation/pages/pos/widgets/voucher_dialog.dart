@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it/get_it.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../data/database/dao/voucher_dao.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class VoucherDialog extends StatefulWidget {
   const VoucherDialog({super.key});

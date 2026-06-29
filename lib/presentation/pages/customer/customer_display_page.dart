@@ -12,7 +12,7 @@ import '../../bloc/menu/menu_bloc.dart';
 import '../../bloc/menu/menu_event.dart';
 import '../../bloc/menu/menu_state.dart';
 import '../pos/widgets/modifier_bottom_sheet.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class CustomerDisplayPage extends StatefulWidget {
   const CustomerDisplayPage({super.key});
@@ -216,7 +216,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                     color: AppColors.successLight,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(LucideIcons.checkCircle, color: AppColors.success, size: 56),
+                  child: const Icon(LucideIcons.circle_check, color: AppColors.success, size: 56),
                 ),
                 const SizedBox(height: 20),
                 Text('Pesanan Terkirim!', style: GoogleFonts.playfairDisplay(fontSize: 24, fontWeight: FontWeight.bold)),
@@ -517,7 +517,7 @@ class _CustomerDisplayPageState extends State<CustomerDisplayPage> {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               ),
-                              icon: const Icon(LucideIcons.trash2, size: 20),
+                              icon: const Icon(LucideIcons.trash_2, size: 20),
                               label: Text('Reset', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                             ),
                         ],

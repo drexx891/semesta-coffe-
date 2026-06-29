@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/di/injection_container.dart';
 import '../../data/database/dao/user_dao.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class PinVerificationDialog extends StatefulWidget {
   final String actionDescription;
@@ -71,7 +71,7 @@ class _PinVerificationDialogState extends State<PinVerificationDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Icon(LucideIcons.shieldCheck, size: 48, color: AppColors.error),
+            Icon(LucideIcons.shield_check, size: 48, color: AppColors.error),
             const SizedBox(height: 16),
             Text(
               'Otorisasi Diperlukan',

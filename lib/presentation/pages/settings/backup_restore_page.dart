@@ -10,7 +10,7 @@ import '../../../core/di/injection_container.dart';
 import '../../../data/database/database_helper.dart';
 import '../../../data/database/dao/transaction_dao.dart';
 import '../../../services/supabase_sync_service.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class BackupRestorePage extends StatefulWidget {
   const BackupRestorePage({super.key});

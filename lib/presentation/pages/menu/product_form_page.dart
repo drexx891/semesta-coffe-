@@ -7,7 +7,7 @@ import '../../bloc/menu_management/menu_management_event.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import '../../../core/utils/base64_image_helper.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class ProductFormPage extends StatefulWidget {
   final Map<String, dynamic>? product;

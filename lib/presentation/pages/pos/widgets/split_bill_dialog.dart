@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/currency_formatter.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class SplitBillDialog extends StatefulWidget {
   final double totalAmount;
@@ -133,7 +133,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                       ),
                       if (_payments.length > 1)
                         IconButton(
-                          icon: const Icon(LucideIcons.minusCircle, color: AppColors.error),
+                          icon: const Icon(LucideIcons.circle_minus, color: AppColors.error),
                           onPressed: () => _removePaymentLine(index),
                         ),
                     ],

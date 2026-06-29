@@ -11,7 +11,7 @@ import '../../bloc/menu_management/menu_management_event.dart';
 import '../../bloc/menu_management/menu_management_state.dart';
 import 'product_form_page.dart';
 import 'widgets/category_form_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class MenuListPage extends StatelessWidget {
   const MenuListPage({super.key});

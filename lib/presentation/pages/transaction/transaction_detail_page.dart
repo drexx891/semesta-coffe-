@@ -9,7 +9,7 @@ import '../../../data/database/dao/transaction_dao.dart';
 import '../../../services/session_manager.dart';
 
 import '../../../presentation/widgets/pin_verification_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class TransactionDetailPage extends StatefulWidget {
   final int transactionId;

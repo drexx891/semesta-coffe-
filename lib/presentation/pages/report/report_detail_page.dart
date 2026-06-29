@@ -8,7 +8,7 @@ import '../../../core/utils/receipt_printer.dart';
 import '../../../data/database/dao/transaction_dao.dart';
 import '../../../data/database/dao/shift_dao.dart';
 import '../../../core/utils/csv_exporter.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 enum ReportType { daily, monthly, bestSeller, salesByCashier, paymentMethods, voidTransactions, discount, tax, shift, hpp, generic }
 
@@ -230,7 +230,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
                     final item = _listData[i];
                     if (widget.type == ReportType.bestSeller) {
                       return ListTile(
-                        leading: const Icon(LucideIcons.layoutGrid, color: AppColors.primary),
+                        leading: const Icon(LucideIcons.layout_grid, color: AppColors.primary),
                         title: Text(item['category_name'] as String, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                         subtitle: Text('${item['total_qty']} item terjual', style: GoogleFonts.inter(fontSize: 12)),
                         trailing: Text(

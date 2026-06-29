@@ -13,7 +13,7 @@ import 'customer_selection_dialog.dart';
 import 'discount_dialog.dart';
 import 'voucher_dialog.dart';
 import 'payment_sheet.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class CartSummary extends StatefulWidget {
   const CartSummary({super.key});
@@ -90,7 +90,7 @@ class _CartSummaryState extends State<CartSummary> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: IconButton(
-                      icon: const Icon(LucideIcons.userCheck, color: AppColors.primaryDark),
+                      icon: const Icon(LucideIcons.user_check, color: AppColors.primaryDark),
                       tooltip: 'Cari Member',
                       onPressed: () async {
                         final result = await showDialog<Customer>(

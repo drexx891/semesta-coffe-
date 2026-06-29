@@ -8,7 +8,7 @@ import '../../../../core/constants/app_dimensions.dart';
 import '../../../../domain/entities/voucher.dart';
 import '../../../bloc/voucher/voucher_bloc.dart';
 import '../../../bloc/voucher/voucher_event.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class VoucherFormDialog extends StatefulWidget {
   final Voucher? voucher;
@@ -165,7 +165,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: 'Min. Pembelian (Rp)',
-                      prefixIcon: Icon(LucideIcons.shoppingCart),
+                      prefixIcon: Icon(LucideIcons.shopping_cart),
                     ),
                   ),
                   const SizedBox(height: AppDimensions.spacing16),
@@ -182,7 +182,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                             ),
                             child: Row(
                               children: [
-                                const Icon(LucideIcons.calendarDays, color: AppColors.textSecondary, size: 20),
+                                const Icon(LucideIcons.calendar_days, color: AppColors.textSecondary, size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(child: Text(DateFormat('dd MMM yyyy').format(_validFrom!), style: const TextStyle(fontSize: 14))),
                               ],
@@ -202,7 +202,7 @@ class _VoucherFormDialogState extends State<VoucherFormDialog> {
                             ),
                             child: Row(
                               children: [
-                                const Icon(LucideIcons.calendarCheck, color: AppColors.textSecondary, size: 20),
+                                const Icon(LucideIcons.calendar_check, color: AppColors.textSecondary, size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(child: Text(DateFormat('dd MMM yyyy').format(_validUntil!), style: const TextStyle(fontSize: 14))),
                               ],

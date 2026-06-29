@@ -7,7 +7,7 @@ import '../../../../core/di/injection_container.dart';
 import '../../../../data/database/dao/product_dao.dart';
 import '../../../../domain/entities/hold_order.dart';
 import '../../../../domain/entities/transaction.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class ModifierBottomSheet extends StatefulWidget {
   final Map<String, dynamic> product;

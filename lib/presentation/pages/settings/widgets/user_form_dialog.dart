@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../data/database/dao/user_dao.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class UserFormDialog extends StatefulWidget {
   final Map<String, dynamic>? user;
@@ -139,7 +139,7 @@ class _UserFormDialogState extends State<UserFormDialog> {
                     labelText: isEdit ? 'Password Baru (Kosongkan jika tidak diubah)' : 'Password',
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword ? LucideIcons.eyeOff : LucideIcons.eye),
+                      icon: Icon(_obscurePassword ? LucideIcons.eye_off : LucideIcons.eye),
                       onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
                   ),
@@ -171,7 +171,7 @@ class _UserFormDialogState extends State<UserFormDialog> {
                       labelText: 'PIN 4 Digit (Khusus Akses Supervisor)',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscurePin ? LucideIcons.eyeOff : LucideIcons.eye),
+                        icon: Icon(_obscurePin ? LucideIcons.eye_off : LucideIcons.eye),
                         onPressed: () => setState(() => _obscurePin = !_obscurePin),
                       ),
                     ),

@@ -10,7 +10,7 @@ import '../../../data/database/dao/settings_dao.dart';
 import '../../../services/printer_service.dart';
 import '../../../core/utils/receipt_printer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class ShiftPage extends StatefulWidget {
   const ShiftPage({super.key});
@@ -192,7 +192,7 @@ class _ShiftPageState extends State<ShiftPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(LucideIcons.unlock, size: 48, color: AppColors.primary),
+                Icon(LucideIcons.lock_open, size: 48, color: AppColors.primary),
                 const SizedBox(height: 16),
                 Text(
                   'Buka Shift',

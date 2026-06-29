@@ -10,7 +10,7 @@ import '../../../bloc/pos/pos_state.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../data/database/dao/settings_dao.dart';
 import 'dart:convert';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class PaymentSheet extends StatefulWidget {
   const PaymentSheet({super.key});
@@ -78,9 +78,9 @@ class _PaymentSheetState extends State<PaymentSheet> {
                 runSpacing: 8,
                 children: [
                   _paymentMethodChip('cash', AppStrings.cash, LucideIcons.banknote, AppColors.paymentCash, selectedMethod),
-                  _paymentMethodChip('qris', AppStrings.qris, LucideIcons.qrCode, AppColors.paymentQris, selectedMethod),
+                  _paymentMethodChip('qris', AppStrings.qris, LucideIcons.qr_code, AppColors.paymentQris, selectedMethod),
                   _paymentMethodChip('transfer', AppStrings.bankTransfer, Icons.account_balance_rounded, AppColors.paymentTransfer, selectedMethod),
-                  _paymentMethodChip('edc', AppStrings.edc, LucideIcons.creditCard, AppColors.paymentEdc, selectedMethod),
+                  _paymentMethodChip('edc', AppStrings.edc, LucideIcons.credit_card, AppColors.paymentEdc, selectedMethod),
                 ],
               ),
               const SizedBox(height: 20),

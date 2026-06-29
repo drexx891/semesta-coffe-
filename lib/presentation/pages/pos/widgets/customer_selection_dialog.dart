@@ -4,7 +4,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../domain/entities/customer.dart';
 import '../../../../data/database/dao/customer_dao.dart';
 import '../../../../core/di/injection_container.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class CustomerSelectionDialog extends StatefulWidget {
   const CustomerSelectionDialog({super.key});
@@ -85,7 +85,7 @@ class _CustomerSelectionDialogState extends State<CustomerSelectionDialog> {
           children: [
             Text('Pilih Member', style: GoogleFonts.playfairDisplay(fontSize: 20, fontWeight: FontWeight.w600)),
             IconButton(
-              icon: const Icon(LucideIcons.userPlus, color: AppColors.primary),
+              icon: const Icon(LucideIcons.user_plus, color: AppColors.primary),
               onPressed: () => setState(() => _isAddingNew = true),
               tooltip: 'Member Baru',
             ),

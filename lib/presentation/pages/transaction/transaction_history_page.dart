@@ -9,7 +9,7 @@ import '../../../core/utils/currency_formatter.dart';
 import 'transaction_detail_page.dart';
 
 import 'package:intl/intl.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 /// Halaman Riwayat Transaksi
 class TransactionHistoryPage extends StatefulWidget {

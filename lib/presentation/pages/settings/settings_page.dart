@@ -9,7 +9,7 @@ import 'printer_settings_page.dart';
 import 'activity_log_page.dart';
 import 'backup_restore_page.dart';
 import 'voucher_management_page.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

@@ -7,7 +7,7 @@ import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/voucher.dart';
 import '../../../data/database/dao/voucher_dao.dart';
 import 'widgets/voucher_form_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class VoucherManagementPage extends StatefulWidget {
   const VoucherManagementPage({super.key});
@@ -174,7 +174,7 @@ class _VoucherManagementPageState extends State<VoucherManagementPage> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(LucideIcons.trash2, color: AppColors.error, size: 20),
+                                  icon: const Icon(LucideIcons.trash_2, color: AppColors.error, size: 20),
                                   onPressed: () => _deleteVoucher(voucher),
                                 ),
                               ],

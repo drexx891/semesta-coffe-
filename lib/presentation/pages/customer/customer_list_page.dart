@@ -8,7 +8,7 @@ import '../../bloc/customer/customer_bloc.dart';
 import '../../bloc/customer/customer_event.dart';
 import '../../bloc/customer/customer_state.dart';
 import 'widgets/customer_form_dialog.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class CustomerListPage extends StatefulWidget {
   const CustomerListPage({super.key});
@@ -126,7 +126,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
               ),
             );
           },
-          icon: const Icon(LucideIcons.userPlus),
+          icon: const Icon(LucideIcons.user_plus),
           label: const Text('Member Baru'),
           backgroundColor: AppColors.accent,
         ),
@@ -252,7 +252,7 @@ class _CustomerCardState extends State<_CustomerCard> {
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  icon: const Icon(LucideIcons.trash2, color: AppColors.error),
+                  icon: const Icon(LucideIcons.trash_2, color: AppColors.error),
                   onPressed: () {
                     showDialog(
                       context: context,

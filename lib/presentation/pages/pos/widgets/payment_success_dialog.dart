@@ -11,7 +11,7 @@ import '../../../../services/audio_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../bloc/pos/pos_bloc.dart';
 import '../../../bloc/pos/pos_event.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class PaymentSuccessDialog extends StatefulWidget {
   final int transactionId;
@@ -79,7 +79,7 @@ class _PaymentSuccessDialogState extends State<PaymentSuccessDialog> {
               color: AppColors.successLight,
               shape: BoxShape.circle,
             ),
-            child: const Icon(LucideIcons.checkCircle, color: AppColors.success, size: 48),
+            child: const Icon(LucideIcons.circle_check, color: AppColors.success, size: 48),
           ),
           const SizedBox(height: 16),
           Text(AppStrings.paymentSuccess,

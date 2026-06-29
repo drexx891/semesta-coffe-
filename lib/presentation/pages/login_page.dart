@@ -7,7 +7,7 @@ import '../../core/constants/app_dimensions.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/auth/auth_event.dart';
 import '../bloc/auth/auth_state.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 /// Halaman Login — tampilan pertama setelah splash
 class LoginPage extends StatefulWidget {
@@ -259,7 +259,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 fillColor: AppColors.surfaceVariant.withValues(alpha: 0.5),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? LucideIcons.eyeOff : LucideIcons.eye,
+                    _obscurePassword ? LucideIcons.eye_off : LucideIcons.eye,
                     color: AppColors.textTertiary,
                   ),
                   onPressed: () => setState(() => _obscurePassword = !_obscurePassword),

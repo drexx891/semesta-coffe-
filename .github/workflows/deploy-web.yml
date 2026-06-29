@@ -31,6 +31,7 @@ jobs:
         run: |
           mkdir -p public
           cp -r build/web/* public/
+          cp vercel.json public/vercel.json
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add public/

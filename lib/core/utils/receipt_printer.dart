@@ -2,10 +2,190 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'currency_formatter.dart';
 import '../../domain/entities/user.dart';
 
 class ReceiptPrinter {
+  /// Generate raw ESC/POS bytes for thermal printer via TCP/Network
+  static Future<List<int>> generateEscPosReceipt({
+    required Map<String, dynamic> transaction,
+    required List<Map<String, dynamic>> items,
+    required User cashier,
+    String storeName = 'SMESTA COFFEE',
+    String storeAddress = 'Jalan Raya Smesta No. 123',
+    String storePhone = '0812-3456-7890',
+  }) async {
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm58, profile);
+    List<int> bytes = [];
+
+    bytes += generator.text(storeName,
+        styles: const PosStyles(align: PosAlign.center, height: PosTextSize.size2, width: PosTextSize.size2, bold: true));
+    bytes += generator.text(storeAddress, styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.text(storePhone, styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.hr();
+
+    bytes += generator.row([
+      PosColumn(text: 'Waktu:', width: 4),
+      PosColumn(
+          text: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(transaction['created_at'] as String)),
+          width: 8,
+          styles: const PosStyles(align: PosAlign.right)),
+    ]);
+    bytes += generator.row([
+      PosColumn(text: 'Kasir:', width: 4),
+      PosColumn(text: cashier.name, width: 8, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+    bytes += generator.row([
+      PosColumn(text: 'No. Trx:', width: 4),
+      PosColumn(text: transaction['transaction_number'] as String, width: 8, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+    bytes += generator.row([
+      PosColumn(text: 'Antrian:', width: 4),
+      PosColumn(text: transaction['queue_number'] as String, width: 8, styles: const PosStyles(align: PosAlign.right, bold: true)),
+    ]);
+    bytes += generator.hr(ch: '-');
+
+    for (var item in items) {
+      final name = item['product_name'] as String;
+      final qty = item['quantity'] as int;
+      final price = (item['unit_price'] as num).toDouble();
+      final subtotal = (item['subtotal'] as num).toDouble();
+
+      bytes += generator.text(name);
+      bytes += generator.row([
+        PosColumn(text: '$qty x ${CurrencyFormatter.format(price)}', width: 6),
+        PosColumn(text: CurrencyFormatter.format(subtotal), width: 6, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
+
+    bytes += generator.hr(ch: '-');
+
+    final subtotal = (transaction['subtotal'] as num).toDouble();
+    final discount = (transaction['discount_amount'] as num).toDouble();
+    final tax = (transaction['tax_amount'] as num).toDouble();
+    final service = (transaction['service_charge_amount'] as num).toDouble();
+    final total = (transaction['total'] as num).toDouble();
+    final cash = (transaction['cash_received'] as num).toDouble();
+    final change = (transaction['cash_change'] as num).toDouble();
+
+    bytes += generator.row([
+      PosColumn(text: 'Subtotal', width: 6),
+      PosColumn(text: CurrencyFormatter.format(subtotal), width: 6, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+    if (discount > 0) {
+      bytes += generator.row([
+        PosColumn(text: 'Diskon', width: 6),
+        PosColumn(text: '-${CurrencyFormatter.format(discount)}', width: 6, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
+    if (service > 0) {
+      bytes += generator.row([
+        PosColumn(text: 'Service', width: 6),
+        PosColumn(text: CurrencyFormatter.format(service), width: 6, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
+    if (tax > 0) {
+      bytes += generator.row([
+        PosColumn(text: 'Pajak', width: 6),
+        PosColumn(text: CurrencyFormatter.format(tax), width: 6, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
+
+    bytes += generator.hr();
+    bytes += generator.row([
+      PosColumn(text: 'TOTAL', width: 6, styles: const PosStyles(bold: true)),
+      PosColumn(text: CurrencyFormatter.format(total), width: 6, styles: const PosStyles(align: PosAlign.right, bold: true)),
+    ]);
+    bytes += generator.hr();
+
+    bytes += generator.row([
+      PosColumn(text: 'Tunai', width: 6),
+      PosColumn(text: CurrencyFormatter.format(cash), width: 6, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+    bytes += generator.row([
+      PosColumn(text: 'Kembali', width: 6),
+      PosColumn(text: CurrencyFormatter.format(change), width: 6, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+
+    bytes += generator.feed(2);
+    bytes += generator.text('Terima kasih telah berkunjung!', styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.feed(2);
+    bytes += generator.cut();
+
+    return bytes;
+  }
+
+  /// Generate Z-Report (End of Shift) ESC/POS bytes
+  static Future<List<int>> generateShiftZReport({
+    required Map<String, dynamic> shiftData,
+    required Map<String, dynamic> summary,
+    required User user,
+    String storeName = 'SMESTA COFFEE',
+    String storeAddress = 'Jalan Raya Smesta No. 123',
+    String storePhone = '0812-3456-7890',
+  }) async {
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm58, profile);
+    List<int> bytes = [];
+
+    bytes += generator.text(storeName,
+        styles: const PosStyles(align: PosAlign.center, height: PosTextSize.size2, width: PosTextSize.size2, bold: true));
+    bytes += generator.text(storeAddress, styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.text(storePhone, styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.hr();
+
+    bytes += generator.text('Z-REPORT / TUTUP SHIFT',
+        styles: const PosStyles(align: PosAlign.center, bold: true));
+    bytes += generator.hr();
+
+    final openedAt = DateTime.parse(shiftData['opened_at'] as String);
+    final closedAt = DateTime.now();
+    final openingCash = (shiftData['opening_cash'] as num).toDouble();
+    final expectedCash = (shiftData['expected_cash'] as num).toDouble();
+    final closingCash = (shiftData['closing_cash'] as num).toDouble();
+    final diff = (shiftData['cash_difference'] as num).toDouble();
+
+    bytes += generator.row([PosColumn(text: 'Kasir:', width: 4), PosColumn(text: user.name, width: 8, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Mulai:', width: 4), PosColumn(text: DateFormat('dd/MM/yyyy HH:mm').format(openedAt), width: 8, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Tutup:', width: 4), PosColumn(text: DateFormat('dd/MM/yyyy HH:mm').format(closedAt), width: 8, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.hr(ch: '-');
+
+    bytes += generator.text('RINGKASAN PENJUALAN', styles: const PosStyles(bold: true));
+    bytes += generator.row([PosColumn(text: 'Total Trx:', width: 6), PosColumn(text: '${summary['totalTransactions']}', width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Trx Batal (Void):', width: 6), PosColumn(text: '${summary['totalVoid']}', width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.hr(ch: '-');
+
+    bytes += generator.text('METODE PEMBAYARAN', styles: const PosStyles(bold: true));
+    bytes += generator.row([PosColumn(text: 'Tunai:', width: 6), PosColumn(text: CurrencyFormatter.format((summary['totalCash'] as num).toDouble()), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'QRIS:', width: 6), PosColumn(text: CurrencyFormatter.format((summary['totalQris'] as num).toDouble()), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Transfer:', width: 6), PosColumn(text: CurrencyFormatter.format((summary['totalTransfer'] as num).toDouble()), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Kartu (EDC):', width: 6), PosColumn(text: CurrencyFormatter.format((summary['totalEdc'] as num).toDouble()), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Voucher:', width: 6), PosColumn(text: CurrencyFormatter.format((summary['totalVoucher'] as num).toDouble()), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.hr(ch: '-');
+
+    bytes += generator.text('KEUANGAN FISIK (KAS)', styles: const PosStyles(bold: true));
+    bytes += generator.row([PosColumn(text: 'Modal Awal:', width: 6), PosColumn(text: CurrencyFormatter.format(openingCash), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Penjualan Tunai:', width: 6), PosColumn(text: CurrencyFormatter.format((summary['totalCash'] as num).toDouble()), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Harapan Kas:', width: 6), PosColumn(text: CurrencyFormatter.format(expectedCash), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([PosColumn(text: 'Kas Fisik:', width: 6), PosColumn(text: CurrencyFormatter.format(closingCash), width: 6, styles: const PosStyles(align: PosAlign.right))]);
+    bytes += generator.row([
+      PosColumn(text: 'Selisih:', width: 6, styles: const PosStyles(bold: true)),
+      PosColumn(text: CurrencyFormatter.format(diff), width: 6, styles: const PosStyles(align: PosAlign.right, bold: true)),
+    ]);
+    bytes += generator.hr();
+
+    bytes += generator.feed(2);
+    bytes += generator.text('Paraf Kasir          Paraf SPV', styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.feed(4);
+    bytes += generator.text('................     ................', styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.feed(2);
+    bytes += generator.cut();
+
+    return bytes;
+  }
+
   /// Print receipt with 58mm thermal paper format
   static Future<void> printReceipt({
     required Map<String, dynamic> transaction,

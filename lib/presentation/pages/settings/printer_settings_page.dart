@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/settings_dao.dart';
+import '../../../services/printer_service.dart';
 
 class PrinterSettingsPage extends StatefulWidget {
   const PrinterSettingsPage({super.key});
@@ -64,6 +65,31 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
       }
     }
     setState(() => _isLoading = false);
+  }
+
+  Future<void> _testPrint(String ipAddress) async {
+    if (ipAddress.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Alamat IP kosong')));
+      return;
+    }
+    
+    try {
+      final printerService = sl<PrinterService>();
+      final bytes = [
+        0x1B, 0x40, // Init
+        ...('TEST PRINT S.COFFEE\nTest koneksi berhasil.\n').codeUnits,
+        0x0A, 0x0A, // Feed
+        0x1D, 0x56, 0x00, // Cut
+      ];
+      await printerService.printViaTcp(ipAddress, bytes);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Test print berhasil dikirim!')));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
+    }
   }
 
   @override
@@ -156,21 +182,29 @@ class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
                         const SizedBox(height: 16),
                         TextFormField(
                           controller: _receiptPrinterController,
-                          decoration: const InputDecoration(
-                            labelText: 'Alamat Printer Kasir (IP/MAC/USB)',
-                            hintText: 'Cth: 192.168.1.100 atau XX:XX:XX:XX:XX',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.print_rounded),
+                          decoration: InputDecoration(
+                            labelText: 'Alamat Jaringan Printer Kasir (IP Jaringan/LAN)',
+                            hintText: 'Cth: 192.168.1.100',
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.print_rounded),
+                            suffixIcon: TextButton(
+                              onPressed: () => _testPrint(_receiptPrinterController.text.trim()),
+                              child: const Text('TEST PRINT'),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
                           controller: _baristaPrinterController,
-                          decoration: const InputDecoration(
-                            labelText: 'Alamat Printer Dapur/Barista',
-                            hintText: 'Opsional. Jika kosong, print struk & dapur di kasir',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.restaurant_rounded),
+                          decoration: InputDecoration(
+                            labelText: 'Alamat Jaringan Printer Dapur/Barista',
+                            hintText: 'Cth: 192.168.1.101',
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.restaurant_rounded),
+                            suffixIcon: TextButton(
+                              onPressed: () => _testPrint(_baristaPrinterController.text.trim()),
+                              child: const Text('TEST PRINT'),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),

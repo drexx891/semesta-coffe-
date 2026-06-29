@@ -13,6 +13,7 @@ import '../../data/database/dao/attendance_dao.dart';
 import '../../services/session_manager.dart';
 import '../../services/audio_service.dart';
 import '../../services/supabase_sync_service.dart';
+import '../../services/printer_service.dart';
 import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/menu/menu_bloc.dart';
 import '../../presentation/bloc/menu_management/menu_management_bloc.dart';
@@ -73,6 +74,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<SessionManager>(() => SessionManager());
   sl.registerLazySingleton<AudioService>(() => AudioService());
   sl.registerLazySingleton<SupabaseSyncService>(() => SupabaseSyncService(sl()));
+  sl.registerLazySingleton<PrinterService>(() => PrinterService());
 
   // Inisialisasi database
   await sl<DatabaseHelper>().database;

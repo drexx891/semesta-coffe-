@@ -6,6 +6,10 @@ import '../../../core/di/injection_container.dart';
 import '../../../data/database/dao/shift_dao.dart';
 import '../../../services/session_manager.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../data/database/dao/settings_dao.dart';
+import '../../../services/printer_service.dart';
+import '../../../core/utils/receipt_printer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShiftPage extends StatefulWidget {
   const ShiftPage({super.key});
@@ -96,6 +100,38 @@ class _ShiftPageState extends State<ShiftPage> {
         cashDifference: difference,
         summary: _shiftSummary!,
       );
+      
+      // Auto-print Z-Report
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final autoPrint = prefs.getBool('auto_print_receipt') ?? true;
+        if (autoPrint && _session.currentUser != null) {
+          final settingsDao = sl<SettingsDao>();
+          final settings = await settingsDao.getSettings();
+          final printerIp = settings?['receipt_printer_address'] as String?;
+          if (printerIp != null && printerIp.isNotEmpty) {
+            final shiftData = Map<String, dynamic>.from(_activeShift!);
+            shiftData['closing_cash'] = closingCash;
+            shiftData['expected_cash'] = expectedCash;
+            shiftData['cash_difference'] = difference;
+
+            final bytes = await ReceiptPrinter.generateShiftZReport(
+              shiftData: shiftData,
+              summary: _shiftSummary!,
+              user: _session.currentUser!,
+              storeName: settings?['store_name'] as String? ?? 'SMESTA COFFEE',
+              storeAddress: settings?['store_address'] as String? ?? '',
+              storePhone: settings?['store_phone'] as String? ?? '',
+            );
+            
+            final printerService = sl<PrinterService>();
+            printerService.printViaTcp(printerIp, bytes).catchError((_) {});
+          }
+        }
+      } catch (e) {
+        // Abaikan error print agar tidak menggagalkan penutupan shift
+      }
+      
       _cashController.clear();
       await _loadShiftState();
       

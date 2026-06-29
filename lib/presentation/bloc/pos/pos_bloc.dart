@@ -13,7 +13,10 @@ import '../../../data/database/dao/settings_dao.dart';
 import '../../../data/database/dao/hold_order_dao.dart';
 import '../../../data/database/dao/voucher_dao.dart';
 import '../../../services/session_manager.dart';
+import '../../../services/printer_service.dart';
 import '../../../core/utils/date_formatter.dart';
+import '../../../core/utils/receipt_printer.dart';
+import '../../../core/di/injection_container.dart';
 import '../../../domain/entities/hold_order.dart';
 
 class PosBloc extends Bloc<PosEvent, PosState> {
@@ -413,8 +416,55 @@ class PosBloc extends Bloc<PosEvent, PosState> {
       if (state.selectedVoucher != null && state.selectedVoucher!.id != null) {
         await _voucherDao.incrementUsedCount(state.selectedVoucher!.id!);
       }
-      
       add(const SyncCartState(status: 'success'));
+      
+      // Auto-print receipt if configured
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final autoPrint = prefs.getBool('auto_print_receipt') ?? true;
+        if (autoPrint) {
+          final settings = await _settingsDao.getSettings();
+          final printerIp = settings?['receipt_printer_address'] as String?;
+          if (printerIp != null && printerIp.isNotEmpty) {
+            final printerService = sl<PrinterService>();
+            
+            final transactionData = {
+              'created_at': DateTime.now().toIso8601String(),
+              'transaction_number': trxNumber,
+              'queue_number': queueNumber,
+              'order_type': state.orderType,
+              'subtotal': state.subtotal,
+              'discount_amount': state.discountAmount,
+              'tax_amount': state.taxAmount,
+              'service_charge_amount': state.serviceChargeAmount,
+              'total': state.total,
+              'cash_received': event.paymentMethod == 'cash' ? event.cashReceived : state.total,
+              'cash_change': change,
+            };
+            
+            final itemsData = state.cartItems.map((item) => {
+              'product_name': item.productName,
+              'quantity': item.quantity,
+              'unit_price': item.basePrice,
+              'subtotal': item.subtotal,
+            }).toList();
+
+            final bytes = await ReceiptPrinter.generateEscPosReceipt(
+              transaction: transactionData,
+              items: itemsData,
+              cashier: user,
+              storeName: settings?['store_name'] as String? ?? 'SMESTA COFFEE',
+              storeAddress: settings?['store_address'] as String? ?? '',
+              storePhone: settings?['store_phone'] as String? ?? '',
+            );
+            
+            // Fire and forget
+            printerService.printViaTcp(printerIp, bytes).catchError((_) {});
+          }
+        }
+      } catch (e) {
+        // Abaikan error print agar tidak menggagalkan transaksi
+      }
       
     } catch (e) {
       emit(state.copyWith(

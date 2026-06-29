@@ -58,8 +58,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
 
-  // Muat file .env untuk API keys
-  await dotenv.load(fileName: ".env");
+  // Muat file env untuk API keys (tanpa titik agar tidak diblokir Vercel)
+  await dotenv.load(fileName: "env");
 
   // Inisialisasi locale Indonesia
   await initializeDateFormatting('id_ID', null);

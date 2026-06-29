@@ -39,7 +39,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<StockDao>(() => StockDao(sl()));
   sl.registerLazySingleton<SettingsDao>(() => SettingsDao(sl()));
   sl.registerLazySingleton<HoldOrderDao>(() => HoldOrderDao(sl()));
-  sl.registerLazySingleton<CustomerDao>(() => CustomerDao());
+  sl.registerLazySingleton<CustomerDao>(() => CustomerDao(sl()));
   sl.registerLazySingleton<VoucherDao>(() => VoucherDao(sl()));
   sl.registerLazySingleton<AttendanceDao>(() => AttendanceDao(sl()));
 

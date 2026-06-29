@@ -3,7 +3,9 @@ import '../database_helper.dart';
 import '../../../domain/entities/customer.dart';
 
 class CustomerDao {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final DatabaseHelper _dbHelper;
+
+  CustomerDao(this._dbHelper);
 
   Future<Database> get _db async => await _dbHelper.database;
 

@@ -20,15 +20,25 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 void main() async {
   // Tangkap semua error widget dan render ke layar (mencegah layar putih)
   ErrorWidget.builder = (FlutterErrorDetails details) {
-    return Directionality(
+    debugPrint('WIDGET ERROR: ${details.exceptionAsString()}');
+    debugPrint('STACKTRACE: ${details.stack?.toString()}');
+    return const Directionality(
       textDirection: TextDirection.ltr,
       child: Material(
-        color: Colors.red.shade900,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Text(
-            'WIDGET ERROR:\n\n${details.exceptionAsString()}\n\n${details.stack?.toString() ?? ''}',
-            style: const TextStyle(color: Colors.white, fontSize: 14),
+        color: AppColors.background,
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.error_outline_rounded, color: AppColors.error, size: 48),
+                SizedBox(height: 16),
+                Text('Terjadi Kesalahan', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                SizedBox(height: 8),
+                Text('Maaf, halaman ini mengalami gangguan sementara.', textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary)),
+              ],
+            ),
           ),
         ),
       ),
@@ -57,15 +67,23 @@ void main() async {
     
     // Tampilkan error di layar jika inisialisasi gagal
     runApp(
-      Directionality(
+      const Directionality(
         textDirection: TextDirection.ltr,
         child: Material(
-          color: Colors.red.shade900,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Text(
-              'INIT ERROR:\n\nStep: $initStep\n\nError: $e\n\nStack: $stackTrace',
-              style: const TextStyle(color: Colors.white, fontSize: 14),
+          color: AppColors.background,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.cloud_off_rounded, color: AppColors.error, size: 64),
+                  SizedBox(height: 24),
+                  Text('Gagal Memuat Aplikasi', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  SizedBox(height: 16),
+                  Text('Koneksi sistem terputus. Silakan muat ulang (Refresh) halaman ini.', textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                ],
+              ),
             ),
           ),
         ),
@@ -74,11 +92,10 @@ void main() async {
     return; // Berhenti di sini, jangan lanjut ke SmestaCoffeeApp
   }
 
-  // Set preferred orientations
+  // Set preferred orientations (Khusus Tablet POS Landscape)
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
-    DeviceOrientation.portraitUp,
   ]);
 
   // Status bar style

@@ -24,8 +24,13 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     if (kIsWeb) {
-      // Menggunakan databaseFactoryFfiWeb (membutuhkan sqflite_sw.js dan sqlite3.wasm)
-      databaseFactory = databaseFactoryFfiWeb;
+      // Menggunakan databaseFactoryFfiWeb dengan absolute URI agar tidak crash saat routing SPA di Vercel
+      databaseFactory = createDatabaseFactoryFfiWeb(
+        options: SqfliteFfiWebOptions(
+          sharedWorkerUri: Uri.parse('/sqflite_sw.js'),
+          sqlite3WasmUri: Uri.parse('/sqlite3.wasm'),
+        ),
+      );
       return await databaseFactory.openDatabase(
         'smesta_coffee.db',
         options: OpenDatabaseOptions(

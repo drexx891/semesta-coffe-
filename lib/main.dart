@@ -41,17 +41,18 @@ void main() async {
   // Inisialisasi locale Indonesia
   await initializeDateFormatting('id_ID', null);
 
+  String initStep = 'Starting initialization...';
   try {
-    // Inisialisasi Supabase
+    initStep = 'Initializing Supabase...';
     await Supabase.initialize(
       url: 'https://jhdsklpaubhkcwgswqrt.supabase.co',
-      publishableKey: 'sb_publishable_LX3NuW-7wlF6k-m__iI17A_krboNnAb',
+      anonKey: 'sb_publishable_LX3NuW-7wlF6k-m__iI17A_krboNnAb',
     );
 
-    // Inisialisasi dependency injection & database
+    initStep = 'Initializing Dependencies (Database, etc)...';
     await initDependencies();
   } catch (e, stackTrace) {
-    debugPrint('FAILED TO INIT DEPENDENCIES: $e');
+    debugPrint('FAILED TO INIT DEPENDENCIES at step: $initStep - $e');
     debugPrint('STACKTRACE: $stackTrace');
     
     // Tampilkan error di layar jika inisialisasi gagal
@@ -59,12 +60,12 @@ void main() async {
       Directionality(
         textDirection: TextDirection.ltr,
         child: Material(
-          color: Colors.white,
+          color: Colors.red.shade900,
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Text(
-              'Gagal Inisialisasi Aplikasi:\n\n$e\n\n$stackTrace',
-              style: const TextStyle(color: Colors.red, fontSize: 14),
+              'INIT ERROR:\n\nStep: $initStep\n\nError: $e\n\nStack: $stackTrace',
+              style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
         ),

@@ -65,6 +65,9 @@ class _PosPageState extends State<PosPage> {
           }
 
           if (state.paymentStatus == PaymentStatus.success && state.lastTransactionId != null) {
+            // Close PaymentSheet
+            Navigator.of(context).pop();
+            
             showDialog(
               context: context,
               barrierDismissible: false,

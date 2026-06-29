@@ -214,14 +214,25 @@ class _CartSummaryState extends State<CartSummary> {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    gradient: state.cartItems.isEmpty ? LinearGradient(colors: [AppColors.border, AppColors.border]) : AppColors.accentGradient,
-                    boxShadow: state.cartItems.isEmpty ? null : [
+                    gradient: (!state.cartItems.isNotEmpty || !state.isShiftOpen) 
+                        ? LinearGradient(colors: [AppColors.border, AppColors.border]) 
+                        : AppColors.accentGradient,
+                    boxShadow: (!state.cartItems.isNotEmpty || !state.isShiftOpen) ? null : [
                       BoxShadow(color: AppColors.accent.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4))
                     ],
                   ),
                   child: ElevatedButton(
-                    onPressed: state.cartItems.isNotEmpty && state.isShiftOpen ? () {
-                       showModalBottomSheet(
+                    onPressed: state.cartItems.isNotEmpty ? () {
+                      if (!state.isShiftOpen) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Silakan buka shift terlebih dahulu untuk melakukan transaksi!'),
+                            backgroundColor: AppColors.error,
+                          ),
+                        );
+                        return;
+                      }
+                      showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
                           useSafeArea: true,

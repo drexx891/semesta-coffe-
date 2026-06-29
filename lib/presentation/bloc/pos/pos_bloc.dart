@@ -32,16 +32,25 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   Timer? _shiftCheckTimer;
 
   PosBloc({
-    required this._productDao,
-    required this._stockDao,
-    required this._shiftDao,
-    required this._transactionDao,
-    required this._settingsDao,
-    required this._holdOrderDao,
-    required this._voucherDao,
-    required this._sessionManager,
-    required this._prefs,
-  })  : super(const PosState()) {
+    required ProductDao productDao,
+    required StockDao stockDao,
+    required ShiftDao shiftDao,
+    required TransactionDao transactionDao,
+    required SettingsDao settingsDao,
+    required HoldOrderDao holdOrderDao,
+    required VoucherDao voucherDao,
+    required SessionManager sessionManager,
+    required SharedPreferences prefs,
+  })  : _productDao = productDao,
+        _stockDao = stockDao,
+        _shiftDao = shiftDao,
+        _transactionDao = transactionDao,
+        _settingsDao = settingsDao,
+        _holdOrderDao = holdOrderDao,
+        _voucherDao = voucherDao,
+        _sessionManager = sessionManager,
+        _prefs = prefs,
+        super(const PosState()) {
     on<InitPos>(_onInitPos);
     on<AddToCart>(_onAddToCart);
     on<UpdateCartItemQuantity>(_onUpdateCartItemQuantity);

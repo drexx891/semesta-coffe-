@@ -6,8 +6,9 @@ import 'menu_state.dart';
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   final ProductDao _productDao;
 
-  MenuBloc({required this._productDao})
-      : super(MenuInitial()) {
+  MenuBloc({required ProductDao productDao})
+      : _productDao = productDao,
+        super(MenuInitial()) {
     on<LoadMenu>(_onLoadMenu);
     on<SelectCategory>(_onSelectCategory);
     on<SearchMenu>(_onSearchMenu);

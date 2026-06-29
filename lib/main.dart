@@ -40,9 +40,6 @@ void main() async {
 
   // Inisialisasi locale Indonesia
   await initializeDateFormatting('id_ID', null);
-  
-  // Disable Google Fonts runtime fetching untuk Web (mencegah CORS error / white screen)
-  GoogleFonts.config.allowRuntimeFetching = false;
 
   try {
     // Inisialisasi dependency injection & database

@@ -129,11 +129,7 @@ class SemestaCafeeApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (_) => AuthBloc(
-            userDao: sl<UserDao>(),
-            settingsDao: sl<SettingsDao>(),
-            sessionManager: sl<SessionManager>(),
-          ),
+          create: (_) => sl<AuthBloc>(),
         ),
         BlocProvider<MenuBloc>(
           create: (_) => sl<MenuBloc>()..add(LoadMenu()),

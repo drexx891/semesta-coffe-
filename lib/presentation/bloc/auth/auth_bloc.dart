@@ -7,6 +7,7 @@ import '../../../domain/entities/user.dart';
 import '../../../domain/entities/activity_log.dart';
 import '../../../services/session_manager.dart';
 import 'auth_event.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_state.dart';
 
 /// BLoC untuk autentikasi dan manajemen session
@@ -14,6 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserDao _userDao;
   final SettingsDao _settingsDao;
   final SessionManager _sessionManager;
+  final SharedPreferences _prefs;
 
   static const int _maxLoginAttempts = 5;
   static const int _lockDurationMinutes = 10;
@@ -22,9 +24,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required UserDao userDao,
     required SettingsDao settingsDao,
     required SessionManager sessionManager,
+    required SharedPreferences prefs,
   })  : _userDao = userDao,
         _settingsDao = settingsDao,
         _sessionManager = sessionManager,
+        _prefs = prefs,
         super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
@@ -106,6 +110,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       // Start session
       _sessionManager.login(user);
+      
+      // Save session to local storage for persistence
+      await _prefs.setString('loggedInUsername', user.username);
 
       // Log aktivitas
       await _settingsDao.insertLog({
@@ -137,6 +144,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     _sessionManager.logout();
+    await _prefs.remove('loggedInUsername');
     emit(const AuthUnauthenticated());
   }
 
@@ -145,9 +153,41 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     CheckSessionRequested event,
     Emitter<AuthState> emit,
   ) async {
-    // Untuk saat ini, selalu mulai dari login
-    // Di masa depan bisa implementasi persistent session
-    emit(const AuthUnauthenticated());
+    try {
+      final savedUsername = _prefs.getString('loggedInUsername');
+      if (savedUsername != null && savedUsername.isNotEmpty) {
+        // Cek ke DB apakah user masih ada dan aktif
+        final userMap = await _userDao.getByUsername(savedUsername);
+        if (userMap != null && userMap['is_active'] == 1) {
+          final user = _mapToUser(userMap);
+          
+          // Cek apakah akun terkunci
+          final lockedUntil = userMap['locked_until'] as String?;
+          if (lockedUntil != null) {
+            final lockTime = DateTime.parse(lockedUntil);
+            if (DateTime.now().isBefore(lockTime)) {
+              emit(const AuthUnauthenticated());
+              return;
+            }
+          }
+          
+          // Load timeout setting
+          final settings = await _settingsDao.getSettings();
+          if (settings != null) {
+            _sessionManager.timeoutMinutes = settings['session_timeout_minutes'] as int? ?? 15;
+          }
+          
+          _sessionManager.login(user);
+          emit(AuthAuthenticated(user: user));
+          return;
+        }
+      }
+      
+      // Jika tidak ada session atau tidak valid
+      emit(const AuthUnauthenticated());
+    } catch (e) {
+      emit(const AuthUnauthenticated());
+    }
   }
 
   /// Handle session expired
@@ -156,6 +196,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) {
     _sessionManager.logout();
+    _prefs.remove('loggedInUsername');
     emit(const AuthUnauthenticated(message: 'Sesi telah berakhir. Silakan masuk kembali.'));
   }
 

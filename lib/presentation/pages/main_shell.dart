@@ -311,7 +311,7 @@ class _MainShellState extends State<MainShell> {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(bottomItems.length + (hasMore ? 1 : 0), (index) {
@@ -353,7 +353,7 @@ class _MainShellState extends State<MainShell> {
                             child: Icon(
                               item.icon,
                               color: isSelected ? AppColors.accent : AppColors.white.withValues(alpha: 0.45),
-                              size: 24,
+                              size: 22,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -362,11 +362,11 @@ class _MainShellState extends State<MainShell> {
                             duration: const Duration(milliseconds: 300),
                             child: Text(
                               item.label,
-                              style: GoogleFonts.inter(
-                                fontSize: 10,
-                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                                color: isSelected ? AppColors.white : AppColors.white.withValues(alpha: 0.7),
-                              ),
+                                style: GoogleFonts.inter(
+                                  fontSize: 9,
+                                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                                  color: isSelected ? AppColors.white : AppColors.white.withValues(alpha: 0.7),
+                                ),
                               textAlign: TextAlign.center,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,

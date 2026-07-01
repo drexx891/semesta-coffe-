@@ -303,9 +303,9 @@ class _PosPageState extends State<PosPage> {
             if (state.cartItems.isEmpty) return const SizedBox.shrink();
             
             return Positioned(
-              bottom: 16,
-              left: 16,
-              right: 16,
+              bottom: 24,
+              left: 24,
+              right: 24,
               child: GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
@@ -341,7 +341,7 @@ class _PosPageState extends State<PosPage> {
                     gradient: const LinearGradient(
                       colors: [AppColors.primaryDark, AppColors.primary],
                     ),
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                    borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primaryDark.withValues(alpha: 0.4),

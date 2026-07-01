@@ -76,7 +76,25 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(AppStrings.dashboard, style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600)),
+        title: Row(
+          children: [
+            // Logo for mobile view
+            if (MediaQuery.of(context).size.width < AppDimensions.tabletBreakpoint)
+              Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/logo.png', 
+                    width: 32, 
+                    height: 32, 
+                    fit: BoxFit.cover, 
+                    errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                  ),
+                ),
+              ),
+            Text(AppStrings.dashboard, style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w600)),
+          ],
+        ),
         backgroundColor: AppColors.primaryDark,
         actions: [
           IconButton(
@@ -240,14 +258,29 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildSummaryGrid() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = constraints.maxWidth > 600 ? 4 : 2;
+        int crossAxisCount;
+        double childAspectRatio;
+        
+        if (constraints.maxWidth > 600) {
+          crossAxisCount = 4;
+          childAspectRatio = 1.5;
+        } else if (constraints.maxWidth < 380) {
+          // Sangat kecil (e.g iPhone SE), 1 kolom
+          crossAxisCount = 1;
+          childAspectRatio = 3.0; 
+        } else {
+          // HP standar, 2 kolom tapi butuh ruang vertikal lebih tinggi
+          crossAxisCount = 2;
+          childAspectRatio = 1.15;
+        }
+
         return GridView.count(
           crossAxisCount: crossAxisCount,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisSpacing: AppDimensions.spacing12,
           mainAxisSpacing: AppDimensions.spacing12,
-          childAspectRatio: 1.5,
+          childAspectRatio: childAspectRatio,
           children: [
             _buildSummaryCard(
               icon: Icons.attach_money_rounded,
@@ -545,7 +578,14 @@ class _DashboardPageState extends State<DashboardPage> {
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(width: 12, height: 12, color: color, decoration: BoxDecoration(borderRadius: BorderRadius.circular(2))),
+                  Container(
+                    width: 12, 
+                    height: 12, 
+                    decoration: BoxDecoration(
+                      color: color, 
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                   const SizedBox(width: 4),
                   Text(method.toUpperCase(), style: const TextStyle(fontSize: 11)),
                 ],

@@ -62,6 +62,7 @@ void main() async {
 
   // Muat file env untuk API keys (tanpa titik agar tidak diblokir Vercel)
   await dotenv.load(fileName: "env");
+  debugPrint("App Initialized. Triggering rebuild for Vercel.");
 
   // Inisialisasi locale Indonesia
   await initializeDateFormatting('id_ID', null);

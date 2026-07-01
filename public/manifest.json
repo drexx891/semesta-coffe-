@@ -1,11 +1,11 @@
 {
-    "name": "smesta_coffee",
-    "short_name": "smesta_coffee",
+    "name": "Semesta Cafee",
+    "short_name": "Semesta Cafee",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Semesta Cafee POS System",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

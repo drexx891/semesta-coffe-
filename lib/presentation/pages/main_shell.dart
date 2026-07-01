@@ -166,8 +166,23 @@ class _MainShellState extends State<MainShell> {
                 decoration: BoxDecoration(
                   color: AppColors.accent,
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: const Icon(Icons.coffee_rounded, color: AppColors.white, size: 24),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.coffee_rounded, color: AppColors.white, size: 24),
+                  ),
+                ),
               ),
               const SizedBox(height: AppDimensions.spacing24),
 

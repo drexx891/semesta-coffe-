@@ -129,11 +129,11 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildGreeting(String name) {
     final hour = DateTime.now().hour;
     String greeting;
-    if (hour < 12) {
+    if (hour >= 4 && hour < 11) {
       greeting = 'Selamat Pagi';
-    } else if (hour < 15) {
+    } else if (hour >= 11 && hour < 15) {
       greeting = 'Selamat Siang';
-    } else if (hour < 18) {
+    } else if (hour >= 15 && hour < 18) {
       greeting = 'Selamat Sore';
     } else {
       greeting = 'Selamat Malam';

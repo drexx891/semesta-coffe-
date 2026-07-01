@@ -45,5 +45,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add public/
-          git commit -m "[skip ci] chore: update public build for vercel" || echo "No changes to commit"
+          git commit -m "chore: update public build for vercel" || echo "No changes to commit"
           git push

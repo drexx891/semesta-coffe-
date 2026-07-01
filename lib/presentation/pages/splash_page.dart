@@ -58,13 +58,12 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          gradient: RadialGradient(
+            center: Alignment.topCenter,
+            radius: 1.5,
             colors: [
-              AppColors.primaryDark,
-              Color(0xFF5C2D00),
-              AppColors.primary,
+              Color(0xFF2A1708), // Warmer dark center
+              Color(0xFF0F0804), // Almost black edges
             ],
           ),
         ),
@@ -76,25 +75,29 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
               child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Logo/Icon
+                // Luxurious logo with golden glow
                 Container(
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: AppColors.accent,
-                    borderRadius: BorderRadius.circular(24),
+                    shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.accent.withValues(alpha: 0.4),
-                        blurRadius: 30,
-                        offset: const Offset(0, 10),
+                        color: AppColors.accent.withValues(alpha: 0.25),
+                        blurRadius: 40,
+                        spreadRadius: 5,
                       ),
                     ],
                   ),
-                  child: const Icon(
-                    Icons.coffee_rounded,
-                    size: 56,
-                    color: AppColors.white,
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppColors.accent,
+                        child: const Icon(Icons.coffee_rounded, size: 44, color: AppColors.white),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppDimensions.spacing24),
@@ -104,17 +107,17 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                     fontSize: 36,
                     fontWeight: FontWeight.w700,
                     color: AppColors.white,
-                    letterSpacing: 1.5,
+                    letterSpacing: 2.0,
                   ),
                 ),
                 const SizedBox(height: AppDimensions.spacing8),
                 Text(
-                  AppStrings.appTagline,
+                  AppStrings.appTagline.toUpperCase(),
                   style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.white.withValues(alpha: 0.7),
-                    letterSpacing: 3,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.accent,
+                    letterSpacing: 4.0,
                   ),
                 ),
                 const SizedBox(height: AppDimensions.spacing48),

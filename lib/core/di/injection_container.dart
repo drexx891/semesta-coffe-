@@ -53,6 +53,7 @@ Future<void> initDependencies() async {
         settingsDao: sl(),
         sessionManager: sl(),
         prefs: sl(),
+        syncService: sl(),
       ));
   
   sl.registerFactory(() => MenuBloc(
@@ -61,6 +62,7 @@ Future<void> initDependencies() async {
 
   sl.registerFactory(() => MenuManagementBloc(
         productDao: sl(),
+        syncService: sl(),
       ));
 
   sl.registerFactory(() => PosBloc(

@@ -6,6 +6,7 @@ import '../../../data/database/dao/settings_dao.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/entities/activity_log.dart';
 import '../../../services/session_manager.dart';
+import '../../../services/supabase_sync_service.dart';
 import 'auth_event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_state.dart';
@@ -16,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SettingsDao _settingsDao;
   final SessionManager _sessionManager;
   final SharedPreferences _prefs;
+  final SupabaseSyncService _syncService;
 
   static const int _maxLoginAttempts = 5;
   static const int _lockDurationMinutes = 10;
@@ -25,10 +27,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required SettingsDao settingsDao,
     required SessionManager sessionManager,
     required SharedPreferences prefs,
+    required SupabaseSyncService syncService,
   })  : _userDao = userDao,
         _settingsDao = settingsDao,
         _sessionManager = sessionManager,
         _prefs = prefs,
+        _syncService = syncService,
         super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
@@ -123,6 +127,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       });
 
       emit(AuthAuthenticated(user: user));
+
+      // Tarik data dari cloud setelah login sukses (berjalan di background)
+      _syncService.pullAllDataFromCloud().catchError((e) => null);
     } catch (e) {
       emit(AuthError(message: 'Terjadi kesalahan: ${e.toString()}'));
     }
@@ -179,6 +186,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           
           _sessionManager.login(user);
           emit(AuthAuthenticated(user: user));
+          
+          // Sinkronisasi data saat membuka aplikasi
+          _syncService.pullAllDataFromCloud().catchError((e) => null);
           return;
         }
       }

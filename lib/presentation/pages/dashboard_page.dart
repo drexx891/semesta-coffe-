@@ -8,8 +8,11 @@ import '../../core/di/injection_container.dart';
 import '../../data/database/dao/transaction_dao.dart';
 import '../../data/database/dao/stock_dao.dart';
 import '../../data/database/dao/shift_dao.dart';
+import '../../../domain/entities/user.dart';
+import '../../../domain/entities/shift.dart';
+import '../../../services/session_manager.dart';
+import '../../../services/supabase_sync_service.dart';
 import '../../core/utils/currency_formatter.dart';
-import '../../services/session_manager.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 
 /// Dashboard — ringkasan penjualan hari ini
@@ -69,6 +72,26 @@ class _DashboardPageState extends State<DashboardPage> {
     if (mounted) setState(() => _isLoading = false);
   }
 
+  Future<void> _syncCloudData() async {
+    setState(() => _isLoading = true);
+    try {
+      await sl<SupabaseSyncService>().pullAllDataFromCloud();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Sinkronisasi cloud berhasil')),
+        );
+        _loadDashboardData();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sinkronisasi gagal: $e'), backgroundColor: AppColors.error),
+        );
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = _session.currentUser;
@@ -97,6 +120,11 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         backgroundColor: AppColors.primaryDark,
         actions: [
+          IconButton(
+            icon: const Icon(LucideIcons.cloud_download),
+            onPressed: _syncCloudData,
+            tooltip: 'Tarik Data Cloud',
+          ),
           IconButton(
             icon: const Icon(Icons.refresh_rounded),
             onPressed: _loadDashboardData,

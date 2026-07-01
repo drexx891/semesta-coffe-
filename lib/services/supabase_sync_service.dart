@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sqflite/sqflite.dart';
 import '../data/database/database_helper.dart';
 
 class SupabaseSyncService {
@@ -47,24 +48,27 @@ class SupabaseSyncService {
     }
   }
 
-  /// Menarik semua data dari Supabase ke lokal (Overwrite Local)
+  /// Menarik semua data dari Supabase ke lokal secara aman (Upsert / Sinkronisasi 2 arah)
   Future<void> pullAllDataFromCloud() async {
     try {
       // Kita harus insert dalam urutan yang benar karena Foreign Key constraints
       await _db.transaction((txn) async {
         for (final table in _tables) {
-          // Kosongkan tabel lokal
-          await txn.delete(table);
-          
           // Ambil data dari cloud
           final cloudData = await _supabase.from(table).select();
           
           if (cloudData.isNotEmpty) {
             final batch = txn.batch();
             for (final row in cloudData) {
-              batch.insert(table, row);
+              // Gunakan conflictAlgorithm.replace agar bertindak sebagai UPSERT lokal
+              // Data lama dengan ID yang sama akan ditimpa, data baru dari lokal tidak akan hilang
+              batch.insert(
+                table, 
+                row, 
+                conflictAlgorithm: ConflictAlgorithm.replace,
+              );
             }
-            await batch.commit();
+            await batch.commit(noResult: true);
           }
         }
       });

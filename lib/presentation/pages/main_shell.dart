@@ -7,10 +7,20 @@ import '../../core/constants/app_strings.dart';
 import '../../domain/entities/user.dart';
 import '../../services/session_manager.dart';
 import '../../core/di/injection_container.dart';
+import 'dart:async';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/auth/auth_event.dart';
 import '../bloc/pos/pos_bloc.dart';
 import '../bloc/pos/pos_event.dart';
+import '../bloc/menu/menu_bloc.dart';
+import '../bloc/menu/menu_event.dart';
+import '../bloc/stock/stock_bloc.dart';
+import '../bloc/stock/stock_event.dart';
+import '../bloc/customer/customer_bloc.dart';
+import '../bloc/customer/customer_event.dart';
+import '../bloc/voucher/voucher_bloc.dart';
+import '../bloc/voucher/voucher_event.dart';
+import '../../services/supabase_sync_service.dart';
 import 'dashboard_page.dart';
 import 'pos/pos_page.dart';
 import 'transaction/transaction_history_page.dart';
@@ -38,6 +48,7 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _selectedIndex = 0;
   late final PosBloc _posBloc;
+  StreamSubscription? _syncSubscription;
 
   List<_NavItem> get _navItems {
     final items = <_NavItem>[
@@ -107,10 +118,28 @@ class _MainShellState extends State<MainShell> {
   void initState() {
     super.initState();
     _posBloc = sl<PosBloc>()..add(InitPos());
+    
+    _syncSubscription = sl<SupabaseSyncService>().onSyncComplete.listen((_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Sinkronisasi otomatis selesai! Data terbaru telah dimuat.'),
+            duration: Duration(seconds: 3),
+            backgroundColor: AppColors.success,
+          ),
+        );
+        // Otomatis refresh data di semua halaman tanpa reload manual
+        try { context.read<MenuBloc>().add(LoadMenu()); } catch(_) {}
+        try { context.read<StockBloc>().add(LoadStock()); } catch(_) {}
+        try { context.read<CustomerBloc>().add(LoadCustomers()); } catch(_) {}
+        try { context.read<VoucherBloc>().add(LoadVouchers()); } catch(_) {}
+      }
+    });
   }
 
   @override
   void dispose() {
+    _syncSubscription?.cancel();
     _posBloc.close();
     super.dispose();
   }

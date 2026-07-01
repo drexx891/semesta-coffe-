@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 import '../data/database/database_helper.dart';
@@ -5,6 +6,9 @@ import '../data/database/database_helper.dart';
 class SupabaseSyncService {
   final SupabaseClient _supabase = Supabase.instance.client;
   final DatabaseHelper _db;
+  
+  final _syncCompleteController = StreamController<void>.broadcast();
+  Stream<void> get onSyncComplete => _syncCompleteController.stream;
 
   // Daftar tabel yang perlu disinkronisasi (Berurutan dari parent ke child)
   final List<String> _tables = [
@@ -79,6 +83,12 @@ class SupabaseSyncService {
       throw Exception('Gagal pull data dari Cloud: $e');
     } finally {
       _db.suspendSyncTriggers = false;
+      // Beritahu UI bahwa sinkronisasi selesai dan data baru tersedia
+      _syncCompleteController.add(null);
     }
+  }
+
+  void dispose() {
+    _syncCompleteController.close();
   }
 }

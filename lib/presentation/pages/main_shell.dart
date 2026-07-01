@@ -320,18 +320,13 @@ class _MainShellState extends State<MainShell> {
 
   /// Layout phone: bottom navigation
   Widget _buildPhoneLayout(List<_NavItem> navItems) {
-    // Combine navItems with user info & logout for mobile
-    final allItems = [
-      ...navItems,
-      _NavItem(
-        icon: LucideIcons.log_out,
-        label: 'Logout',
-        page: const Scaffold(), // Handled specially
-      ),
-    ];
+    // Batasi bottom nav max 5 items, sisanya masuk ke "More"
+    final maxBottomItems = navItems.length > 5 ? 4 : navItems.length;
+    final bottomItems = navItems.take(maxBottomItems).toList();
+    final hasMore = navItems.length > 5;
 
     return Scaffold(
-      body: navItems[_selectedIndex].page, // Only index into navItems
+      body: navItems[_selectedIndex].page,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: AppColors.primaryDark,
@@ -344,29 +339,29 @@ class _MainShellState extends State<MainShell> {
           ],
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: List.generate(allItems.length, (index) {
-                  final item = allItems[index];
-                  final isLogout = index == allItems.length - 1;
-                  final isSelected = !isLogout && _selectedIndex == index;
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(bottomItems.length + (hasMore ? 1 : 0), (index) {
+                final isMore = hasMore && index == maxBottomItems;
+                final isSelected = _selectedIndex == index && !isMore;
+                final item = isMore 
+                    ? _NavItem(icon: LucideIcons.ellipsis, label: 'Lainnya', page: const Scaffold()) 
+                    : bottomItems[index];
 
-                  return InkWell(
+                return Expanded(
+                  child: InkWell(
                     onTap: () {
-                      if (isLogout) {
-                        _confirmLogout();
-                        return;
+                      if (isMore) {
+                        _showMoreMenu(navItems.sublist(maxBottomItems), maxBottomItems);
+                      } else {
+                        if (item.label == 'Clock In/Out') {
+                          _showAttendanceDialog();
+                          return;
+                        }
+                        setState(() => _selectedIndex = index);
                       }
-                      if (item.label == 'Clock In/Out') {
-                        _showAttendanceDialog();
-                        return;
-                      }
-                      setState(() => _selectedIndex = index);
                     },
                     borderRadius: BorderRadius.circular(16),
                     splashColor: AppColors.accent.withValues(alpha: 0.1),
@@ -374,9 +369,7 @@ class _MainShellState extends State<MainShell> {
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeOutCubic,
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      constraints: const BoxConstraints(minWidth: 76),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
                         color: isSelected ? AppColors.accent.withValues(alpha: 0.15) : Colors.transparent,
                         borderRadius: BorderRadius.circular(16),
@@ -390,9 +383,7 @@ class _MainShellState extends State<MainShell> {
                             curve: Curves.easeOutBack,
                             child: Icon(
                               item.icon,
-                              color: isLogout 
-                                  ? AppColors.error 
-                                  : (isSelected ? AppColors.accent : AppColors.white.withValues(alpha: 0.45)),
+                              color: isSelected ? AppColors.accent : AppColors.white.withValues(alpha: 0.45),
                               size: 22,
                             ),
                           ),
@@ -403,11 +394,9 @@ class _MainShellState extends State<MainShell> {
                             child: Text(
                               item.label,
                               style: GoogleFonts.inter(
-                                fontSize: 10,
+                                fontSize: 9,
                                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                                color: isLogout 
-                                    ? AppColors.error 
-                                    : (isSelected ? AppColors.white : AppColors.white.withValues(alpha: 0.7)),
+                                color: isSelected ? AppColors.white : AppColors.white.withValues(alpha: 0.7),
                               ),
                               textAlign: TextAlign.center,
                               maxLines: 1,
@@ -417,9 +406,9 @@ class _MainShellState extends State<MainShell> {
                         ],
                       ),
                     ),
-                  );
-                }),
-              ),
+                  ),
+                );
+              }),
             ),
           ),
         ),
@@ -538,7 +527,77 @@ class _MainShellState extends State<MainShell> {
     );
   }
 
-  // _showMoreMenu removed since phone layout is now horizontally scrollable.
+  void _showMoreMenu(List<_NavItem> moreItems, int startOffset) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Allow bottom sheet to expand based on content
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(AppDimensions.spacing16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Display User Info similar to tablet sidebar
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: AppColors.accent,
+                    child: Text(
+                      widget.user.name.isNotEmpty ? widget.user.name[0].toUpperCase() : 'U',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.white,
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    widget.user.name,
+                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: Text(
+                    widget.user.role.displayName,
+                    style: GoogleFonts.inter(color: AppColors.textSecondary, fontSize: 12),
+                  ),
+                ),
+                const Divider(),
+                // More navigation items
+                ...moreItems.asMap().entries.map((entry) {
+                  final localIndex = entry.key;
+                  final item = entry.value;
+                  final globalIndex = startOffset + localIndex;
+                  return ListTile(
+                    leading: Icon(item.icon, color: AppColors.primary),
+                    title: Text(item.label),
+                    onTap: () {
+                      if (item.label == 'Clock In/Out') {
+                        Navigator.pop(context);
+                        _showAttendanceDialog();
+                        return;
+                      }
+                      Navigator.pop(context);
+                      if (mounted) {
+                        setState(() => _selectedIndex = globalIndex);
+                      }
+                    },
+                  );
+                }),
+                const Divider(),
+                // Logout button
+                ListTile(
+                  leading: const Icon(LucideIcons.log_out, color: AppColors.error),
+                  title: const Text('Logout', style: TextStyle(color: AppColors.error)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _confirmLogout();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   void _showAttendanceDialog() async {
     final result = await showDialog<String>(

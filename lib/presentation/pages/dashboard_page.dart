@@ -119,18 +119,6 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
         backgroundColor: AppColors.primaryDark,
-        actions: [
-          IconButton(
-            icon: const Icon(LucideIcons.cloud_download),
-            onPressed: _syncCloudData,
-            tooltip: 'Tarik Data Cloud',
-          ),
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded),
-            onPressed: _loadDashboardData,
-            tooltip: AppStrings.refresh,
-          ),
-        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: AppColors.accent))

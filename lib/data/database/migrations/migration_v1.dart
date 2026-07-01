@@ -1,5 +1,5 @@
 /// Database migration v1 — schema DDL untuk semua tabel
-/// Smesta Coffee POS Database
+/// Semesta Cafee POS Database
 class MigrationV1 {
   MigrationV1._();
 
@@ -76,7 +76,7 @@ class MigrationV1 {
   static const String _createStoreSettings = '''
     CREATE TABLE store_settings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      store_name TEXT NOT NULL DEFAULT 'Smesta Coffee',
+      store_name TEXT NOT NULL DEFAULT 'Semesta Cafee',
       store_logo_path TEXT,
       store_address TEXT DEFAULT '',
       store_phone TEXT DEFAULT '',
@@ -440,7 +440,7 @@ class MigrationV1 {
   static const String _seedStoreSettings = '''
     INSERT INTO store_settings (store_name, store_address, receipt_footer)
     VALUES (
-      'Smesta Coffee',
+      'Semesta Cafee',
       'Jl. Contoh No. 1, Kota',
       'Terima kasih telah berkunjung!\nSelamat menikmati kopi Anda'
     )

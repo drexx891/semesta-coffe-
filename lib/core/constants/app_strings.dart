@@ -4,7 +4,7 @@ class AppStrings {
   AppStrings._();
 
   // === App ===
-  static const String appName = 'Smesta Coffee';
+  static const String appName = 'Semesta Cafee';
   static const String appTagline = 'Point of Sale';
 
   // === Login ===

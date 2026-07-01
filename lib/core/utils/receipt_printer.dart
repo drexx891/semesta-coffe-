@@ -12,8 +12,8 @@ class ReceiptPrinter {
     required Map<String, dynamic> transaction,
     required List<Map<String, dynamic>> items,
     required User cashier,
-    String storeName = 'SMESTA COFFEE',
-    String storeAddress = 'Jalan Raya Smesta No. 123',
+    String storeName = 'SEMESTA CAFEE',
+    String storeAddress = 'Jalan Raya Semesta No. 123',
     String storePhone = '0812-3456-7890',
   }) async {
     final profile = await CapabilityProfile.load();
@@ -122,8 +122,8 @@ class ReceiptPrinter {
     required Map<String, dynamic> shiftData,
     required Map<String, dynamic> summary,
     required User user,
-    String storeName = 'SMESTA COFFEE',
-    String storeAddress = 'Jalan Raya Smesta No. 123',
+    String storeName = 'SEMESTA CAFEE',
+    String storeAddress = 'Jalan Raya Semesta No. 123',
     String storePhone = '0812-3456-7890',
   }) async {
     final profile = await CapabilityProfile.load();
@@ -191,8 +191,8 @@ class ReceiptPrinter {
     required Map<String, dynamic> transaction,
     required List<Map<String, dynamic>> items,
     required User cashier,
-    String storeName = 'SMESTA COFFEE',
-    String storeAddress = 'Jalan Raya Smesta No. 123',
+    String storeName = 'SEMESTA CAFEE',
+    String storeAddress = 'Jalan Raya Semesta No. 123',
     String storePhone = '0812-3456-7890',
   }) async {
     final pdf = pw.Document();

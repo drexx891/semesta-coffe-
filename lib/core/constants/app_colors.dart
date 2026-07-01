@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Smesta Coffee color palette
+/// Semesta Cafee color palette
 /// Identitas visual: cokelat tua, cokelat medium, krem, putih, aksen emas/amber
 class AppColors {
   AppColors._();

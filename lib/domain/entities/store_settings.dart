@@ -26,7 +26,7 @@ class StoreSettings extends Equatable {
 
   const StoreSettings({
     this.id,
-    this.storeName = 'Smesta Coffee',
+    this.storeName = 'Semesta Cafee',
     this.storeLogoPath,
     this.storeAddress = '',
     this.storePhone = '',

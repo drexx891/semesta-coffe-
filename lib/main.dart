@@ -101,7 +101,7 @@ void main() async {
         ),
       ),
     );
-    return; // Berhenti di sini, jangan lanjut ke SmestaCoffeeApp
+    return; // Berhenti di sini, jangan lanjut ke SemestaCafeeApp
   }
 
   // Set preferred orientations (Khusus Tablet POS Landscape)
@@ -118,11 +118,11 @@ void main() async {
     systemNavigationBarIconBrightness: Brightness.dark,
   ));
 
-  runApp(const SmestaCoffeeApp());
+  runApp(const SemestaCafeeApp());
 }
 
-class SmestaCoffeeApp extends StatelessWidget {
-  const SmestaCoffeeApp({super.key});
+class SemestaCafeeApp extends StatelessWidget {
+  const SemestaCafeeApp({super.key});
 
   @override
   Widget build(BuildContext context) {

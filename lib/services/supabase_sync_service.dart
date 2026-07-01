@@ -59,17 +59,19 @@ class SupabaseSyncService {
           final cloudData = await _supabase.from(table).select();
           
           if (cloudData.isNotEmpty) {
-            final batch = txn.batch();
             for (final row in cloudData) {
-              // Gunakan conflictAlgorithm.replace agar bertindak sebagai UPSERT lokal
-              // Data lama dengan ID yang sama akan ditimpa, data baru dari lokal tidak akan hilang
-              batch.insert(
-                table, 
-                row, 
-                conflictAlgorithm: ConflictAlgorithm.replace,
-              );
+              final id = row['id'];
+              if (id != null) {
+                final exists = await txn.query(table, where: 'id = ?', whereArgs: [id]);
+                if (exists.isNotEmpty) {
+                  await txn.update(table, row, where: 'id = ?', whereArgs: [id]);
+                } else {
+                  await txn.insert(table, row);
+                }
+              } else {
+                await txn.insert(table, row);
+              }
             }
-            await batch.commit(noResult: true);
           }
         }
       });

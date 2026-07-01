@@ -460,7 +460,7 @@ class _PosPageState extends State<PosPage> {
     );
   }
 
-  Widget _buildPosProductList(BuildContext context, MenuState menuState) {
+  Widget _buildPosProductList(BuildContext context, MenuLoaded menuState) {
     if (menuState.selectedCategoryId != null) {
       // Menampilkan grid normal untuk 1 kategori
       return GridView.builder(

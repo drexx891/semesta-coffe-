@@ -35,8 +35,19 @@ if (!window._flutter) {
 }
 _flutter.buildConfig = {"engineRevision":"a10d8ac38de835021c8d2f920dbf50a920ccc030","builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"},{}]};
 
+
 _flutter.loader.load({
-  serviceWorkerSettings: {
-    serviceWorkerVersion: "1661845601" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */
+  onEntrypointLoaded: async function(engineInitializer) {
+    // Initialize the engine
+    const appRunner = await engineInitializer.initializeEngine();
+    
+    // Run the app
+    await appRunner.runApp();
+    
+    // Custom logic: Remove the custom loading screen after the app is running
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.remove();
+    }
   }
 });

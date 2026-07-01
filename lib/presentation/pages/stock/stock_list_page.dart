@@ -154,8 +154,21 @@ class _StockListPageState extends State<StockListPage> {
               ),
             );
           },
-          icon: const Icon(LucideIcons.plus),
-          label: const Text('Tambah Bahan'),
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+            side: BorderSide(color: AppColors.white.withValues(alpha: 0.2), width: 1),
+          ),
+          icon: const Icon(LucideIcons.plus, size: 20, color: AppColors.white),
+          label: Text(
+            'Tambah Bahan',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.white,
+              letterSpacing: 0.5,
+            ),
+          ),
           backgroundColor: AppColors.accent,
         ),
       ),

@@ -126,8 +126,21 @@ class _CustomerListPageState extends State<CustomerListPage> {
               ),
             );
           },
-          icon: const Icon(LucideIcons.user_plus),
-          label: const Text('Member Baru'),
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+            side: BorderSide(color: AppColors.white.withValues(alpha: 0.2), width: 1),
+          ),
+          icon: const Icon(LucideIcons.user_plus, size: 20, color: AppColors.white),
+          label: Text(
+            'Member Baru',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.white,
+              letterSpacing: 0.5,
+            ),
+          ),
           backgroundColor: AppColors.accent,
         ),
       ),

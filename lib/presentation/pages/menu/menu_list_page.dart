@@ -134,8 +134,21 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
             }
           }
         },
-        icon: const Icon(LucideIcons.plus),
-        label: Text(_tabController.index == 0 ? 'Tambah Produk' : 'Tambah Kategori'),
+        elevation: 6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+          side: BorderSide(color: AppColors.white.withValues(alpha: 0.2), width: 1),
+        ),
+        icon: const Icon(LucideIcons.plus, size: 20, color: AppColors.white),
+        label: Text(
+          _tabController.index == 0 ? 'Tambah Produk' : 'Tambah Kategori',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: AppColors.white,
+            letterSpacing: 0.5,
+          ),
+        ),
         backgroundColor: AppColors.accent,
       ),
     );

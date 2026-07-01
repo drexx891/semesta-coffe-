@@ -37,8 +37,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       final currentState = state as MenuLoaded;
       final isSameCategory = currentState.selectedCategoryId == event.categoryId;
       
-      // If tapping the same category, we clear it (toggle off)
       final newCategoryId = isSameCategory ? null : event.categoryId;
+      final shouldClear = isSameCategory || event.categoryId == null;
 
       final filtered = _filterProducts(
         currentState.allProducts,
@@ -49,7 +49,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       emit(currentState.copyWith(
         filteredProducts: filtered,
         selectedCategoryId: newCategoryId,
-        clearCategoryId: isSameCategory,
+        clearCategoryId: shouldClear,
       ));
     }
   }

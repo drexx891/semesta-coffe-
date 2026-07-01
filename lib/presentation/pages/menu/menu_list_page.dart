@@ -160,74 +160,103 @@ class _MenuListViewState extends State<MenuListView> with SingleTickerProviderSt
     }
 
     final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    
+    // Kelompokkan produk berdasarkan category_id
+    final Map<int, List<Map<String, dynamic>>> groupedProducts = {};
+    for (var product in products) {
+      final catId = product['category_id'] as int;
+      groupedProducts.putIfAbsent(catId, () => []).add(product);
+    }
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: products.length,
+      itemCount: categories.length,
       itemBuilder: (context, index) {
-        final product = products[index];
-        final isActive = product['is_active'] == 1;
+        final category = categories[index];
+        final catId = category['id'] as int;
+        final catProducts = groupedProducts[catId] ?? [];
 
-        return Card(
-          elevation: 2,
-          margin: const EdgeInsets.only(bottom: 12),
-          child: ListTile(
-            leading: Container(
-              width: 50,
-              height: 50,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                color: AppColors.primarySurface,
-                borderRadius: BorderRadius.circular(8),
+        // Jangan tampilkan kategori yang kosong
+        if (catProducts.isEmpty) return const SizedBox.shrink();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 16, bottom: 12, left: 4),
+              child: Text(
+                category['name'] as String,
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryDark,
+                ),
               ),
-              child: Base64ImageHelper.buildImage(product['image_path'] as String?),
             ),
-            title: Text(
-              product['name'],
-              style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 4),
-                Text('Kategori: ${product['category_name']}'),
-                Text(
-                  currencyFormat.format(product['price_regular']),
-                  style: const TextStyle(color: AppColors.accent, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Switch(
-                  value: isActive,
-                  onChanged: (val) {
-                    context.read<MenuManagementBloc>().add(ToggleProductActive(product['id'], val));
-                  },
-                  activeThumbColor: AppColors.primary,
-                ),
-                IconButton(
-                  icon: const Icon(LucideIcons.pencil, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => BlocProvider.value(
-                          value: context.read<MenuManagementBloc>(),
-                          child: ProductFormPage(product: product, categories: categories),
-                        ),
+            ...catProducts.map((product) {
+              final isActive = product['is_active'] == 1;
+              return Card(
+                elevation: 2,
+                margin: const EdgeInsets.only(bottom: 12),
+                child: ListTile(
+                  leading: Container(
+                    width: 50,
+                    height: 50,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: AppColors.primarySurface,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Base64ImageHelper.buildImage(product['image_path'] as String?),
+                  ),
+                  title: Text(
+                    product['name'],
+                    style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Text(
+                        currencyFormat.format(product['price_regular']),
+                        style: const TextStyle(color: AppColors.accent, fontWeight: FontWeight.w600),
                       ),
-                    );
-                  },
+                    ],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Switch(
+                        value: isActive,
+                        onChanged: (val) {
+                          context.read<MenuManagementBloc>().add(ToggleProductActive(product['id'], val));
+                        },
+                        activeThumbColor: AppColors.primary,
+                      ),
+                      IconButton(
+                        icon: const Icon(LucideIcons.pencil, color: Colors.blue),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => BlocProvider.value(
+                                value: context.read<MenuManagementBloc>(),
+                                child: ProductFormPage(product: product, categories: categories),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _confirmDeleteProduct(context, product),
+                      ),
+                    ],
+                  ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => _confirmDeleteProduct(context, product),
-                ),
-              ],
-            ),
-          ),
+              );
+            }),
+          ],
         );
       },
     );

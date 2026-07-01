@@ -452,25 +452,81 @@ class _PosPageState extends State<PosPage> {
                         ],
                       ),
                     )
-                  : GridView.builder(
-                      padding: const EdgeInsets.all(AppDimensions.spacing12),
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 170,
-                        childAspectRatio: 0.78,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      itemCount: menuState.filteredProducts.length,
-                      itemBuilder: (ctx, index) {
-                        final product = menuState.filteredProducts[index];
-                        return _buildProductCard(context, product, menuState.stockAvailability);
-                      },
-                    ),
+                  : _buildPosProductList(context, menuState),
             ),
           ],
         );
       },
     );
+  }
+
+  Widget _buildPosProductList(BuildContext context, MenuState menuState) {
+    if (menuState.selectedCategoryId != null) {
+      // Menampilkan grid normal untuk 1 kategori
+      return GridView.builder(
+        padding: const EdgeInsets.all(AppDimensions.spacing12),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 170,
+          childAspectRatio: 0.78,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        itemCount: menuState.filteredProducts.length,
+        itemBuilder: (ctx, index) {
+          return _buildProductCard(context, menuState.filteredProducts[index], menuState.stockAvailability);
+        },
+      );
+    } else {
+      // Tab "Semua" -> Kelompokkan berdasarkan kategori
+      final Map<int, List<Map<String, dynamic>>> groupedProducts = {};
+      for (var product in menuState.filteredProducts) {
+        final catId = product['category_id'] as int;
+        groupedProducts.putIfAbsent(catId, () => []).add(product);
+      }
+
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimensions.spacing12, vertical: AppDimensions.spacing12),
+        itemCount: menuState.categories.length,
+        itemBuilder: (context, index) {
+          final category = menuState.categories[index];
+          final catId = category['id'] as int;
+          final catProducts = groupedProducts[catId] ?? [];
+          if (catProducts.isEmpty) return const SizedBox.shrink();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 12, left: 4),
+                child: Text(
+                  category['name'] as String,
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryDark,
+                  ),
+                ),
+              ),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 24),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 170,
+                  childAspectRatio: 0.78,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: catProducts.length,
+                itemBuilder: (ctx, pIndex) {
+                  return _buildProductCard(context, catProducts[pIndex], menuState.stockAvailability);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Widget _buildCategoryChip(BuildContext context, int? id, String name, int? selectedId) {

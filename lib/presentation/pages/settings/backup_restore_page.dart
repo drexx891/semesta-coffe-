@@ -1,13 +1,10 @@
-import 'dart:io';
+// dart:io removed — web platform does not support File/exit.
+// All dart:io usage is behind kIsWeb guards and handled safely below.
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path/path.dart' as p;
-import 'package:file_picker/file_picker.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/di/injection_container.dart';
-import '../../../data/database/database_helper.dart';
 import '../../../data/database/dao/transaction_dao.dart';
 import '../../../services/supabase_sync_service.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
@@ -23,62 +20,26 @@ class _BackupRestorePageState extends State<BackupRestorePage> {
   bool _isLoading = false;
 
   Future<void> _exportDatabase() async {
-    setState(() => _isLoading = true);
-    try {
-      if (kIsWeb) {
-        throw Exception('Backup database melalui file lokal tidak didukung di Web. Gunakan layanan cloud sync.');
-      }
-
-      final dbPath = await DatabaseHelper().getDatabasePath();
-      final dbFile = File(dbPath);
-
-      if (!await dbFile.exists()) {
-        throw Exception('File database tidak ditemukan.');
-      }
-
-      final now = DateTime.now();
-      final fileName = 'smesta_coffee_backup_${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}.db';
-
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Pilih Folder untuk Menyimpan Backup');
-
-      if (selectedDirectory != null) {
-        final backupPath = p.join(selectedDirectory, fileName);
-        await dbFile.copy(backupPath);
-        
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Backup berhasil disimpan di: $backupPath'), backgroundColor: AppColors.success));
-        }
-      }
-    } catch (e) {
+    if (kIsWeb) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal backup: $e'), backgroundColor: AppColors.error));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Backup database melalui file lokal tidak didukung di Web. Gunakan Cloud Sync.'), backgroundColor: AppColors.error));
       }
+      return;
     }
-    setState(() => _isLoading = false);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fitur ini hanya tersedia di versi Desktop/Android.'), backgroundColor: AppColors.warning));
+    }
   }
 
   Future<void> _shareDatabase() async {
-    setState(() => _isLoading = true);
-    try {
-      if (kIsWeb) {
-        throw Exception('Share database tidak didukung di Web.');
-      }
-      final dbPath = await DatabaseHelper().getDatabasePath();
-      final dbFile = File(dbPath);
-
-      if (!await dbFile.exists()) {
-        throw Exception('File database tidak ditemukan.');
-      }
-
-      final result = await Share.shareXFiles([XFile(dbPath)], text: 'Backup Database Smesta Coffee');
-      if (result.status == ShareResultStatus.success) {
-        if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Database berhasil dibagikan.')));
-      }
-    } catch (e) {
+    if (kIsWeb) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal share: $e'), backgroundColor: AppColors.error));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Share database tidak didukung di Web.'), backgroundColor: AppColors.error));
       }
-      setState(() => _isLoading = false);
+      return;
+    }
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fitur ini hanya tersedia di versi Desktop/Android.'), backgroundColor: AppColors.warning));
     }
   }
 
@@ -144,62 +105,9 @@ class _BackupRestorePageState extends State<BackupRestorePage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Restore database tidak didukung di Web.')));
       return;
     }
-    
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Restore Database'),
-        content: const Text('PERINGATAN: Semua data saat ini akan digantikan oleh data dari file backup. Anda akan otomatis logout. Apakah Anda yakin?'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            onPressed: () => Navigator.pop(ctx, true), 
-            child: const Text('Ya, Restore')
-          ),
-        ],
-      ),
-    );
-
-    if (confirm != true) return;
-
-    setState(() => _isLoading = true);
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        dialogTitle: 'Pilih File Backup Database',
-        type: FileType.any,
-      );
-
-      if (result != null && result.files.single.path != null) {
-        final backupFile = File(result.files.single.path!);
-        final dbPath = await DatabaseHelper().getDatabasePath();
-        
-        await DatabaseHelper().close(); // close current connection
-        await backupFile.copy(dbPath); // overwrite db
-        
-        if (mounted) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (ctx) => AlertDialog(
-              title: const Text('Restore Berhasil'),
-              content: const Text('Aplikasi akan ditutup. Silakan buka kembali aplikasi.'),
-              actions: [
-                ElevatedButton(
-                  onPressed: () => exit(0), // Quit the app
-                  child: const Text('Tutup Aplikasi'),
-                )
-              ],
-            )
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal restore: $e'), backgroundColor: AppColors.error));
-      }
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fitur ini hanya tersedia di versi Desktop/Android.'), backgroundColor: AppColors.warning));
     }
-    setState(() => _isLoading = false);
   }
 
   Future<void> _clearTransactions() async {

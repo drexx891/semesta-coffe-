@@ -45,7 +45,6 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       });
       emit(const MenuManagementActionSuccess('Kategori berhasil ditambahkan'));
       add(LoadMenuManagement()); // Reload data
-      _syncService.pushAllDataToCloud().catchError((e) => null);
     } catch (e) {
       emit(MenuManagementError('Gagal menambahkan kategori: $e'));
     }
@@ -59,7 +58,6 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       });
       emit(const MenuManagementActionSuccess('Kategori berhasil diperbarui'));
       add(LoadMenuManagement());
-      _syncService.pushAllDataToCloud().catchError((e) => null);
     } catch (e) {
       emit(MenuManagementError('Gagal memperbarui kategori: $e'));
     }
@@ -76,7 +74,6 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       await _productDao.deleteCategory(event.id);
       emit(const MenuManagementActionSuccess('Kategori berhasil dihapus'));
       add(LoadMenuManagement());
-      _syncService.pushAllDataToCloud().catchError((e) => null);
     } catch (e) {
       emit(MenuManagementError('Gagal menghapus kategori: $e'));
     }
@@ -87,7 +84,6 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       await _productDao.insertProduct(event.productData);
       emit(const MenuManagementActionSuccess('Produk berhasil ditambahkan'));
       add(LoadMenuManagement());
-      _syncService.pushAllDataToCloud().catchError((e) => null);
     } catch (e) {
       emit(MenuManagementError('Gagal menambahkan produk: $e'));
     }
@@ -98,7 +94,6 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       await _productDao.updateProduct(event.id, event.productData);
       emit(const MenuManagementActionSuccess('Produk berhasil diperbarui'));
       add(LoadMenuManagement());
-      _syncService.pushAllDataToCloud().catchError((e) => null);
     } catch (e) {
       emit(MenuManagementError('Gagal memperbarui produk: $e'));
     }
@@ -108,7 +103,6 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
     try {
       await _productDao.toggleActive(event.id, event.isActive);
       add(LoadMenuManagement());
-      _syncService.pushAllDataToCloud().catchError((e) => null);
     } catch (e) {
       emit(MenuManagementError('Gagal mengubah status produk: $e'));
     }
@@ -125,7 +119,6 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       await _productDao.deleteProduct(event.id);
       emit(const MenuManagementActionSuccess('Produk berhasil dihapus'));
       add(LoadMenuManagement());
-      _syncService.pushAllDataToCloud().catchError((e) => null);
     } catch (e) {
       emit(MenuManagementError('Gagal menghapus produk: $e'));
     }

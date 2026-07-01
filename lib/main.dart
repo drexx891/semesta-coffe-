@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,8 @@ import 'presentation/bloc/menu/menu_bloc.dart';
 import 'presentation/bloc/menu/menu_event.dart';
 import 'core/routes/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'data/database/database_helper.dart';
+import 'services/supabase_sync_service.dart';
 
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -73,6 +76,28 @@ void main() async {
 
     initStep = 'Initializing Dependencies (Database, etc)...';
     await initDependencies();
+
+    // ==========================================
+    // AUTO-SYNC & REAL-TIME LISTENER SETUP
+    // ==========================================
+    initStep = 'Setting up Automatic Cloud Sync...';
+    final dbHelper = sl<DatabaseHelper>();
+    final syncService = sl<SupabaseSyncService>();
+    Timer? syncTimer;
+
+    dbHelper.onDataModified = () {
+      // Debounce: Tunggu 2 detik sejak perubahan terakhir sebelum melakukan Push
+      // agar sistem tidak terbebani jika ada banyak operasi DB berturut-turut.
+      syncTimer?.cancel();
+      syncTimer = Timer(const Duration(seconds: 2), () {
+        debugPrint('Auto-Sync: Mendorong perubahan lokal ke Cloud...');
+        syncService.pushAllDataToCloud().catchError((e) {
+          debugPrint('Auto-Sync Error: $e');
+        });
+      });
+    };
+    // ==========================================
+    
   } catch (e, stackTrace) {
     debugPrint('FAILED TO INIT DEPENDENCIES at step: $initStep - $e');
     debugPrint('STACKTRACE: $stackTrace');

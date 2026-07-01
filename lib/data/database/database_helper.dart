@@ -11,6 +11,12 @@ class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
 
+  /// Callback yang dipanggil setiap kali ada perubahan data lokal (insert/update/delete)
+  void Function()? onDataModified;
+
+  /// Flag untuk menonaktifkan trigger (digunakan saat proses sinkronisasi dari Cloud ke Lokal)
+  bool suspendSyncTriggers = false;
+
   factory DatabaseHelper() => _instance;
 
   DatabaseHelper._internal();
@@ -172,10 +178,19 @@ class DatabaseHelper {
   // HELPER METHODS
   // ============================================================
 
+  /// Trigger sinkronisasi jika tidak disuspend
+  void _triggerDataModified() {
+    if (!suspendSyncTriggers && onDataModified != null) {
+      onDataModified!();
+    }
+  }
+
   /// Insert dan return ID
   Future<int> insert(String table, Map<String, dynamic> data) async {
     final db = await database;
-    return await db.insert(table, data);
+    final result = await db.insert(table, data);
+    _triggerDataModified();
+    return result;
   }
 
   /// Update dan return jumlah rows yang terpengaruh
@@ -184,7 +199,9 @@ class DatabaseHelper {
     List<Object?>? whereArgs,
   }) async {
     final db = await database;
-    return await db.update(table, data, where: where, whereArgs: whereArgs);
+    final result = await db.update(table, data, where: where, whereArgs: whereArgs);
+    if (result > 0) _triggerDataModified();
+    return result;
   }
 
   /// Delete dan return jumlah rows yang terhapus
@@ -193,7 +210,9 @@ class DatabaseHelper {
     List<Object?>? whereArgs,
   }) async {
     final db = await database;
-    return await db.delete(table, where: where, whereArgs: whereArgs);
+    final result = await db.delete(table, where: where, whereArgs: whereArgs);
+    if (result > 0) _triggerDataModified();
+    return result;
   }
 
   /// Query dengan semua opsi
@@ -233,12 +252,15 @@ class DatabaseHelper {
   Future<void> rawExecute(String sql, [List<Object?>? arguments]) async {
     final db = await database;
     await db.execute(sql, arguments);
+    _triggerDataModified();
   }
 
   /// Transaksi database
   Future<T> transaction<T>(Future<T> Function(Transaction txn) action) async {
     final db = await database;
-    return await db.transaction(action);
+    final result = await db.transaction(action);
+    _triggerDataModified();
+    return result;
   }
 
   /// Batch operation
@@ -246,7 +268,9 @@ class DatabaseHelper {
     final db = await database;
     final batch = db.batch();
     operations(batch);
-    return await batch.commit();
+    final result = await batch.commit();
+    _triggerDataModified();
+    return result;
   }
 
   /// Hitung jumlah rows

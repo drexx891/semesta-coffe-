@@ -51,6 +51,7 @@ class SupabaseSyncService {
   /// Menarik semua data dari Supabase ke lokal secara aman (Upsert / Sinkronisasi 2 arah)
   Future<void> pullAllDataFromCloud() async {
     try {
+      _db.suspendSyncTriggers = true;
       // Kita harus insert dalam urutan yang benar karena Foreign Key constraints
       await _db.transaction((txn) async {
         for (final table in _tables) {
@@ -74,6 +75,8 @@ class SupabaseSyncService {
       });
     } catch (e) {
       throw Exception('Gagal pull data dari Cloud: $e');
+    } finally {
+      _db.suspendSyncTriggers = false;
     }
   }
 }
